@@ -1,0 +1,447 @@
+<html>
+
+<head>
+
+    <!-- Load ioBroker scripts and styles-->
+    <link rel="stylesheet" type="text/css" href="../../css/adapter.css" />
+    <link rel="stylesheet" type="text/css" href="../../lib/css/materialize.css">
+
+    <script type="text/javascript" src="../../lib/js/jquery-3.2.1.min.js"></script>
+    <script type="text/javascript" src="../../socket.io/socket.io.js"></script>
+
+    <script type="text/javascript" src="../../js/translate.js"></script>
+    <script type="text/javascript" src="../../lib/js/materialize.js"></script>
+    <script type="text/javascript" src="../../js/adapter-settings.js"></script>
+
+    <!-- Load our own files -->
+    <link rel="stylesheet" type="text/css" href="style.css" />
+    <script type="text/javascript" src="words.js"></script>
+
+    <script type="text/javascript">
+      let curValues = [];
+      let namespace = '';
+      let onChange2 = undefined;
+
+      /**
+       * Process tasks by the backend.
+       */
+      function processTasks(tasks, cb) {
+        console.log('tasks', tasks);
+        if (!tasks || !tasks.length) {
+          cb && cb();
+          return;
+        }
+
+        const task = tasks.pop();
+
+        if (typeof task === 'object') {
+          socket.emit('setObject', task._id, task, function (err) {
+            if (err) console.error(err);
+            setTimeout(function () {
+              processTasks(tasks, cb);
+            }, 0);
+          });
+        } else {
+          socket.emit('delState', task, function (err) {
+            if (err) console.error(err);
+            socket.emit('delObject', task, function (err) {
+              if (err) console.error(err);
+              setTimeout(function () {
+                processTasks(tasks, cb);
+              }, 0);
+            });
+          });
+        }
+      }
+
+      /**
+       * Adopt the curValues or the given values to the values table.
+       */
+      function curValues2table (newValues) {
+        if (!newValues) {
+          newValues = JSON.parse(JSON.stringify(curValues));
+        }
+
+        values2table('values', newValues, onChange2, () => {
+          // add change events
+          $('#values .values-input[data-name="id"], \
+             #values .values-input[data-name="address"], \
+             #values .values-input[data-name="name"], \
+             #values .values-input[data-name="interval"]')
+          .on('change', function () {
+            checkLine($(this).data('index'));
+          })
+          .on('keyup', function () {
+            checkLine($(this).data('index'));
+          });
+
+          // run initial check
+          $('#values tr[data-index]').each(function () {
+            checkLine($(this).data('index'));
+          });
+
+          // reinitialize all the Materialize labels on the page if you are dynamically adding inputs:
+          if (M) M.updateTextFields();
+        });
+      }
+
+      /**
+       * This will be called by the admin adapter when the settings page loads.
+       */
+      function load(settings, onChange) { // eslint-disable-line @typescript-eslint/no-unused-vars
+        namespace = adapter + '.' + instance + '.sensors.';
+
+        // save onChange function for later use
+        onChange2 = onChange;
+
+        if (!settings) return;
+        $('.value').each(function () {
+          const $key = $(this);
+          const id = $key.attr('id');
+          if ($key.attr('type') === 'checkbox') {
+            // do not call onChange direct, because onChange could expect some arguments
+            $key.prop('checked', settings[id])
+              .on('change', () => {
+                onChange();
+              });
+          } else {
+            // do not call onChange direct, because onChange could expect some arguments
+            $key.val(settings[id])
+              .on('change', () => onChange())
+              .on('keyup', () => onChange())
+            ;
+          }
+        });
+
+        $('.table-button-search').on('click', searchDevices);
+
+        socket.emit('getObjectView', 'system', 'state', {startkey: namespace, endkey: namespace + '\u9999'}, function (err, res) {
+          if (!err && res) {
+            for (let i = 0; i < res.rows.length; i++) {
+              const obj = res.rows[i].value;
+              const line = {
+                name:          obj.common.name,
+                unit:          obj.common.unit,
+
+                address:       obj.native.address,
+                interval:      obj.native.interval,
+                factor:        obj.native.factor,
+                offset:        obj.native.offset,
+                decimals:      obj.native.decimals,
+                nullOnError:   obj.native.nullOnError,
+                obj:           obj
+              };
+              curValues.push(line);
+            }
+          }
+
+          curValues2table();
+
+        });
+
+        onChange(false);
+        // reinitialize all the Materialize labels on the page if you are dynamically adding inputs:
+        if (M) M.updateTextFields();
+      }
+
+      /**
+       * Check an input line.
+       */
+      function checkLine (id) {
+        let errorCount = 0;
+
+        const $name = $('#values .values-input[data-name="name"][data-index="' + id + '"]');
+        const name = $name.val();
+        if (!name) {
+          setError($name, 'Empty names are not allowed');
+          errorCount++;
+        } else if (name.match(/[^\w_-]/)) {
+          setError($name, 'Allowd chars: a-z A-Z 0-9 - _');
+          errorCount++;
+        } else {
+          setError($name, false);
+        }
+
+        const $address = $('#values .values-input[data-name="address"][data-index="' + id + '"]');
+        if ($address.val().match(/^\w{2}\-\w{12}$/)) {
+          setError($address, false);
+        } else {
+          setError($address, 'Invalid address');
+          errorCount++;
+        }
+
+        const $interval = $('#values .values-input[data-name="interval"][data-index="' + id + '"]');
+        const interval = parseInt($interval.val());
+        if ($interval.val() === '' || (!isNaN(interval) && (interval === 0 || interval > 500))) {
+          setError($interval, false);
+        } else {
+          setError($interval, 'Invalid interval, must be greater than 500');
+          errorCount++;
+        }
+
+        return errorCount;
+      }
+
+      /**
+       * Set an error info on an element.
+       */
+      function setError($elem, error) {
+        if (error) {
+          $elem.addClass('error').attr('title', _(error));
+        } else {
+          $elem.removeClass('error').attr('title', '');
+        }
+      }
+
+      /**
+       * Search for devices.
+       */
+      function searchDevices () {
+        sendTo(adapter + '.' + instance, 'search', {}, (ret) => {
+          if (!ret) {
+            showError(_('No response!'));
+            return;
+          }
+          if (ret.err) {
+            showError(_(ret.err));
+            return;
+          }
+
+          const newValues = JSON.parse(JSON.stringify(curValues));
+
+          foundSensorsLoop:
+          for (const address of ret.sensors) {
+            // check if this sensor already exists
+            for (let v = 0; v < curValues.length; v++) {
+              if (newValues[v].address === address) {
+                continue foundSensorsLoop;
+              }
+            }
+
+            // create new line
+            const line = {
+              name:          address,
+              unit:          '°C',
+
+              address:       address,
+              interval:      null,
+              factor:        1,
+              offset:        0,
+              decimals:      2,
+              nullOnError:   true
+            };
+            newValues.push(line);
+
+          }
+
+          curValues2table(newValues);
+          onChange2(true);
+          setTimeout(() => {
+            $('#values .values-input[data-name="address"]').each((_i, elem) => {
+              const $elem = $(elem);
+              if (ret.sensors.indexOf($elem.val()) !== -1) {
+                $elem.addClass('sensor-found');
+              }
+            });
+            setTimeout(() => {
+              $('input.sensor-found').removeClass('sensor-found');
+            }, 3000);
+          }, 100);
+        });
+      }
+
+      // This will be called by the admin adapter when the user presses the save button
+      function save(callback) { // eslint-disable-line @typescript-eslint/no-unused-vars
+        // example: select elements with class=value and build settings object
+        const obj = {};
+        $('.value').each(function () {
+          const $this = $(this);
+          if ($this.attr('type') === 'checkbox') {
+            obj[$this.attr('id')] = $this.prop('checked');
+          } else {
+            obj[$this.attr('id')] = $this.val();
+          }
+        });
+
+        let errorCount = 0;
+        $('#values tr[data-index]').each(function () {
+          errorCount += checkLine($(this).data('index'));
+        });
+
+        if (errorCount > 0) {
+          showMessage(_('Something seems to be wrong. Please check the highlighted fields.'), _('Error'), 'alert');
+          return;
+        }
+
+        const newValues = table2values('values');
+        const tasks = [];
+        const addresses = [];
+
+        for (let v = 0; v < newValues.length; v++) {
+          if (addresses.indexOf(newValues[v].address) !== -1) {
+            showError(_('Duplicate addresses are not allowed'));
+            return;
+          }
+          addresses.push(newValues[v].address);
+          let found = false;
+          let t;
+          // find same address in old values
+          for (t = 0; t < curValues.length; t++) {
+            if (curValues[t].address === newValues[v].address) {
+              found = true;
+              break;
+            }
+          }
+
+          if (typeof newValues[v].factor === 'string') {
+            newValues[v].factor = newValues[v].factor.replace(',', '.');
+          }
+          if (typeof newValues[v].offset === 'string') {
+            newValues[v].offset = newValues[v].offset.replace(',', '.');
+          }
+
+          if (newValues[v].interval === '') {
+            newValues[v].interval = null;
+          } else {
+            newValues[v].interval = parseInt(newValues[v].interval);
+            if (isNaN(newValues[v].interval)) {
+              newValues[v].interval = null;
+            }
+          }
+          newValues[v].offset = parseFloat(newValues[v].offset) || 0;
+          newValues[v].factor = parseFloat(newValues[v].factor) || 1;
+          newValues[v].decimals = parseInt(newValues[v].decimals, 10) || 2;
+
+          if (found) {
+            const _obj = curValues[t].obj;
+            let changed = false;
+            if (_obj.common.name !== newValues[v].name) {
+              _obj.common.name = newValues[v].name;
+              changed = true;
+            }
+            if (_obj.common.unit !== newValues[v].unit) {
+              _obj.common.unit = newValues[v].unit;
+              changed = true;
+            }
+            if (_obj.native.interval !== newValues[v].interval) {
+              _obj.native.interval = newValues[v].interval;
+              changed = true;
+            }
+            if (_obj.native.factor !== newValues[v].factor) {
+              _obj.native.factor = newValues[v].factor;
+              changed = true;
+            }
+            if (_obj.native.offset !== newValues[v].offset) {
+              _obj.native.offset = newValues[v].offset;
+              changed = true;
+            }
+            if (_obj.native.decimals !== newValues[v].decimals) {
+              _obj.native.decimals = newValues[v].decimals;
+              changed = true;
+            }
+            if (_obj.native.nullOnError !== newValues[v].nullOnError) {
+              _obj.native.nullOnError = newValues[v].nullOnError;
+              changed = true;
+            }
+            newValues[v].obj = _obj;
+            if (changed) tasks.push(_obj);
+          } else {
+            const _obj = {
+              _id:           namespace + newValues[v].address,
+              common: {
+                name:        newValues[v].name,
+                write:       false,
+                read:        true,
+                unit:        newValues[v].unit,
+                type:        'number',
+                role:        'value.temperature'
+              },
+              native: {
+                address:     newValues[v].address,
+                interval:    newValues[v].interval,
+                factor:      newValues[v].factor,
+                offset:      newValues[v].offset,
+                decimals:    newValues[v].decimals,
+                nullOnError: newValues[v].nullOnError
+              },
+              type: 'state'
+            };
+            newValues[v].obj = _obj;
+            tasks.push(_obj);
+          }
+        }
+        for (let w = 0; w < curValues.length; w++) {
+          let found = false;
+          for (let k = 0; k < newValues.length; k++) {
+            if (curValues[w].address === newValues[k].address) {
+              found = true;
+              break;
+            }
+          }
+          if (!found) {
+            tasks.push(curValues[w].obj._id);
+          }
+        }
+
+        // save in and out for config save and restore
+        obj['_values'] = newValues;
+
+        processTasks(tasks, function () {
+          curValues = newValues;
+          callback(obj);
+        });
+      }
+
+    </script>
+
+</head>
+<body>
+<div class="m adapter-container">
+
+  <div class="row">
+    <div class="col s12 m4 l2">
+      <img src="ds18b20.png" class="logo">
+    </div>
+  </div>
+
+  <!-- main settings -->
+  <div class="row">
+    <div class="input-field col s12 m8 l4">
+      <input type="text" id="defaultInterval" class="value" />
+      <label class="translate" for="port">Default query interval</label>
+      <span class="translate">The default time between sensor queries in milliseconds.</span>
+    </div>
+  </div>
+
+  <!-- sensors -->
+  <div class="row">
+    <div class="col s12" id="values">
+      <span style="font-size: larger;" class="translate">Add entry</span>: <a class="btn-floating waves-effect waves-light blue table-button-add"><i class="material-icons">add</i></a>
+      <span style="font-size: larger;" class="translate">Search Sensors</span>: <a class="btn-floating waves-effect waves-light blue table-button-search"><i class="material-icons">visibility</i></a>
+      <div class="table-values-div">
+        <table class="table-values">
+          <thead>
+          <tr>
+            <th data-name="_index"     style="width:30px"></th>
+            <th data-name="address"    style="width:150px" class="translate">Address</th>
+            <th data-name="name"       style="width:150px" class="translate">Name</th>
+            <th data-name="interval"   style="width:60px" class="translate">Query interval</th>
+            <th data-name="unit"       style="width:60px" class="translate" data-default="°C">Unit</th>
+            <th data-name="factor"     style="width:60px" class="translate" data-default="1">Factor</th>
+            <th data-name="offset"     style="width:60px" class="translate" data-default="0">Offset</th>
+            <th data-name="decimals"   style="width:60px" class="translate" data-type="number" data-default="2">Decimals</th>
+            <th data-name="nullOnError" style="width:60px" class="translate" data-type="checkbox" data-default="true">Null on error</th>
+            <th data-buttons="delete copy" style="width:80px"></th>
+          </tr>
+          </thead>
+        </table>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col s12 translate"><em>Hint:</em> Click on the ?-button at the top to get help and some examples.</div>
+  </div>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,119 @@
+{
+    "common": {
+        "name": "ds18b20",
+        "version": "1.0.0",
+        "news": {
+            "1.0.0": {
+                "en": "initial release",
+                "de": "Erstveröffentlichung",
+                "ru": "Начальная версия",
+                "pt": "lançamento inicial",
+                "nl": "Eerste uitgave",
+                "fr": "Première version",
+                "it": "Versione iniziale",
+                "es": "Versión inicial",
+                "pl": "Pierwsze wydanie",
+                "zh-cn": "首次出版"
+            }
+        },
+        "title": "DS18B20",
+        "desc": {
+            "en": "This is an ioBroker-Adapter to integrate DS18B20 1-wire temperature sensors.",
+            "de": "Dies ist ein ioBroker-Adapter zur Integration von DS18B20 1-Wire Temperatursensoren.",
+            "ru": "Это адаптер ioBroker для интеграции однопроводных датчиков температуры DS18B20.",
+            "pt": "Este é um adaptador ioBroker para integrar os sensores de temperatura DS18B20 de 1 fio.",
+            "nl": "Dit is een ioBroker-adapter om DS18B20 1-draads temperatuursensoren te integreren.",
+            "fr": "C'est un adaptateur ioBroker pour intégrer les capteurs de température DS18B20 à 1 fil.",
+            "it": "Questo è un adattatore ioBroker per integrare i sensori di temperatura a 1 filo DS18B20.",
+            "es": "Este es un adaptador ioBroker para integrar sensores de temperatura DS18B20 de 1 cable.",
+            "pl": "Jest to adapter ioBroker do integracji 1-przewodowych czujników temperatury DS18B20.",
+            "zh-cn": "这是一款集成DS18B20单线温度传感器的ioBroker-Adapter。"
+        },
+        "docs": {
+            "en": "docs/en/ds18b20.md",
+            "de": "docs/de/ds18b20.md"
+        },
+        "authors": [
+            "Peter Müller <peter@crycode.de>"
+        ],
+        "keywords": [
+            "ds18b20",
+            "ds1820",
+            "1wire"
+        ],
+        "license": "MIT",
+        "platform": "Javascript/Node.js",
+        "main": "build/main.js",
+        "icon": "ds18b20.png",
+        "enabled": true,
+        "extIcon": "https://raw.githubusercontent.com/crycode-de/ioBroker.ds18b20/master/admin/ds18b20.png",
+        "readme": "https://github.com/crycode-de/ioBroker.ds18b20/blob/master/README.md",
+        "loglevel": "info",
+        "mode": "daemon",
+        "type": "protocols",
+        "compact": true,
+        "materialize": true,
+        "messagebox": true,
+        "dependencies": [
+            {
+                "js-controller": ">=1.4.2"
+            }
+        ]
+    },
+    "native": {
+      "defaultInterval": 60000
+    },
+    "objects": [],
+    "instanceObjects": [
+        {
+            "_id": "info",
+            "type": "channel",
+            "common": {
+                "name": "Information"
+            },
+            "native": {}
+        },
+        {
+            "_id": "info.connection",
+            "type": "state",
+            "common": {
+                "role": "indicator.connected",
+                "name": "All sensors connected",
+                "type": "boolean",
+                "read": true,
+                "write": false,
+                "def": false
+            },
+            "native": {}
+        },
+        {
+            "_id": "actions",
+            "type": "channel",
+            "common": {
+                "name": "Actions"
+            },
+            "native": {}
+        },
+        {
+            "_id": "actions.readNow",
+            "type": "state",
+            "common": {
+                "role": "text",
+                "name": "Read one or all sensors now",
+                "type": "text",
+                "read": false,
+                "write": true,
+                "def": ""
+            },
+            "native": {}
+        },
+        {
+            "_id": "sensors",
+            "type": "channel",
+            "common": {
+                "name": "The sensors"
+            },
+            "native": {}
+        }
+    ]
+}

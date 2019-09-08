@@ -1,0 +1,23 @@
+{
+    "<em>Hint:</em> Click on the ?-button at the top to get help and some examples.": "<em>Hint:</em> Click on the ?-button at the top to get help and some examples.",
+    "Add entry": "Add entry",
+    "Address": "Address",
+    "Allowed chars: a-z A-Z 0-9 - _": "Allowed chars: a-z A-Z 0-9 - _",
+    "Decimals": "Decimals",
+    "Default query interval": "Default query interval",
+    "Duplicate addresses are not allowed": "Duplicate addresses are not allowed",
+    "Empty names are not allowed": "Empty names are not allowed",
+    "Error": "Error",
+    "Factor": "Factor",
+    "Invalid address": "Invalid address",
+    "Invalid interval, must be greater than 500": "Invalid interval, must be greater than 500",
+    "Name": "Name",
+    "No response!": "No response!",
+    "Null on error": "Null on error",
+    "Offset": "Offset",
+    "Query interval": "Query interval",
+    "Search Sensors": "Search Sensors",
+    "Something seems to be wrong. Please check the highlighted fields.": "Something seems to be wrong. Please check the highlighted fields.",
+    "The default time between sensor queries in milliseconds.": "The default time between sensor queries in milliseconds.",
+    "Unit": "Unit"
+}

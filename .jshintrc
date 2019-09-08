@@ -1,0 +1,8 @@
+{
+  "esversion": 8,
+  "node": true,
+
+  "-W054": false,
+  "-W069": false,
+  "-W083": false
+}

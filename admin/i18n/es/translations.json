@@ -1,0 +1,23 @@
+{
+    "<em>Hint:</em> Click on the ?-button at the top to get help and some examples.": "<em>Sugerencia:</em> haga clic en el botón ? En la parte superior para obtener ayuda y algunos ejemplos.",
+    "Add entry": "Añadir entrada",
+    "Address": "Dirección",
+    "Allowed chars: a-z A-Z 0-9 - _": "Caracteres permitidos: a-z A-Z 0-9 - _",
+    "Decimals": "Decimales",
+    "Default query interval": "Intervalo de consulta predeterminado",
+    "Duplicate addresses are not allowed": "No se permiten direcciones duplicadas.",
+    "Empty names are not allowed": "No se permiten nombres vacíos.",
+    "Error": "Error",
+    "Factor": "Factor",
+    "Invalid address": "Dirección inválida",
+    "Invalid interval, must be greater than 500": "Intervalo no válido, debe ser mayor que 500",
+    "Name": "Nombre",
+    "No response!": "¡Ninguna respuesta!",
+    "Null on error": "Nulo por error",
+    "Offset": "Compensar",
+    "Query interval": "Intervalo de consulta",
+    "Search Sensors": "Sensores de búsqueda",
+    "Something seems to be wrong. Please check the highlighted fields.": "Algo parece estar mal. Por favor verifique los campos resaltados.",
+    "The default time between sensor queries in milliseconds.": "El tiempo predeterminado entre consultas del sensor en milisegundos.",
+    "Unit": "Unidad"
+}

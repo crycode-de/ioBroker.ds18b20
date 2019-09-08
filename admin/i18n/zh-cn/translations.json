@@ -1,0 +1,23 @@
+{
+    "<em>Hint:</em> Click on the ?-button at the top to get help and some examples.": "<em>提示：</em>点击顶部的 ？ - 按钮获取帮助和一些示例。",
+    "Add entry": "添加条目",
+    "Address": "地址",
+    "Allowed chars: a-z A-Z 0-9 - _": "允许的字符：a-z A-Z 0-9  -  _",
+    "Decimals": "小数点",
+    "Default query interval": "默认查询间隔",
+    "Duplicate addresses are not allowed": "不允许重复的地址",
+    "Empty names are not allowed": "不允许使用空名称",
+    "Error": "错误",
+    "Factor": "因子",
+    "Invalid address": "无效地址",
+    "Invalid interval, must be greater than 500": "无效区间，必须大于500",
+    "Name": "名称",
+    "No response!": "没有反应！",
+    "Null on error": "空出错误",
+    "Offset": "抵消",
+    "Query interval": "查询间隔",
+    "Search Sensors": "搜索传感器",
+    "Something seems to be wrong. Please check the highlighted fields.": "有些东西似乎是错的。请检查突出显示的字段。",
+    "The default time between sensor queries in milliseconds.": "传感器查询之间的默认时间（以毫秒为单位）。",
+    "Unit": "单元"
+}

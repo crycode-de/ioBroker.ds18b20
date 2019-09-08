@@ -1,0 +1,23 @@
+{
+    "<em>Hint:</em> Click on the ?-button at the top to get help and some examples.": "<em>Hint:</em> klik bovenaan op de ? - knop voor hulp en enkele voorbeelden.",
+    "Add entry": "Vermelding toevoegen",
+    "Address": "Adres",
+    "Allowed chars: a-z A-Z 0-9 - _": "Toegestane tekens: a-z A-Z 0-9 - _",
+    "Decimals": "Decimals",
+    "Default query interval": "Standaard query-interval",
+    "Duplicate addresses are not allowed": "Dubbele adressen zijn niet toegestaan",
+    "Empty names are not allowed": "Lege namen zijn niet toegestaan",
+    "Error": "Fout",
+    "Factor": "Factor",
+    "Invalid address": "Ongeldig adres",
+    "Invalid interval, must be greater than 500": "Ongeldig interval, moet groter zijn dan 500",
+    "Name": "Naam",
+    "No response!": "Geen antwoord!",
+    "Null on error": "Null op fout",
+    "Offset": "compenseren",
+    "Query interval": "Zoekopdracht interval",
+    "Search Sensors": "Zoek sensoren",
+    "Something seems to be wrong. Please check the highlighted fields.": "Er lijkt iets mis te zijn. Controleer de gemarkeerde velden.",
+    "The default time between sensor queries in milliseconds.": "De standaardtijd tussen sensorquery's in milliseconden.",
+    "Unit": "Eenheid"
+}

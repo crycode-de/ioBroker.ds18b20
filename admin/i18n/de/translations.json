@@ -1,0 +1,23 @@
+{
+    "<em>Hint:</em> Click on the ?-button at the top to get help and some examples.": "<em>Hinweis:</em> Klicke auf den ?-Button weiter oben um Hilfe und einige Beispiele zu erhalten.",
+    "Add entry": "Eintrag hinzufügen",
+    "Address": "Adresse",
+    "Allowed chars: a-z A-Z 0-9 - _": "Zulässige Zeichen: a-z A-Z 0-9 - _",
+    "Decimals": "Dezimalstellen",
+    "Default query interval": "Standardabfrageintervall",
+    "Duplicate addresses are not allowed": "Doppelte Adressen sind nicht zulässig",
+    "Empty names are not allowed": "Leere Namen sind nicht erlaubt",
+    "Error": "Error",
+    "Factor": "Faktor",
+    "Invalid address": "Ungültige Adresse",
+    "Invalid interval, must be greater than 500": "Ungültiges Intervall, muss größer als 500 sein",
+    "Name": "Name",
+    "No response!": "Keine Antwort!",
+    "Null on error": "Null bei Fehler",
+    "Offset": "Offset",
+    "Query interval": "Abfrageintervall",
+    "Search Sensors": "Sensoren suchen",
+    "Something seems to be wrong. Please check the highlighted fields.": "Irgendwas scheint nicht zu stimmen. Bitte überprüfe die markierten Felder.",
+    "The default time between sensor queries in milliseconds.": "Die Standardzeit zwischen Sensorabfragen in Millisekunden.",
+    "Unit": "Einheit"
+}
