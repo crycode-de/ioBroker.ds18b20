@@ -13,9 +13,25 @@ const events_1 = require("events");
 const core_decorators_1 = require("core-decorators");
 const ds18b20 = require("ds18b20");
 const tools_1 = require("./lib/tools");
+/**
+ * This class represents a single sensor.
+ */
 class Sensor extends events_1.EventEmitter {
+    /**
+     * Constructor for a new sensor.
+     * @param id          The ID of the sensor in ioBroker.
+     * @param address     The address (1-wire ID) of the sensor.
+     * @param interval    The interval in milliseconds for periodic reads.
+     * @param nullOnError Use null values on errors.
+     * @param factor      Factor for value calculation.
+     * @param offset      Offset for value calculation.
+     * @param decimals    Number of decimals to round to.
+     */
     constructor(id, address, interval, nullOnError, factor, offset, decimals) {
         super();
+        /**
+         * Timer for interval sensor readings.
+         */
         this.timer = null;
         this.id = id;
         this.address = address;
@@ -24,6 +40,10 @@ class Sensor extends events_1.EventEmitter {
         this.offset = offset;
         this.decimals = decimals;
         this.hasError = true; // true on init while we don't know the current state
+        // smallest interval is 500ms
+        if (interval < 500) {
+            interval = 500;
+        }
         // start interval and inital read if interval is set
         if (interval && interval > 0) {
             this.timer = setInterval(this.read, interval);

@@ -87,6 +87,11 @@ export class Sensor extends EventEmitter {
     this.decimals = decimals;
     this.hasError = true; // true on init while we don't know the current state
 
+    // smallest interval is 500ms
+    if (interval < 500) {
+      interval = 500;
+    }
+
     // start interval and inital read if interval is set
     if (interval && interval > 0) {
       this.timer = setInterval(this.read, interval);

@@ -1,7 +1,5 @@
 <html>
-
 <head>
-
     <!-- Load ioBroker scripts and styles-->
     <link rel="stylesheet" type="text/css" href="../../css/adapter.css" />
     <link rel="stylesheet" type="text/css" href="../../lib/css/materialize.css">
@@ -115,6 +113,17 @@
 
         $('.table-button-search').on('click', searchDevices);
 
+        // check default interval on changes
+        $defaultInterval = $('#defaultInterval');
+        $defaultInterval.on('change keyup', () => {
+          const interval = parseInt($defaultInterval.val(), 10);
+          if (!isNaN(interval) && (interval === 0 || interval >= 500)) {
+            setError($defaultInterval, false);
+          } else {
+            setError($defaultInterval, 'Invalid interval, must be greater than 500');
+          }
+        });
+
         socket.emit('getObjectView', 'system', 'state', {startkey: namespace, endkey: namespace + '\u9999'}, function (err, res) {
           if (!err && res) {
             for (let i = 0; i < res.rows.length; i++) {
@@ -171,8 +180,8 @@
         }
 
         const $interval = $('#values .values-input[data-name="interval"][data-index="' + id + '"]');
-        const interval = parseInt($interval.val());
-        if ($interval.val() === '' || (!isNaN(interval) && (interval === 0 || interval > 500))) {
+        const interval = parseInt($interval.val(), 10);
+        if ($interval.val() === '' || (!isNaN(interval) && (interval === 0 || interval >= 500))) {
           setError($interval, false);
         } else {
           setError($interval, 'Invalid interval, must be greater than 500');

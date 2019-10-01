@@ -1,6 +1,8 @@
 "use strict";
-/*
- * Created with @iobroker/create-adapter v1.15.1
+/**
+ * ioBroker DS18B20 1-wire temperature sensor adapter.
+ *
+ * (C) 2019 Peter Müller <peter@crycode.de> (https://github.com/crycode-de/ioBroker.ds18b20)
  */
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -22,6 +24,9 @@ const utils = require("@iobroker/adapter-core");
 const core_decorators_1 = require("core-decorators");
 const ds18b20 = require("ds18b20");
 const sensor_1 = require("./sensor");
+/**
+ * The ds18b20 adapter.
+ */
 class Ds18b20Adapter extends utils.Adapter {
     /**
      * Constructor to create a new instance of the adapter.
@@ -29,6 +34,9 @@ class Ds18b20Adapter extends utils.Adapter {
      */
     constructor(options = {}) {
         super(Object.assign(Object.assign({}, options), { name: 'ds18b20' }));
+        /**
+         * Mapping of the ioBroker object IDs to the sensor class instances.
+         */
         this.sensors = {};
         this.on('ready', this.onReady);
         this.on('stateChange', this.onStateChange);
@@ -81,6 +89,11 @@ class Ds18b20Adapter extends utils.Adapter {
             callback();
         });
     }
+    /**
+     * Handler for incoming sensor values.
+     * @param value The value.
+     * @param id    The ioBroker ID of the sensor.
+     */
     handleSensorValue(value, id) {
         if (!this.sensors[id])
             return;
@@ -90,9 +103,21 @@ class Ds18b20Adapter extends utils.Adapter {
             val: value
         });
     }
+    /**
+     * Handler for sensor errors.
+     * @param err The error.
+     * @param id  The ioBroker ID of the sensor.
+     */
     handleSensorError(err, id) {
         this.log.warn(`Error reading sensor ${this.sensors[id].address}: ${err}`);
     }
+    /**
+     * Handler for changes of error state of a sensor.
+     * This will change the info.connection state of the adapter to true if all
+     * sensors are ok and false if at least one sensor has an error.
+     * @param hasError Indecator if the sensor has an error or not.
+     * @param id       The ioBroker ID of the sensor.
+     */
     handleSensorErrorStateChanged(hasError, id) {
         this.log.debug(`error state of sensor ${this.sensors[id].address} changed to ${hasError}`);
         // check all sensors for errors
@@ -107,9 +132,9 @@ class Ds18b20Adapter extends utils.Adapter {
         this.setState('info.connection', true, true);
     }
     /**
-     * Get a defined sensor from it's id or address.
-     * @param  idOrAddress The id or address of the sensor.
-     * @return             The sensor.
+     * Get a defined sensor from it's ioBroker ID or 1-wire address.
+     * @param  idOrAddress The ID or address of the sensor.
+     * @return             The sensor or null.
      */
     getSensor(idOrAddress) {
         if (this.sensors[idOrAddress])
@@ -122,8 +147,12 @@ class Ds18b20Adapter extends utils.Adapter {
         }
         return null;
     }
-    readNow(address) {
-        if (typeof address !== 'string' || address === 'all' || address === '') {
+    /**
+     * Trigger the reading of a single sensor or all sensors.
+     * @param idOrAddress The ioBroker ID or 1-wire address of the sensor. Use `all` or an empty string to read all sensors.
+     */
+    readNow(idOrAddress) {
+        if (typeof idOrAddress !== 'string' || idOrAddress === 'all' || idOrAddress === '') {
             // read all sensors
             this.log.info(`Read data from all sensors now`);
             for (const addr in this.sensors) {
@@ -132,9 +161,9 @@ class Ds18b20Adapter extends utils.Adapter {
         }
         else {
             // read a specific sensor
-            const sens = this.getSensor(address);
+            const sens = this.getSensor(idOrAddress);
             if (!sens) {
-                this.log.warn(`No sensor with address or id ${address} found!`);
+                this.log.warn(`No sensor with address or id ${idOrAddress} found!`);
                 return;
             }
             this.log.info(`Read data from sensor ${sens.address} now`);
