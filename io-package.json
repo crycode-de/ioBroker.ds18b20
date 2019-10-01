@@ -1,8 +1,20 @@
 {
     "common": {
         "name": "ds18b20",
-        "version": "1.0.0",
+        "version": "1.0.1",
         "news": {
+            "1.0.1": {
+                "en": "Type changed to hardware, Renamed command, Added missing documentation",
+                "de": "Typ geändert in Hardware, Befehl umbenannt, fehlende Dokumentation hinzugefügt",
+                "ru": "Тип изменен на аппаратное обеспечение, команда переименована, добавлена недостающая документация",
+                "pt": "Tipo alterado para hardware, comando renomeado, documentação ausente adicionada",
+                "nl": "Type gewijzigd in hardware, opdracht Hernoemd, ontbrekende documentatie toegevoegd",
+                "fr": "Type modifié en matériel, commande renommée, documentation manquante ajoutée",
+                "it": "Tipo modificato in hardware, comando rinominato, aggiunta documentazione mancante",
+                "es": "Tipo cambiado a hardware, comando renombrado, documentación faltante agregada",
+                "pl": "Zmieniono typ na sprzęt, zmieniono nazwę polecenia, dodano brakującą dokumentację",
+                "zh-cn": "将类型更改为硬件，重命名命令，添加了缺少的文档"
+            },
             "1.0.0": {
                 "en": "initial release",
                 "de": "Erstveröffentlichung",
@@ -50,7 +62,7 @@
         "readme": "https://github.com/crycode-de/ioBroker.ds18b20/blob/master/README.md",
         "loglevel": "info",
         "mode": "daemon",
-        "type": "protocols",
+        "type": "hardware",
         "compact": true,
         "materialize": true,
         "messagebox": true,
@@ -61,7 +73,7 @@
         ]
     },
     "native": {
-      "defaultInterval": 60000
+        "defaultInterval": 60000
     },
     "objects": [],
     "instanceObjects": [

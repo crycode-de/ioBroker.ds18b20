@@ -233,7 +233,7 @@ class Ds18b20Adapter extends utils.Adapter {
 
     if (typeof obj === 'object' && obj.message) {
       switch (obj.command) {
-        case 'checkNow':
+        case 'readNow':
           // we should read sensors now...
           if (typeof obj.message === 'string') {
             this.readNow(obj.message);
