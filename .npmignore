@@ -37,3 +37,4 @@ admin/i18n
 maintenance/**
 
 build/lib/*-dev.js
+**/*.d.ts
