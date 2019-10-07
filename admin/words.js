@@ -1,177 +1,178 @@
-/*global systemDictionary:true */
+/* global systemDictionary:true */
+/* eslint-disable quotes */
 'use strict';
 
 systemDictionary = {
-    "<em>Hint:</em> Click on the ?-button at the top to get help and some examples.": {
-      "en": "<em>Hint:</em> Click on the ?-button at the top to get help and some examples.",
-      "de": "<em>Hinweis:</em> Klicke auf den ?-Button weiter oben um Hilfe und einige Beispiele zu erhalten.",
-      "ru": "<em>Подсказка:</em> Нажмите на ?-Кнопка вверху, чтобы получить помощь и несколько примеров.",
-      "pt": "<em>Dica:</em> clique no botão ? - na parte superior para obter ajuda e alguns exemplos.",
-      "nl": "<em>Hint:</em> klik bovenaan op de ? - knop voor hulp en enkele voorbeelden.",
-      "fr": "<em>Conseil:</em> Cliquez sur le ?-bouton en haut pour obtenir de l'aide et des exemples.",
-      "it": "<em>Suggerimento: fai</em> clic sul pulsante ? In alto per ottenere assistenza e alcuni esempi.",
-      "es": "<em>Sugerencia:</em> haga clic en el botón ? En la parte superior para obtener ayuda y algunos ejemplos.",
-      "pl": "<em>Wskazówka:</em> Kliknij przycisk ? U góry, aby uzyskać pomoc i kilka przykładów.",
-      "zh-cn": "<em>提示：</em>点击顶部的 ？ - 按钮获取帮助和一些示例。"
-    },
+  "<em>Hint:</em> Click on the ?-button at the top to get help and some examples.": {
+    "en": "<em>Hint:</em> Click on the ?-button at the top to get help and some examples.",
+    "de": "<em>Hinweis:</em> Klicke auf den ?-Button weiter oben um Hilfe und einige Beispiele zu erhalten.",
+    "ru": "<em>Подсказка:</em> Нажмите на ?-Кнопка вверху, чтобы получить помощь и несколько примеров.",
+    "pt": "<em>Dica:</em> clique no botão ? - na parte superior para obter ajuda e alguns exemplos.",
+    "nl": "<em>Hint:</em> klik bovenaan op de ? - knop voor hulp en enkele voorbeelden.",
+    "fr": "<em>Conseil:</em> Cliquez sur le ?-bouton en haut pour obtenir de l'aide et des exemples.",
+    "it": "<em>Suggerimento: fai</em> clic sul pulsante ? In alto per ottenere assistenza e alcuni esempi.",
+    "es": "<em>Sugerencia:</em> haga clic en el botón ? En la parte superior para obtener ayuda y algunos ejemplos.",
+    "pl": "<em>Wskazówka:</em> Kliknij przycisk ? U góry, aby uzyskać pomoc i kilka przykładów.",
+    "zh-cn": "<em>提示：</em>点击顶部的 ？ - 按钮获取帮助和一些示例。"
+  },
 
-    "Add entry": {
-      "en": "Add entry",
-      "de": "Eintrag hinzufügen",
-      "ru": "Добавить запись",
-      "pt": "Adicionar entrada",
-      "nl": "Vermelding toevoegen",
-      "fr": "Ajouter une entrée",
-      "it": "Aggiungi voce",
-      "es": "Añadir entrada",
-      "pl": "Dodaj wpis",
-      "zh-cn": "添加条目"
-    },
+  "Add entry": {
+    "en": "Add entry",
+    "de": "Eintrag hinzufügen",
+    "ru": "Добавить запись",
+    "pt": "Adicionar entrada",
+    "nl": "Vermelding toevoegen",
+    "fr": "Ajouter une entrée",
+    "it": "Aggiungi voce",
+    "es": "Añadir entrada",
+    "pl": "Dodaj wpis",
+    "zh-cn": "添加条目"
+  },
 
-    "Address": {
-      "en": "Address",
-      "de": "Adresse",
-      "ru": "Адрес",
-      "pt": "Endereço",
-      "nl": "Adres",
-      "fr": "Adresse",
-      "it": "Indirizzo",
-      "es": "Dirección",
-      "pl": "Adres",
-      "zh-cn": "地址"
-    },
+  "Address": {
+    "en": "Address",
+    "de": "Adresse",
+    "ru": "Адрес",
+    "pt": "Endereço",
+    "nl": "Adres",
+    "fr": "Adresse",
+    "it": "Indirizzo",
+    "es": "Dirección",
+    "pl": "Adres",
+    "zh-cn": "地址"
+  },
 
-    "Allowed chars: a-z A-Z 0-9 - _": {
-      "en": "Allowed chars: a-z A-Z 0-9 - _",
-      "de": "Zulässige Zeichen: a-z A-Z 0-9 - _",
-      "ru": "Допустимые символы: a-z A-Z 0-9 - _",
-      "pt": "Caracteres permitidos: a-z A-Z 0-9 - _",
-      "nl": "Toegestane tekens: a-z A-Z 0-9 - _",
-      "fr": "Caractères autorisés: a-z A-Z 0-9 - _",
-      "it": "Caratteri consentiti: a-z A-Z 0-9 - _",
-      "es": "Caracteres permitidos: a-z A-Z 0-9 - _",
-      "pl": "Dozwolone znaki: a-z A-Z 0-9 - _",
-      "zh-cn": "允许的字符：a-z A-Z 0-9  -  _"
-    },
+  "Allowed chars: a-z A-Z 0-9 - _": {
+    "en": "Allowed chars: a-z A-Z 0-9 - _",
+    "de": "Zulässige Zeichen: a-z A-Z 0-9 - _",
+    "ru": "Допустимые символы: a-z A-Z 0-9 - _",
+    "pt": "Caracteres permitidos: a-z A-Z 0-9 - _",
+    "nl": "Toegestane tekens: a-z A-Z 0-9 - _",
+    "fr": "Caractères autorisés: a-z A-Z 0-9 - _",
+    "it": "Caratteri consentiti: a-z A-Z 0-9 - _",
+    "es": "Caracteres permitidos: a-z A-Z 0-9 - _",
+    "pl": "Dozwolone znaki: a-z A-Z 0-9 - _",
+    "zh-cn": "允许的字符：a-z A-Z 0-9  -  _"
+  },
 
-    "Decimals": {
-      "en": "Decimals",
-      "de": "Dezimalstellen",
-      "ru": "Десятичные",
-      "pt": "Decimais",
-      "nl": "Decimals",
-      "fr": "Décimales",
-      "it": "Decimali",
-      "es": "Decimales",
-      "pl": "Liczby dziesiętne",
-      "zh-cn": "小数点"
-    },
+  "Decimals": {
+    "en": "Decimals",
+    "de": "Dezimalstellen",
+    "ru": "Десятичные",
+    "pt": "Decimais",
+    "nl": "Decimals",
+    "fr": "Décimales",
+    "it": "Decimali",
+    "es": "Decimales",
+    "pl": "Liczby dziesiętne",
+    "zh-cn": "小数点"
+  },
 
-    "Empty names are not allowed": {
-      "en": "Empty names are not allowed",
-      "de": "Leere Namen sind nicht erlaubt",
-      "ru": "Пустые имена не допускаются",
-      "pt": "Nomes vazios não são permitidos",
-      "nl": "Lege namen zijn niet toegestaan",
-      "fr": "Les noms vides ne sont pas autorisés",
-      "it": "I nomi vuoti non sono ammessi",
-      "es": "No se permiten nombres vacíos.",
-      "pl": "Puste nazwy są niedozwolone",
-      "zh-cn": "不允许使用空名称"
-    },
+  "Empty names are not allowed": {
+    "en": "Empty names are not allowed",
+    "de": "Leere Namen sind nicht erlaubt",
+    "ru": "Пустые имена не допускаются",
+    "pt": "Nomes vazios não são permitidos",
+    "nl": "Lege namen zijn niet toegestaan",
+    "fr": "Les noms vides ne sont pas autorisés",
+    "it": "I nomi vuoti non sono ammessi",
+    "es": "No se permiten nombres vacíos.",
+    "pl": "Puste nazwy są niedozwolone",
+    "zh-cn": "不允许使用空名称"
+  },
 
-    "Error": {
-      "en": "Error",
-      "de": "Error",
-      "ru": "ошибка",
-      "pt": "Erro",
-      "nl": "Fout",
-      "fr": "Erreur",
-      "it": "Errore",
-      "es": "Error",
-      "pl": "Błąd",
-      "zh-cn": "错误"
-    },
+  "Error": {
+    "en": "Error",
+    "de": "Error",
+    "ru": "ошибка",
+    "pt": "Erro",
+    "nl": "Fout",
+    "fr": "Erreur",
+    "it": "Errore",
+    "es": "Error",
+    "pl": "Błąd",
+    "zh-cn": "错误"
+  },
 
-    "Factor": {
-      "en": "Factor",
-      "de": "Faktor",
-      "ru": "фактор",
-      "pt": "Fator",
-      "nl": "Factor",
-      "fr": "Facteur",
-      "it": "Fattore",
-      "es": "Factor",
-      "pl": "Czynnik",
-      "zh-cn": "因子"
-    },
+  "Factor": {
+    "en": "Factor",
+    "de": "Faktor",
+    "ru": "фактор",
+    "pt": "Fator",
+    "nl": "Factor",
+    "fr": "Facteur",
+    "it": "Fattore",
+    "es": "Factor",
+    "pl": "Czynnik",
+    "zh-cn": "因子"
+  },
 
-    "Invalid address": {
-      "en": "Invalid address",
-      "de": "Ungültige Adresse",
-      "ru": "Неверный адрес",
-      "pt": "Endereço inválido",
-      "nl": "Ongeldig adres",
-      "fr": "Adresse invalide",
-      "it": "Indirizzo non valido",
-      "es": "Dirección inválida",
-      "pl": "Błędny adres",
-      "zh-cn": "无效地址"
-    },
+  "Invalid address": {
+    "en": "Invalid address",
+    "de": "Ungültige Adresse",
+    "ru": "Неверный адрес",
+    "pt": "Endereço inválido",
+    "nl": "Ongeldig adres",
+    "fr": "Adresse invalide",
+    "it": "Indirizzo non valido",
+    "es": "Dirección inválida",
+    "pl": "Błędny adres",
+    "zh-cn": "无效地址"
+  },
 
-    "Name": {
-      "en": "Name",
-      "de": "Name",
-      "ru": "название",
-      "pt": "Nome",
-      "nl": "Naam",
-      "fr": "prénom",
-      "it": "Nome",
-      "es": "Nombre",
-      "pl": "Nazwa",
-      "zh-cn": "名称"
-    },
+  "Name": {
+    "en": "Name",
+    "de": "Name",
+    "ru": "название",
+    "pt": "Nome",
+    "nl": "Naam",
+    "fr": "prénom",
+    "it": "Nome",
+    "es": "Nombre",
+    "pl": "Nazwa",
+    "zh-cn": "名称"
+  },
 
-    "Offset": {
-      "en": "Offset",
-      "de": "Offset",
-      "ru": "офсет",
-      "pt": "Deslocamento",
-      "nl": "compenseren",
-      "fr": "Décalage",
-      "it": "Compensare",
-      "es": "Compensar",
-      "pl": "Offsetowy",
-      "zh-cn": "抵消"
-    },
+  "Offset": {
+    "en": "Offset",
+    "de": "Offset",
+    "ru": "офсет",
+    "pt": "Deslocamento",
+    "nl": "compenseren",
+    "fr": "Décalage",
+    "it": "Compensare",
+    "es": "Compensar",
+    "pl": "Offsetowy",
+    "zh-cn": "抵消"
+  },
 
-    "Something seems to be wrong. Please check the highlighted fields.": {
-      "en": "Something seems to be wrong. Please check the highlighted fields.",
-      "de": "Irgendwas scheint nicht zu stimmen. Bitte überprüfe die markierten Felder.",
-      "ru": "Кажется, что-то не так. Пожалуйста, проверьте выделенные поля.",
-      "pt": "Algo parece estar errado. Por favor, verifique os campos destacados.",
-      "nl": "Er lijkt iets mis te zijn. Controleer de gemarkeerde velden.",
-      "fr": "Quelque chose semble être faux. Veuillez vérifier les champs en surbrillance.",
-      "it": "Qualcosa sembra essere sbagliato. Si prega di controllare i campi evidenziati.",
-      "es": "Algo parece estar mal. Por favor verifique los campos resaltados.",
-      "pl": "Coś wydaje się nie tak. Sprawdź podświetlone pola.",
-      "zh-cn": "有些东西似乎是错的。请检查突出显示的字段。"
-    },
+  "Something seems to be wrong. Please check the highlighted fields.": {
+    "en": "Something seems to be wrong. Please check the highlighted fields.",
+    "de": "Irgendwas scheint nicht zu stimmen. Bitte überprüfe die markierten Felder.",
+    "ru": "Кажется, что-то не так. Пожалуйста, проверьте выделенные поля.",
+    "pt": "Algo parece estar errado. Por favor, verifique os campos destacados.",
+    "nl": "Er lijkt iets mis te zijn. Controleer de gemarkeerde velden.",
+    "fr": "Quelque chose semble être faux. Veuillez vérifier les champs en surbrillance.",
+    "it": "Qualcosa sembra essere sbagliato. Si prega di controllare i campi evidenziati.",
+    "es": "Algo parece estar mal. Por favor verifique los campos resaltados.",
+    "pl": "Coś wydaje się nie tak. Sprawdź podświetlone pola.",
+    "zh-cn": "有些东西似乎是错的。请检查突出显示的字段。"
+  },
 
-    "Unit": {
-      "en": "Unit",
-      "de": "Einheit",
-      "ru": "Единица измерения",
-      "pt": "Unidade",
-      "nl": "Eenheid",
-      "fr": "Unité",
-      "it": "Unità",
-      "es": "Unidad",
-      "pl": "Jednostka",
-      "zh-cn": "单元"
-    },
+  "Unit": {
+    "en": "Unit",
+    "de": "Einheit",
+    "ru": "Единица измерения",
+    "pt": "Unidade",
+    "nl": "Eenheid",
+    "fr": "Unité",
+    "it": "Unità",
+    "es": "Unidad",
+    "pl": "Jednostka",
+    "zh-cn": "单元"
+  },
 
-    "Default query interval": {
+  "Default query interval": {
     "en": "Default query interval",
     "de": "Standardabfrageintervall",
     "ru": "Интервал запроса по умолчанию",
@@ -273,5 +274,18 @@ systemDictionary = {
     "es": "Intervalo no válido, debe ser mayor que 500",
     "pl": "Nieprawidłowy interwał, musi być większy niż 500",
     "zh-cn": "无效区间，必须大于500"
+  },
+
+  "The adapter instance must be started to search for sensors.": {
+    "en": "The adapter instance must be started to search for sensors.",
+    "de": "Die Adapterinstanz muss gestartet sein, um nach Sensoren zu suchen.",
+    "ru": "Экземпляр адаптера должен быть запущен для поиска датчиков.",
+    "pt": "A instância do adaptador deve ser iniciada para procurar sensores.",
+    "nl": "De adapterinstantie moet worden gestart om te zoeken naar sensoren.",
+    "fr": "L'instance de l'adaptateur doit être démarrée pour rechercher des capteurs.",
+    "it": "L'istanza dell'adattatore deve essere avviata per cercare i sensori.",
+    "es": "La instancia del adaptador debe iniciarse para buscar sensores.",
+    "pl": "Instancja adaptera musi zostać uruchomiona, aby wyszukać czujniki.",
+    "zh-cn": "必须启动适配器实例以搜索传感器。"
   }
 };

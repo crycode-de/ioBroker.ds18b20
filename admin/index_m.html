@@ -164,9 +164,6 @@
         if (!name) {
           setError($name, 'Empty names are not allowed');
           errorCount++;
-        } else if (name.match(/[^\w_-]/)) {
-          setError($name, 'Allowd chars: a-z A-Z 0-9 - _');
-          errorCount++;
         } else {
           setError($name, false);
         }
@@ -206,56 +203,65 @@
        * Search for devices.
        */
       function searchDevices () {
-        sendTo(adapter + '.' + instance, 'search', {}, (ret) => {
-          if (!ret) {
-            showError(_('No response!'));
-            return;
-          }
-          if (ret.err) {
-            showError(_(ret.err));
+        // check if the adapter instance is active
+        socket.emit('getState', `system.adapter.${adapter}.${instance}.alive`, (err, state) => {
+          if (!state || !state.val) {
+            showError(_('The adapter instance must be started to search for sensors.'));
             return;
           }
 
-          const newValues = JSON.parse(JSON.stringify(curValues));
-
-          foundSensorsLoop:
-          for (const address of ret.sensors) {
-            // check if this sensor already exists
-            for (let v = 0; v < curValues.length; v++) {
-              if (newValues[v].address === address) {
-                continue foundSensorsLoop;
-              }
+          // send search request to the adapter instance
+          sendTo(adapter + '.' + instance, 'search', {}, (ret) => {
+            if (!ret) {
+              showError(_('No response!'));
+              return;
+            }
+            if (ret.err) {
+              showError(_(ret.err));
+              return;
             }
 
-            // create new line
-            const line = {
-              name:          address,
-              unit:          '°C',
+            const newValues = JSON.parse(JSON.stringify(curValues));
 
-              address:       address,
-              interval:      null,
-              factor:        1,
-              offset:        0,
-              decimals:      2,
-              nullOnError:   true
-            };
-            newValues.push(line);
-
-          }
-
-          curValues2table(newValues);
-          onChange2(true);
-          setTimeout(() => {
-            $('#values .values-input[data-name="address"]').each((_i, elem) => {
-              const $elem = $(elem);
-              if (ret.sensors.indexOf($elem.val()) !== -1) {
-                $elem.addClass('sensor-found');
+            foundSensorsLoop:
+            for (const address of ret.sensors) {
+              // check if this sensor already exists
+              for (let v = 0; v < curValues.length; v++) {
+                if (newValues[v].address === address) {
+                  continue foundSensorsLoop;
+                }
               }
-            });
+
+              // create new line
+              const line = {
+                name:          address,
+                unit:          '°C',
+
+                address:       address,
+                interval:      null,
+                factor:        1,
+                offset:        0,
+                decimals:      2,
+                nullOnError:   true
+              };
+              newValues.push(line);
+
+            }
+
+            curValues2table(newValues);
+            onChange2(true);
             setTimeout(() => {
-              $('input.sensor-found').removeClass('sensor-found');
-            }, 3000);
-          }, 100);
+              $('#values .values-input[data-name="address"]').each((_i, elem) => {
+                const $elem = $(elem);
+                if (ret.sensors.indexOf($elem.val()) !== -1) {
+                  $elem.addClass('sensor-found');
+                }
+              });
+              setTimeout(() => {
+                $('input.sensor-found').removeClass('sensor-found');
+              }, 3000);
+            }, 100);
+          });
         });
       }
 

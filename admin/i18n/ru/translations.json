@@ -18,6 +18,7 @@
     "Query interval": "Интервал запроса",
     "Search Sensors": "Датчики поиска",
     "Something seems to be wrong. Please check the highlighted fields.": "Кажется, что-то не так. Пожалуйста, проверьте выделенные поля.",
+    "The adapter instance must be started to search for sensors.": "Экземпляр адаптера должен быть запущен для поиска датчиков.",
     "The default time between sensor queries in milliseconds.": "Время по умолчанию между запросами датчиков в миллисекундах.",
     "Unit": "Единица измерения"
 }

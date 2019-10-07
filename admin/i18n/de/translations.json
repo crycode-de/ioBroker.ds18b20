@@ -18,6 +18,7 @@
     "Query interval": "Abfrageintervall",
     "Search Sensors": "Sensoren suchen",
     "Something seems to be wrong. Please check the highlighted fields.": "Irgendwas scheint nicht zu stimmen. Bitte überprüfe die markierten Felder.",
+    "The adapter instance must be started to search for sensors.": "Die Adapterinstanz muss gestartet sein, um nach Sensoren zu suchen.",
     "The default time between sensor queries in milliseconds.": "Die Standardzeit zwischen Sensorabfragen in Millisekunden.",
     "Unit": "Einheit"
 }

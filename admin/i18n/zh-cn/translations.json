@@ -18,6 +18,7 @@
     "Query interval": "查询间隔",
     "Search Sensors": "搜索传感器",
     "Something seems to be wrong. Please check the highlighted fields.": "有些东西似乎是错的。请检查突出显示的字段。",
+    "The adapter instance must be started to search for sensors.": "必须启动适配器实例以搜索传感器。",
     "The default time between sensor queries in milliseconds.": "传感器查询之间的默认时间（以毫秒为单位）。",
     "Unit": "单元"
 }
