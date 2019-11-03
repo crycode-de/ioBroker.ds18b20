@@ -26,6 +26,9 @@ Dies ist ein ioBroker-Adapter zur Integration von DS18B20 1-Wire Temperatursenso
 
 
 ## Changelog
+### 1.0.3 (2019-11-03)
+* (Peter Müller) Added documentation about DS18B20 at a Raspberry Pi; Dependencies updated
+
 ### 1.0.2 (2019-10-07)
 * (Peter Müller) Display error message when tried to search for sensors without adapter running.
 

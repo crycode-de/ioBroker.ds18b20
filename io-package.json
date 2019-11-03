@@ -1,19 +1,31 @@
 {
     "common": {
         "name": "ds18b20",
-        "version": "1.0.2",
+        "version": "1.0.3",
         "news": {
+            "1.0.3": {
+                "en": "Added documentation about DS18B20 at a Raspberry Pi; Dependencies updated",
+                "de": "Dokumentation zu DS18B20 an einem Raspberry Pi hinzugefügt; Abhängigkeiten aktualisiert",
+                "ru": "Добавлена документация по DS18B20 на Raspberry Pi; Зависимости обновлены",
+                "pt": "Adicionada documentação sobre o DS18B20 em um Raspberry Pi; Dependências atualizadas",
+                "nl": "Documentatie toegevoegd over DS18B20 op een Raspberry Pi; Afhankelijkheden bijgewerkt",
+                "fr": "Ajout de la documentation sur le DS18B20 sur un Raspberry Pi; Dépendances mises à jour",
+                "it": "Aggiunta documentazione su DS18B20 su un Raspberry Pi; Dipendenze aggiornate",
+                "es": "Se agregó documentación sobre DS18B20 en una Raspberry Pi; Dependencias actualizadas",
+                "pl": "Dodano dokumentację dotyczącą DS18B20 na Raspberry Pi; Zależności zaktualizowane",
+                "zh-cn": "在Raspberry Pi上添加了有关DS18B20的文档；依赖关系已更新"
+            },
             "1.0.2": {
-              "en": "Display error message when tried to search for sensors without adapter running.",
-              "de": "Zeigt eine Fehlermeldung an, wenn versucht wird, nach Sensoren zu suchen, ohne dass der Adapter ausgeführt wird.",
-              "ru": "Отображать сообщение об ошибке при попытке поиска датчиков без работающего адаптера.",
-              "pt": "Exibir mensagem de erro ao tentar procurar sensores sem o adaptador em execução.",
-              "nl": "Geef een foutmelding weer wanneer u probeert te zoeken naar sensoren zonder adapter.",
-              "fr": "Affiche un message d'erreur lorsque vous essayez de rechercher des capteurs sans adaptateur en cours d'exécution.",
-              "it": "Visualizza il messaggio di errore quando si tenta di cercare sensori senza l'adattatore in funzione.",
-              "es": "Muestra un mensaje de error cuando intenta buscar sensores sin el adaptador en ejecución.",
-              "pl": "Wyświetl komunikat o błędzie podczas próby wyszukania czujników bez uruchomionego adaptera.",
-              "zh-cn": "尝试在没有运行适配器的情况下搜索传感器时显示错误消息。"
+                "en": "Display error message when tried to search for sensors without adapter running.",
+                "de": "Zeigt eine Fehlermeldung an, wenn versucht wird nach Sensoren zu suchen, ohne dass der Adapter ausgeführt wird.",
+                "ru": "Отображать сообщение об ошибке при попытке поиска датчиков без работающего адаптера.",
+                "pt": "Exibir mensagem de erro ao tentar procurar sensores sem o adaptador em execução.",
+                "nl": "Geef een foutmelding weer wanneer u probeert te zoeken naar sensoren zonder adapter.",
+                "fr": "Affiche un message d'erreur lorsque vous essayez de rechercher des capteurs sans adaptateur en cours d'exécution.",
+                "it": "Visualizza il messaggio di errore quando si tenta di cercare sensori senza l'adattatore in funzione.",
+                "es": "Muestra un mensaje de error cuando intenta buscar sensores sin el adaptador en ejecución.",
+                "pl": "Wyświetl komunikat o błędzie podczas próby wyszukania czujników bez uruchomionego adaptera.",
+                "zh-cn": "尝试在没有运行适配器的情况下搜索传感器时显示错误消息。"
             },
             "1.0.1": {
                 "en": "Type changed to hardware, Renamed command, Added missing documentation",
