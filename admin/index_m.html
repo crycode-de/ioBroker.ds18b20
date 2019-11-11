@@ -421,10 +421,16 @@
 
   <!-- main settings -->
   <div class="row">
-    <div class="input-field col s12 m8 l4">
+    <div class="input-field col s12 m6 l4">
       <input type="text" id="defaultInterval" class="value" />
       <label class="translate" for="port">Default query interval</label>
       <span class="translate">The default time between sensor queries in milliseconds.</span>
+    </div>
+
+    <div class="input-field col s12 m6 l4">
+      <input type="text" id="w1DevicesPath" class="value" />
+      <label class="translate" for="w1DevicesPath">Path of the 1-wire devices</label>
+      <span class="translate">System path where the 1-wire devices can be accessed. Default is <code>/sys/bus/w1/devices</code>.</span>
     </div>
   </div>
 

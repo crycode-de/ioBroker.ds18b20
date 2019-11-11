@@ -15,9 +15,11 @@
     "No response!": "没有反应！",
     "Null on error": "空出错误",
     "Offset": "抵消",
+    "Path of the 1-wire devices": "1线设备的路径",
     "Query interval": "查询间隔",
     "Search Sensors": "搜索传感器",
     "Something seems to be wrong. Please check the highlighted fields.": "有些东西似乎是错的。请检查突出显示的字段。",
+    "System path where the 1-wire devices can be accessed. Default is <code>/sys/bus/w1/devices</code>.": "可以访问1线设备的系统路径。默认值为<code>/sys/bus/w1/devices</code> 。",
     "The adapter instance must be started to search for sensors.": "必须启动适配器实例以搜索传感器。",
     "The default time between sensor queries in milliseconds.": "传感器查询之间的默认时间（以毫秒为单位）。",
     "Unit": "单元"

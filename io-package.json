@@ -1,8 +1,20 @@
 {
     "common": {
         "name": "ds18b20",
-        "version": "1.0.3",
+        "version": "1.1.0",
         "news": {
+            "1.1.0": {
+                "en": "Own implementation of reading the sensor data. Fixed bug on decimals rounding. 1-wire devices path is now configurable.",
+                "de": "Eigene Implementierung zum Auslesen der Sensordaten. Fehler beim Runden von Dezimalstellen behoben. Der Pfad für 1-Wire Geräte ist jetzt konfigurierbar.",
+                "ru": "Собственная реализация чтения данных датчика. Исправлена ошибка округления десятичных чисел. Путь к однопроводному устройству теперь настраивается.",
+                "pt": "Implementação própria da leitura dos dados do sensor. Corrigido o erro no arredondamento de casas decimais. O caminho dos dispositivos de um fio agora é configurável.",
+                "nl": "Eigen implementatie van het lezen van de sensorgegevens. Bug opgelost bij het afronden van decimalen. 1-draads apparatenpad kan nu worden geconfigureerd.",
+                "fr": "Propre implémentation de la lecture des données du capteur. Correction d'un bug sur l'arrondi des décimales. Le chemin des périphériques 1 fil est maintenant configurable.",
+                "it": "Implementazione propria della lettura dei dati del sensore. Bug risolto nell'arrotondamento dei decimali. Il percorso dei dispositivi a 1 filo è ora configurabile.",
+                "es": "Implementación propia de la lectura de los datos del sensor. Se corrigió el error en el redondeo de decimales. La ruta de los dispositivos de 1 cable ahora es configurable.",
+                "pl": "Własna implementacja odczytu danych czujnika. Naprawiono błąd w zaokrąglaniu miejsc po przecinku. Ścieżkę urządzeń 1-przewodowych można teraz konfigurować.",
+                "zh-cn": "自己实现读取传感器数据。修正了小数舍入的错误。现在可以配置1线设备路径。"
+            },
             "1.0.3": {
                 "en": "Added documentation about DS18B20 at a Raspberry Pi; Dependencies updated",
                 "de": "Dokumentation zu DS18B20 an einem Raspberry Pi hinzugefügt; Abhängigkeiten aktualisiert",
@@ -97,7 +109,8 @@
         ]
     },
     "native": {
-        "defaultInterval": 60000
+        "defaultInterval": 60000,
+        "w1DevicesPath": "/sys/bus/w1/devices"
     },
     "objects": [],
     "instanceObjects": [

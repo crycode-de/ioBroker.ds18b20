@@ -15,9 +15,11 @@
     "No response!": "No response!",
     "Null on error": "Null on error",
     "Offset": "Offset",
+    "Path of the 1-wire devices": "Path of the 1-wire devices",
     "Query interval": "Query interval",
     "Search Sensors": "Search Sensors",
     "Something seems to be wrong. Please check the highlighted fields.": "Something seems to be wrong. Please check the highlighted fields.",
+    "System path where the 1-wire devices can be accessed. Default is <code>/sys/bus/w1/devices</code>.": "System path where the 1-wire devices can be accessed. Default is <code>/sys/bus/w1/devices</code>.",
     "The adapter instance must be started to search for sensors.": "The adapter instance must be started to search for sensors.",
     "The default time between sensor queries in milliseconds.": "The default time between sensor queries in milliseconds.",
     "Unit": "Unit"

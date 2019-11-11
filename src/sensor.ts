@@ -3,12 +3,28 @@
  */
 
 import { EventEmitter } from 'events';
+import { promisify } from 'util';
+
+import * as fs from 'fs';
+const readFile = promisify(fs.readFile);
 
 import { autobind } from 'core-decorators';
 
-import * as ds18b20 from 'ds18b20';
-
 import { round } from './lib/tools';
+
+/**
+ * Options for a Sensor.
+ */
+interface SensorOptions {
+  w1DevicesPath: string;
+  id: string;
+  address: string;
+  interval: number;
+  nullOnError: boolean;
+  factor: number;
+  offset: number;
+  decimals: number | null;
+}
 
 /**
  * Interface to declare events for the Sensor class.
@@ -68,81 +84,111 @@ export class Sensor extends EventEmitter {
   private timer: number | null = null;
 
   /**
-   * Constructor for a new sensor.
-   * @param id          The ID of the sensor in ioBroker.
-   * @param address     The address (1-wire ID) of the sensor.
-   * @param interval    The interval in milliseconds for periodic reads.
-   * @param nullOnError Use null values on errors.
-   * @param factor      Factor for value calculation.
-   * @param offset      Offset for value calculation.
-   * @param decimals    Number of decimals to round to.
+   * System path where the 1-wire devices can be read.
    */
-  constructor (id: string, address: string, interval: number, nullOnError: boolean, factor: number, offset: number, decimals: number | null) {
-    super();
-    this.id = id;
-    this.address = address;
-    this.nullOnError = nullOnError;
-    this.factor = factor;
-    this.offset = offset;
-    this.decimals = decimals;
-    this.hasError = true; // true on init while we don't know the current state
+  private readonly w1DevicesPath: string;
 
-    // smallest interval is 500ms
-    if (interval < 500) {
-      interval = 500;
-    }
+  /**
+   * Constructor for a new sensor.
+   * @param opts The options for the Sensor.
+   */
+  constructor (opts: SensorOptions) {
+    super();
+    this.id = opts.id;
+    this.address = opts.address.replace(/[^0-9a-f-]/g, ''); // remove all bad chars!
+    this.nullOnError = opts.nullOnError;
+    this.factor = opts.factor;
+    this.offset = opts.offset;
+    this.decimals = opts.decimals;
+    this.hasError = true; // true on init while we don't know the current state
+    this.w1DevicesPath = opts.w1DevicesPath;
 
     // start interval and inital read if interval is set
-    if (interval && interval > 0) {
-      this.timer = setInterval(this.read, interval);
+    if (opts.interval && opts.interval > 0) {
+      // smallest interval is 500ms
+      if (opts.interval < 500) {
+        opts.interval = 500;
+      }
+      this.timer = setInterval(this.read, opts.interval);
       this.read();
     }
   }
 
   /**
    * Read the temperature.
-   * Use the decimal parser because the hex parser doesn't  support crc checking.
    * The value and possible errors will be emitted as events.
    * Optionally a callback may be used.
    * @param  cb Optional callback function.
    */
   @autobind
   public read (cb?: (err: Error | null, val: number | null) => void): void {
-    ds18b20.temperature(this.address, { parser: 'decimal' }, (err, val: number | null | false) => {
-      if (err) {
-        this.emit('error', err, this.id);
-        val = null;
-      } else if (val === 85) {
-        this.emit('error', new Error('Communication error'), this.id);
-        val = null;
-      } else if (val === -127) {
-        this.emit('error', new Error('Device disconnected'), this.id);
-        val = null;
-      } else if (val === false) {
-        this.emit('error', new Error('Checksum error'), this.id);
-        val = null;
-      }
+    // read the file
+    readFile(`${this.w1DevicesPath}/${this.address}/w1_slave`, 'utf8')
+      // process data
+      .then((data: string) => {
+        const lines = data.split('\n');
 
-      if (val !== null) {
-        val = val * this.factor + this.offset;
-        if (this.decimals !== null) {
-          val = round(val, this.decimals);
+        if (lines[0].indexOf('YES') > -1) {
+          // checksum ok
+          const bytes = lines[0].split(' ');
+          if (bytes[5] !== 'ff') { // this byte is reserved and fixed to 0xff
+            throw new Error('Communication error');
+          }
+
+          const m = lines[1].match(/t=(-?\d+)/);
+          if (!m) {
+            throw new Error('Parse error');
+          }
+          return parseInt(m[1], 10) / 1000;
+
+        } else if (lines[0].indexOf('NO') > -1) {
+          // checksum error
+          throw new Error('Checksum error');
+
+        } else {
+          // read error
+          throw new Error('Read error');
+
         }
-      }
+      })
 
-      if (val !== null || this.nullOnError) {
-        this.emit('value', val, this.id);
-      }
+      // check for specific errors
+      .then((val) => {
+        switch (val) {
+          case 85:   throw new Error('No temperature read');
+          case -127: throw new Error('Device disconnected');
+          default:   return { err: null, val: val };
+        }
+      })
 
-      if (this.hasError !== (val === null)) {
-        this.hasError = (val === null);
-        this.emit('errorStateChanged', this.hasError, this.id);
-      }
+      // handle errors
+      .catch((err: Error) => {
+        this.emit('error', err, this.id);
+        return { err: err, val: null };
+      })
 
-      if (typeof cb === 'function') {
-        cb(err, val);
-      }
-    });
+      // evaluate the result
+      .then((data: { err: Error|null; val: number|null }) => {
+        if (data.val !== null) {
+          data.val = data.val * this.factor + this.offset;
+          if (this.decimals !== null) {
+            data.val = round(data.val, this.decimals);
+          }
+        }
+
+        if (data.val !== null || this.nullOnError) {
+          this.emit('value', data.val, this.id);
+        }
+
+        if (this.hasError !== (data.val === null)) {
+          this.hasError = (data.val === null);
+          this.emit('errorStateChanged', this.hasError, this.id);
+        }
+
+        if (typeof cb === 'function') {
+          cb(data.err, data.val);
+        }
+      });
   }
 
   /**

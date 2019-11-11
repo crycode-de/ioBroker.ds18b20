@@ -4,11 +4,14 @@
  * (C) 2019 Peter Müller <peter@crycode.de> (https://github.com/crycode-de/ioBroker.ds18b20)
  */
 
+import { promisify } from 'util';
+
+import * as fs from 'fs';
+const readFile = promisify(fs.readFile);
+
 import * as utils from '@iobroker/adapter-core';
 
 import { autobind } from 'core-decorators';
-
-import * as ds18b20 from 'ds18b20';
 
 import { Sensor } from './sensor';
 
@@ -17,6 +20,7 @@ declare global {
   namespace ioBroker {
     interface AdapterConfig {
       defaultInterval: number;
+      w1DevicesPath: string;
     }
   }
 }
@@ -58,6 +62,11 @@ class Ds18b20Adapter extends utils.Adapter {
     // Debug log the current config
     this.log.debug('config: ' + JSON.stringify(this.config));
 
+    // set default devices path if not defined
+    if (!this.config.w1DevicesPath) {
+      this.config.w1DevicesPath = '/sys/bus/w1/devices';
+    }
+
     // setup sensors
     this.getForeignObjects(this.namespace + '.sensors.*', 'state', (err, objects) => {
       if (err) {
@@ -69,7 +78,16 @@ class Ds18b20Adapter extends utils.Adapter {
         const obj: SensorObject = objects[objectId] as SensorObject;
 
         const interval = typeof obj.native.interval === 'number' ? obj.native.interval : this.config.defaultInterval;
-        this.sensors[obj._id] = new Sensor(obj._id, obj.native.address, interval, obj.native.nullOnError, obj.native.factor, obj.native.offset, obj.native.decimals);
+        this.sensors[obj._id] = new Sensor({
+          w1DevicesPath: this.config.w1DevicesPath,
+          id: obj._id,
+          address: obj.native.address,
+          interval,
+          nullOnError: obj.native.nullOnError,
+          factor: obj.native.factor,
+          offset: obj.native.offset,
+          decimals: obj.native.decimals
+        });
         this.sensors[obj._id].on('value', this.handleSensorValue);
         this.sensors[obj._id].on('error', this.handleSensorError);
         this.sensors[obj._id].on('errorStateChanged', this.handleSensorErrorStateChanged);
@@ -266,12 +284,15 @@ class Ds18b20Adapter extends utils.Adapter {
           // search for sensors
           // don't do anything if no callback is provided
           if (!obj.callback) return;
-          ds18b20.sensors((err, sensors) => {
-            if (err) {
-              return this.sendTo(obj.from, obj.command, { err: err.toString() , sensors: sensors }, obj.callback);
-            }
-            this.sendTo(obj.from, obj.command, { err: null , sensors: sensors }, obj.callback);
-          });
+
+          readFile(`${this.config.w1DevicesPath}/w1_bus_master1/w1_master_slaves`, 'utf8')
+            .then((data: string) => {
+              data = data.trim();
+              this.sendTo(obj.from, obj.command, { err: null, sensors: data.split('\n') }, obj.callback);
+            })
+            .catch((err: Error) => {
+              this.sendTo(obj.from, obj.command, { err: err.toString(), sensors: [] }, obj.callback);
+            });
           break;
       }
     }

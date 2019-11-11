@@ -15,9 +15,11 @@
     "No response!": "¡Ninguna respuesta!",
     "Null on error": "Nulo por error",
     "Offset": "Compensar",
+    "Path of the 1-wire devices": "Ruta de los dispositivos de 1 cable",
     "Query interval": "Intervalo de consulta",
     "Search Sensors": "Sensores de búsqueda",
     "Something seems to be wrong. Please check the highlighted fields.": "Algo parece estar mal. Por favor verifique los campos resaltados.",
+    "System path where the 1-wire devices can be accessed. Default is <code>/sys/bus/w1/devices</code>.": "Ruta del sistema donde se puede acceder a los dispositivos de 1 cable. El valor predeterminado es <code>/sys/bus/w1/devices</code> .",
     "The adapter instance must be started to search for sensors.": "La instancia del adaptador debe iniciarse para buscar sensores.",
     "The default time between sensor queries in milliseconds.": "El tiempo predeterminado entre consultas del sensor en milisegundos.",
     "Unit": "Unidad"

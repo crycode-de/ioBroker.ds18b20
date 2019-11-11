@@ -10,8 +10,10 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const events_1 = require("events");
+const util_1 = require("util");
+const fs = require("fs");
+const readFile = util_1.promisify(fs.readFile);
 const core_decorators_1 = require("core-decorators");
-const ds18b20 = require("ds18b20");
 const tools_1 = require("./lib/tools");
 /**
  * This class represents a single sensor.
@@ -19,77 +21,95 @@ const tools_1 = require("./lib/tools");
 class Sensor extends events_1.EventEmitter {
     /**
      * Constructor for a new sensor.
-     * @param id          The ID of the sensor in ioBroker.
-     * @param address     The address (1-wire ID) of the sensor.
-     * @param interval    The interval in milliseconds for periodic reads.
-     * @param nullOnError Use null values on errors.
-     * @param factor      Factor for value calculation.
-     * @param offset      Offset for value calculation.
-     * @param decimals    Number of decimals to round to.
+     * @param opts The options for the Sensor.
      */
-    constructor(id, address, interval, nullOnError, factor, offset, decimals) {
+    constructor(opts) {
         super();
         /**
          * Timer for interval sensor readings.
          */
         this.timer = null;
-        this.id = id;
-        this.address = address;
-        this.nullOnError = nullOnError;
-        this.factor = factor;
-        this.offset = offset;
-        this.decimals = decimals;
+        this.id = opts.id;
+        this.address = opts.address.replace(/[^0-9a-f-]/g, ''); // remove all bad chars!
+        this.nullOnError = opts.nullOnError;
+        this.factor = opts.factor;
+        this.offset = opts.offset;
+        this.decimals = opts.decimals;
         this.hasError = true; // true on init while we don't know the current state
-        // smallest interval is 500ms
-        if (interval < 500) {
-            interval = 500;
-        }
+        this.w1DevicesPath = opts.w1DevicesPath;
         // start interval and inital read if interval is set
-        if (interval && interval > 0) {
-            this.timer = setInterval(this.read, interval);
+        if (opts.interval && opts.interval > 0) {
+            // smallest interval is 500ms
+            if (opts.interval < 500) {
+                opts.interval = 500;
+            }
+            this.timer = setInterval(this.read, opts.interval);
             this.read();
         }
     }
     /**
      * Read the temperature.
-     * Use the decimal parser because the hex parser doesn't  support crc checking.
      * The value and possible errors will be emitted as events.
      * Optionally a callback may be used.
      * @param  cb Optional callback function.
      */
     read(cb) {
-        ds18b20.temperature(this.address, { parser: 'decimal' }, (err, val) => {
-            if (err) {
-                this.emit('error', err, this.id);
-                val = null;
+        // read the file
+        readFile(`${this.w1DevicesPath}/${this.address}/w1_slave`, 'utf8')
+            // process data
+            .then((data) => {
+            const lines = data.split('\n');
+            if (lines[0].indexOf('YES') > -1) {
+                // checksum ok
+                const bytes = lines[0].split(' ');
+                if (bytes[5] !== 'ff') { // this byte is reserved and fixed to 0xff
+                    throw new Error('Communication error');
+                }
+                const m = lines[1].match(/t=(-?\d+)/);
+                if (!m) {
+                    throw new Error('Parse error');
+                }
+                return parseInt(m[1], 10) / 1000;
             }
-            else if (val === 85) {
-                this.emit('error', new Error('Communication error'), this.id);
-                val = null;
+            else if (lines[0].indexOf('NO') > -1) {
+                // checksum error
+                throw new Error('Checksum error');
             }
-            else if (val === -127) {
-                this.emit('error', new Error('Device disconnected'), this.id);
-                val = null;
+            else {
+                // read error
+                throw new Error('Read error');
             }
-            else if (val === false) {
-                this.emit('error', new Error('Checksum error'), this.id);
-                val = null;
+        })
+            // check for specific errors
+            .then((val) => {
+            switch (val) {
+                case 85: throw new Error('No temperature read');
+                case -127: throw new Error('Device disconnected');
+                default: return { err: null, val: val };
             }
-            if (val !== null) {
-                val = val * this.factor + this.offset;
+        })
+            // handle errors
+            .catch((err) => {
+            this.emit('error', err, this.id);
+            return { err: err, val: null };
+        })
+            // evaluate the result
+            .then((data) => {
+            if (data.val !== null) {
+                data.val = data.val * this.factor + this.offset;
                 if (this.decimals !== null) {
-                    val = tools_1.round(val, this.decimals);
+                    data.val = tools_1.round(data.val, this.decimals);
                 }
             }
-            if (val !== null || this.nullOnError) {
-                this.emit('value', val, this.id);
+            if (data.val !== null || this.nullOnError) {
+                this.emit('value', data.val, this.id);
             }
-            if (this.hasError !== (val === null)) {
-                this.hasError = (val === null);
+            if (this.hasError !== (data.val === null)) {
+                this.hasError = (data.val === null);
                 this.emit('errorStateChanged', this.hasError, this.id);
             }
             if (typeof cb === 'function') {
-                cb(err, val);
+                cb(data.err, data.val);
             }
         });
     }

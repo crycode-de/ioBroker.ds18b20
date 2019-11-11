@@ -15,9 +15,11 @@
     "No response!": "Geen antwoord!",
     "Null on error": "Null op fout",
     "Offset": "compenseren",
+    "Path of the 1-wire devices": "Pad van de 1-draads apparaten",
     "Query interval": "Zoekopdracht interval",
     "Search Sensors": "Zoek sensoren",
     "Something seems to be wrong. Please check the highlighted fields.": "Er lijkt iets mis te zijn. Controleer de gemarkeerde velden.",
+    "System path where the 1-wire devices can be accessed. Default is <code>/sys/bus/w1/devices</code>.": "Systeempad waar toegang tot de 1-draads apparaten mogelijk is. Standaard is <code>/sys/bus/w1/devices</code> .",
     "The adapter instance must be started to search for sensors.": "De adapterinstantie moet worden gestart om te zoeken naar sensoren.",
     "The default time between sensor queries in milliseconds.": "De standaardtijd tussen sensorquery's in milliseconden.",
     "Unit": "Eenheid"

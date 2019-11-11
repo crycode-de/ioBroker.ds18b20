@@ -287,5 +287,31 @@ systemDictionary = {
     "es": "La instancia del adaptador debe iniciarse para buscar sensores.",
     "pl": "Instancja adaptera musi zostać uruchomiona, aby wyszukać czujniki.",
     "zh-cn": "必须启动适配器实例以搜索传感器。"
+  },
+
+  "Path of the 1-wire devices": {
+    "en": "Path of the 1-wire devices",
+    "de": "Pfad der 1-Wire Geräte",
+    "ru": "Дорожка 1-проводных приборов",
+    "pt": "Caminho dos dispositivos de 1 fio",
+    "nl": "Pad van de 1-draads apparaten",
+    "fr": "Chemin des appareils à 1 fil",
+    "it": "Percorso dei dispositivi a 1 filo",
+    "es": "Ruta de los dispositivos de 1 cable",
+    "pl": "Ścieżka urządzeń 1-przewodowych",
+    "zh-cn": "1线设备的路径"
+  },
+
+  "System path where the 1-wire devices can be accessed. Default is <code>/sys/bus/w1/devices</code>.": {
+    "en": "System path where the 1-wire devices can be accessed. Default is <code>/sys/bus/w1/devices</code>.",
+    "de": "Systempfad, über den auf die 1-Wire Geräte zugegriffen werden kann. Standard ist <code>/sys/bus/w1/devices</code>.",
+    "ru": "Системный путь, по которому можно получить доступ к однопроводным устройствам. По умолчанию это <code>/sys/bus/w1/devices</code> .",
+    "pt": "Caminho do sistema em que os dispositivos de 1 fio podem ser acessados. O padrão é <code>/sys/bus/w1/devices</code> .",
+    "nl": "Systeempad waar toegang tot de 1-draads apparaten mogelijk is. Standaard is <code>/sys/bus/w1/devices</code> .",
+    "fr": "Chemin du système où les périphériques 1 fil sont accessibles. La valeur par défaut est <code>/sys/bus/w1/devices</code> .",
+    "it": "Percorso di sistema in cui è possibile accedere ai dispositivi a 1 filo. L'impostazione predefinita è <code>/sys/bus/w1/devices</code> .",
+    "es": "Ruta del sistema donde se puede acceder a los dispositivos de 1 cable. El valor predeterminado es <code>/sys/bus/w1/devices</code> .",
+    "pl": "Ścieżka systemowa, do której można uzyskać dostęp do urządzeń 1-przewodowych. Domyślnie jest to <code>/sys/bus/w1/devices</code> .",
+    "zh-cn": "可以访问1线设备的系统路径。默认值为<code>/sys/bus/w1/devices</code> 。"
   }
 };
