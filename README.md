@@ -26,6 +26,9 @@ Dies ist ein ioBroker-Adapter zur Integration von DS18B20 1-Wire Temperatursenso
 
 
 ## Changelog
+### 1.1.1 (2020-01-09)
+* (Peter Müller) Fixed wrong communication errror detection on some sensors.
+
 ### 1.1.0 (2019-11-11)
 * (Peter Müller) Own implementation of reading the sensor data.
 * (Peter Müller) Fixed bug on decimals rounding.

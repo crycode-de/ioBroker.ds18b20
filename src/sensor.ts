@@ -131,7 +131,8 @@ export class Sensor extends EventEmitter {
         if (lines[0].indexOf('YES') > -1) {
           // checksum ok
           const bytes = lines[0].split(' ');
-          if (bytes[5] !== 'ff') { // this byte is reserved and fixed to 0xff
+          if (bytes[0] === bytes[1] && bytes[0] === bytes[2] && bytes[0] === bytes[3] && bytes[0] === bytes[4] && bytes[0] === bytes[5] && bytes[0] === bytes[6] && bytes[0] === bytes[7] && bytes[0] === bytes[8]) {
+            // all bytes are the same
             throw new Error('Communication error');
           }
 
