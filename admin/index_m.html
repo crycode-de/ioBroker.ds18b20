@@ -32,24 +32,44 @@
 
         const task = tasks.pop();
 
-        if (typeof task === 'object') {
-          socket.emit('setObject', task._id, task, function (err) {
-            if (err) console.error(err);
-            setTimeout(function () {
-              processTasks(tasks, cb);
-            }, 0);
-          });
-        } else {
-          socket.emit('delState', task, function (err) {
-            if (err) console.error(err);
-            socket.emit('delObject', task, function (err) {
+        if (typeof task !== 'object') {
+          console.warn('Task is not an object!', task);
+          cb && cb();
+          return;
+        }
+
+        switch (task.action) {
+          case 'create':
+            socket.emit('setObject', task.id, task.obj, function (err) {
               if (err) console.error(err);
               setTimeout(function () {
                 processTasks(tasks, cb);
               }, 0);
             });
-          });
+            break;
+
+          case 'update':
+            socket.emit('extendObject', task.id, task.obj, function (err) {
+              if (err) console.error(err);
+              setTimeout(function () {
+                processTasks(tasks, cb);
+              }, 0);
+            });
+            break;
+
+          case 'delete':
+            socket.emit('delState', task.id, function (err) {
+              if (err) console.error(err);
+              socket.emit('delObject', task.id, function (err) {
+                if (err) console.error(err);
+                setTimeout(function () {
+                  processTasks(tasks, cb);
+                }, 0);
+              });
+            });
+            break;
         }
+
       }
 
       /**
@@ -359,7 +379,7 @@
               changed = true;
             }
             newValues[v].obj = _obj;
-            if (changed) tasks.push(_obj);
+            if (changed) tasks.push({ id: _obj._id, action: 'update', obj: _obj });
           } else {
             const _obj = {
               _id:           namespace + newValues[v].address,
@@ -382,7 +402,7 @@
               type: 'state'
             };
             newValues[v].obj = _obj;
-            tasks.push(_obj);
+            tasks.push({ id: _obj._id, action: 'create', obj: _obj });
           }
         }
         for (let w = 0; w < curValues.length; w++) {
@@ -394,7 +414,7 @@
             }
           }
           if (!found) {
-            tasks.push(curValues[w].obj._id);
+            tasks.push({ id: curValues[w].obj._id, action: 'delete'});
           }
         }
 

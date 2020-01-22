@@ -1,19 +1,31 @@
 {
     "common": {
         "name": "ds18b20",
-        "version": "1.1.1",
+        "version": "1.1.2",
         "news": {
+            "1.1.2": {
+                "en": "Better handling of changed objects in admin.",
+                "de": "Besserer Umgang mit geänderten Objekten im Admin.",
+                "ru": "Лучшая обработка измененных объектов в админке.",
+                "pt": "Melhor manipulação de objetos alterados em admin.",
+                "nl": "Betere verwerking van gewijzigde objecten in admin.",
+                "fr": "Meilleure gestion des objets modifiés dans l'admin.",
+                "it": "Migliore gestione degli oggetti modificati in admin.",
+                "es": "Mejor manejo de objetos modificados en admin.",
+                "pl": "Lepsza obsługa zmienionych obiektów w admin.",
+                "zh-cn": "更好地处理admin中更改的对象。"
+            },
             "1.1.1": {
-              "en": "Fixed wrong communication errror detection on some sensors.",
-              "de": "Fehlerhafte Erkennung von Kommunikationsfehlern bei einigen Sensoren behoben.",
-              "ru": "Исправлено ошибочное обнаружение ошибок связи на некоторых датчиках.",
-              "pt": "Corrigida detecção de erro de comunicação incorreta em alguns sensores.",
-              "nl": "Foutieve communicatie foutdetectie op sommige sensoren opgelost.",
-              "fr": "Correction d'une mauvaise détection d'erreur de communication sur certains capteurs.",
-              "it": "Risolto il problema con la rilevazione errata della comunicazione errata su alcuni sensori.",
-              "es": "Se corrigió la detección de error de comunicación incorrecta en algunos sensores.",
-              "pl": "Naprawiono nieprawidłowe wykrywanie błędów komunikacji w niektórych czujnikach.",
-              "zh-cn": "修复了某些传感器上错误的通信错误检测。"
+                "en": "Fixed wrong communication errror detection on some sensors.",
+                "de": "Fehlerhafte Erkennung von Kommunikationsfehlern bei einigen Sensoren behoben.",
+                "ru": "Исправлено ошибочное обнаружение ошибок связи на некоторых датчиках.",
+                "pt": "Corrigida detecção de erro de comunicação incorreta em alguns sensores.",
+                "nl": "Foutieve communicatie foutdetectie op sommige sensoren opgelost.",
+                "fr": "Correction d'une mauvaise détection d'erreur de communication sur certains capteurs.",
+                "it": "Risolto il problema con la rilevazione errata della comunicazione errata su alcuni sensori.",
+                "es": "Se corrigió la detección de error de comunicación incorrecta en algunos sensores.",
+                "pl": "Naprawiono nieprawidłowe wykrywanie błędów komunikacji w niektórych czujnikach.",
+                "zh-cn": "修复了某些传感器上错误的通信错误检测。"
             },
             "1.1.0": {
                 "en": "Own implementation of reading the sensor data. Fixed bug on decimals rounding. 1-wire devices path is now configurable.",
