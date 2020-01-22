@@ -52,7 +52,7 @@ Dies ist ein ioBroker-Adapter zur Integration von DS18B20 1-Wire Temperatursenso
 
 ## License
 
-Copyright (c) 2019 Peter Müller <peter@crycode.de>
+Copyright (c) 2019-2020 Peter Müller <peter@crycode.de>
 
 ### MIT License
 
