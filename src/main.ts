@@ -39,7 +39,7 @@ class Ds18b20Adapter extends utils.Adapter {
    * Constructor to create a new instance of the adapter.
    * @param options The adapter options.
    */
-  public constructor(options: Partial<ioBroker.AdapterOptions> = {}) {
+  public constructor(options: Partial<utils.AdapterOptions> = {}) {
     super({
       ...options,
       name: 'ds18b20',
@@ -230,7 +230,7 @@ class Ds18b20Adapter extends utils.Adapter {
       // handle special states
       switch (id) {
         case this.namespace + '.actions.readNow':
-          this.readNow(state.val);
+          this.readNow(state.val as string);
           this.setStateAsync(this.namespace + '.actions.readNow', '', true);
           break;
       }
@@ -302,7 +302,7 @@ class Ds18b20Adapter extends utils.Adapter {
 
 if (module.parent) {
   // Export the constructor in compact mode
-  module.exports = (options: Partial<ioBroker.AdapterOptions> | undefined) => new Ds18b20Adapter(options);
+  module.exports = (options: Partial<utils.AdapterOptions> | undefined) => new Ds18b20Adapter(options);
 } else {
   // otherwise start the instance directly
   (() => new Ds18b20Adapter())();

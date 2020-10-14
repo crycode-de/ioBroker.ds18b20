@@ -1,8 +1,20 @@
 {
     "common": {
         "name": "ds18b20",
-        "version": "1.1.4",
+        "version": "1.1.5",
         "news": {
+            "1.1.5": {
+                "en": "Fixed incorrect data type of an object, Updated dependencies",
+                "de": "Fehlerhafter Datentyp eines Objekts behoben, Abhängigkeiten aktualisiert",
+                "ru": "Исправлен неверный тип данных объекта, Обновлены зависимости",
+                "pt": "Tipo de dados incorreto corrigido de um objeto, dependências atualizadas",
+                "nl": "Onjuist gegevenstype van een object opgelost, bijgewerkte afhankelijkheden",
+                "fr": "Correction du type de données incorrect d'un objet, dépendances mises à jour",
+                "it": "Risolto il tipo di dati errato di un oggetto, dipendenze aggiornate",
+                "es": "Se corrigió el tipo de datos incorrecto de un objeto, dependencias actualizadas",
+                "pl": "Naprawiono nieprawidłowy typ danych obiektu, zaktualizowano zależności",
+                "zh-cn": "修复了对象的错误数据类型，更新了依赖项"
+            },
             "1.1.4": {
                 "en": "Updated connectionType and dataSource in io-package.json",
                 "de": "connectionType und dataSource in io-package.json aktualisiert",
@@ -199,7 +211,7 @@
             "common": {
                 "role": "text",
                 "name": "Read one or all sensors now",
-                "type": "text",
+                "type": "string",
                 "read": false,
                 "write": true,
                 "def": ""
