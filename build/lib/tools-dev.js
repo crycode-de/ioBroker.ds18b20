@@ -9,20 +9,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.translateText = exports.isArray = exports.isObject = void 0;
+exports.translateText = exports.isArray = void 0;
 const axios_1 = require("axios");
-/**
- * Tests whether the given variable is a real object and not an Array
- * @param it The variable to test
- */
-function isObject(it) {
-    // This is necessary because:
-    // typeof null === 'object'
-    // typeof [] === 'object'
-    // [] instanceof Object === true
-    return Object.prototype.toString.call(it) === '[object Object]';
-}
-exports.isObject = isObject;
 /**
  * Tests whether the given variable is really an Array
  * @param it The variable to test
@@ -57,3 +45,4 @@ function translateText(text, targetLang) {
     });
 }
 exports.translateText = translateText;
+//# sourceMappingURL=tools-dev.js.map

@@ -299,3 +299,4 @@ else {
     // otherwise start the instance directly
     (() => new Ds18b20Adapter())();
 }
+//# sourceMappingURL=main.js.map

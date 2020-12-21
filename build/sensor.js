@@ -129,3 +129,4 @@ __decorate([
     core_decorators_1.autobind
 ], Sensor.prototype, "read", null);
 exports.Sensor = Sensor;
+//# sourceMappingURL=sensor.js.map

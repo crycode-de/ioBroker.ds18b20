@@ -17,3 +17,4 @@ function round(num, precision) {
     return Math.round(num * exp) / exp;
 }
 exports.round = round;
+//# sourceMappingURL=tools.js.map

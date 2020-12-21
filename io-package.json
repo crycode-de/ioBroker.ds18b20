@@ -1,8 +1,20 @@
 {
     "common": {
         "name": "ds18b20",
-        "version": "1.1.5",
+        "version": "1.2.0",
         "news": {
+            "1.2.0": {
+                "en": "Added Sentry, Updated dependencies",
+                "de": "Sentry hinzugefügt, Abhängigkeiten aktualisiert",
+                "ru": "Добавлен Sentry, обновлены зависимости",
+                "pt": "Adicionado Sentry, Dependências atualizadas",
+                "nl": "Sentry toegevoegd, bijgewerkte afhankelijkheden",
+                "fr": "Sentry ajoutée, dépendances mises à jour",
+                "it": "Sentinella aggiunta, dipendenze aggiornate",
+                "es": "Centinela agregado, dependencias actualizadas",
+                "pl": "Dodano Działko, Zaktualizowano zależności",
+                "zh-cn": "添加了哨兵，更新了依赖项"
+            },
             "1.1.5": {
                 "en": "Fixed incorrect data type of an object, Updated dependencies",
                 "de": "Fehlerhafter Datentyp eines Objekts behoben, Abhängigkeiten aktualisiert",
@@ -166,9 +178,14 @@
         "messagebox": true,
         "dependencies": [
             {
-                "js-controller": ">=1.4.2"
+                "js-controller": ">=2.0.0"
             }
-        ]
+        ],
+        "plugins": {
+            "sentry": {
+                "dsn": "https://4e2fc6b87e4a4016874cb8d91f5cbd97@sentry.cryhost.de/5"
+            }
+        }
     },
     "native": {
         "defaultInterval": 60000,

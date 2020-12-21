@@ -24,7 +24,7 @@ tsconfig.*.json
 .jshintrc
 
 # Sourcemaps
-maps/
+*.map
 
 # npm package files
 iobroker.*.tgz
@@ -38,3 +38,6 @@ maintenance/**
 
 build/lib/*-dev.js
 **/*.d.ts
+
+docs
+.mocharc*
