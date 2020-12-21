@@ -30,7 +30,7 @@ Dies ist ein ioBroker-Adapter zur Integration von DS18B20 1-Wire Temperatursenso
 
 ## Changelog
 
-### 1.1.6 (2020-12-21)
+### 1.2.0 (2020-12-21)
 * (crycode-de) Added Sentry error reporting
 * (crycode-de) Updated dependencies
 * (crycode-de) Optimized npm package
