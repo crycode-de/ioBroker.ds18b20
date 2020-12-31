@@ -147,5 +147,5 @@ jobs:
               with:
                 environment: production
                 tagName: ${{ steps.extract_release.outputs.VERSION }}
-                releaseNamePrefix: ds18b20@
+                releaseNamePrefix: iobroker.ds18b20@
                 sourceMapOptions: '{"include": ["build"]}'
