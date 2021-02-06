@@ -1,8 +1,20 @@
 {
     "common": {
         "name": "ds18b20",
-        "version": "1.2.1",
+        "version": "1.2.2",
         "news": {
+            "1.2.2": {
+                "en": "Fixed crash if settings are malformed",
+                "de": "Absturz bei fehlerhaften Einstellungen behoben",
+                "ru": "Исправлен сбой при неправильных настройках",
+                "pt": "Falha corrigida se as configurações estiverem malformadas",
+                "nl": "Crash opgelost als instellingen onjuist zijn",
+                "fr": "Correction d'un crash si les paramètres sont mal formés",
+                "it": "Risolto il crash se le impostazioni sono malformate",
+                "es": "Se corrigió el bloqueo si la configuración está mal formada",
+                "pl": "Naprawiono awarię, jeśli ustawienia są źle sformułowane",
+                "zh-cn": "修复了如果设置格式错误导致的崩溃"
+            },
             "1.2.1": {
                 "en": "Small fixes",
                 "de": "Kleine Korrekturen",

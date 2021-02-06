@@ -77,16 +77,20 @@ class Ds18b20Adapter extends utils.Adapter {
       for (const objectId in objects) {
         const obj: SensorObject = objects[objectId] as SensorObject;
 
-        const interval = typeof obj.native.interval === 'number' ? obj.native.interval : this.config.defaultInterval;
+        if (typeof obj.native.address !== 'string') {
+          this.log.warn(`Object ${obj._id} has no valid address!`);
+          continue;
+        }
+
         this.sensors[obj._id] = new Sensor({
           w1DevicesPath: this.config.w1DevicesPath,
           id: obj._id,
           address: obj.native.address,
-          interval,
-          nullOnError: obj.native.nullOnError,
-          factor: obj.native.factor,
-          offset: obj.native.offset,
-          decimals: obj.native.decimals
+          interval: typeof obj.native.interval === 'number' ? obj.native.interval : this.config.defaultInterval,
+          nullOnError: !!obj.native.nullOnError,
+          factor: typeof obj.native.factor === 'number' ? obj.native.factor : 1,
+          offset: typeof obj.native.offset === 'number' ? obj.native.offset : 0,
+          decimals: typeof obj.native.decimals === 'number' ? obj.native.decimals : null
         });
         this.sensors[obj._id].on('value', this.handleSensorValue);
         this.sensors[obj._id].on('error', this.handleSensorError);

@@ -1,6 +1,6 @@
 {
   "name": "iobroker.ds18b20",
-  "version": "1.2.1",
+  "version": "1.2.2",
   "description": "This is an ioBroker-Adapter to integrate DS18B20 1-wire temperature sensors.",
   "author": {
     "name": "Peter Müller",
