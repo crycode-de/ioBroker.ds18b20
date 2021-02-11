@@ -84,11 +84,17 @@ class Sensor extends events_1.EventEmitter {
         })
             // check for specific errors
             .then((val) => {
-            switch (val) {
-                case 85: throw new Error('No temperature read');
-                case -127: throw new Error('Device disconnected');
-                default: return { err: null, val: val };
+            if (val === 85) {
+                throw new Error('No temperature read');
             }
+            else if (val === -127) {
+                throw new Error('Device disconnected');
+            }
+            else if (val < -80 || val > 150) {
+                // From datasheet: Measures Temperatures from -55°C to +125°C
+                throw new Error('Read temperature is out of possible range');
+            }
+            return { err: null, val: val };
         })
             // handle errors
             .catch((err) => {

@@ -1,8 +1,20 @@
 {
     "common": {
         "name": "ds18b20",
-        "version": "1.2.2",
+        "version": "1.2.3",
         "news": {
+            "1.2.3": {
+                "en": "Added check of temperatures higher/lower than possible sensor values",
+                "de": "Überprüfung von Temperaturen höher/niedriger als mögliche Sensorwerte hinzugefügt",
+                "ru": "Добавлена проверка температур выше / ниже возможных значений датчика",
+                "pt": "Adicionada verificação de temperaturas superiores / inferiores aos valores possíveis do sensor",
+                "nl": "Extra controle van temperaturen hoger / lager dan mogelijke sensorwaarden",
+                "fr": "Ajout de la vérification des températures supérieures / inférieures aux valeurs possibles du capteur",
+                "it": "Aggiunto controllo di temperature superiori / inferiori ai possibili valori del sensore",
+                "es": "Comprobación añadida de temperaturas superiores / inferiores a los posibles valores del sensor",
+                "pl": "Dodano kontrolę temperatur wyższych / niższych niż możliwe wartości czujnika",
+                "zh-cn": "增加了对温度高于/低于传感器可能值的检查"
+            },
             "1.2.2": {
                 "en": "Fixed crash if settings are malformed",
                 "de": "Absturz bei fehlerhaften Einstellungen behoben",
