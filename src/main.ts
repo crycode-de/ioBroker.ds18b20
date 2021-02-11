@@ -8,6 +8,7 @@ import { promisify } from 'util';
 
 import * as fs from 'fs';
 const readFile = promisify(fs.readFile);
+const readDir = promisify(fs.readdir);
 
 import * as utils from '@iobroker/adapter-core';
 
@@ -116,7 +117,7 @@ class Ds18b20Adapter extends utils.Adapter {
       }
 
       // reset connection state
-      this.setState('info.connection', false, true);
+      await this.setStateAsync('info.connection', false, true);
 
     } catch(e) { }
 
@@ -250,7 +251,7 @@ class Ds18b20Adapter extends utils.Adapter {
    * @param obj The receied ioBroker message.
    */
   @autobind
-  private onMessage(obj: ioBroker.Message): void {
+  private async onMessage(obj: ioBroker.Message): Promise<void> {
     this.log.debug('got message ' + JSON.stringify(obj));
 
     if (typeof obj === 'object' && obj.message) {
@@ -289,14 +290,30 @@ class Ds18b20Adapter extends utils.Adapter {
           // don't do anything if no callback is provided
           if (!obj.callback) return;
 
-          readFile(`${this.config.w1DevicesPath}/w1_bus_master1/w1_master_slaves`, 'utf8')
-            .then((data: string) => {
-              data = data.trim();
-              this.sendTo(obj.from, obj.command, { err: null, sensors: data.split('\n') }, obj.callback);
-            })
-            .catch((err: Error) => {
-              this.sendTo(obj.from, obj.command, { err: err.toString(), sensors: [] }, obj.callback);
-            });
+          try {
+            const files = await readDir(this.config.w1DevicesPath);
+
+            const proms: Promise<string>[] = [];
+            for (let i = 0; i < files.length; i++) {
+              if (!files[i].match(/^w1_bus_master\d+$/)) {
+                continue;
+              }
+              this.log.debug(`reading ${this.config.w1DevicesPath}/${files[i]}/w1_master_slaves`);
+              proms.push(readFile(`${this.config.w1DevicesPath}/${files[i]}/w1_master_slaves`, 'utf8'));
+            }
+
+            const sensors: string[] = (await Promise.all(proms)).reduce<string[]>((acc, cur) => {
+              acc.push(...cur.trim().split('\n'));
+              return acc;
+            }, []);
+            this.log.debug(`sensors found: ${JSON.stringify(sensors)}`);
+            this.sendTo(obj.from, obj.command, { err: null, sensors }, obj.callback);
+
+          } catch (err) {
+            this.log.warn(`Error while searching for sensors: ${err.toString()}`);
+            this.sendTo(obj.from, obj.command, { err: err.toString(), sensors: [] }, obj.callback);
+          }
+
           break;
       }
     }

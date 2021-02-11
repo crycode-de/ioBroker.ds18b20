@@ -23,6 +23,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const util_1 = require("util");
 const fs = require("fs");
 const readFile = util_1.promisify(fs.readFile);
+const readDir = util_1.promisify(fs.readdir);
 const utils = require("@iobroker/adapter-core");
 const core_decorators_1 = require("core-decorators");
 const sensor_1 = require("./sensor");
@@ -101,7 +102,7 @@ class Ds18b20Adapter extends utils.Adapter {
                     this.sensors[address].stop();
                 }
                 // reset connection state
-                this.setState('info.connection', false, true);
+                yield this.setStateAsync('info.connection', false, true);
             }
             catch (e) { }
             callback();
@@ -220,57 +221,72 @@ class Ds18b20Adapter extends utils.Adapter {
      * @param obj The receied ioBroker message.
      */
     onMessage(obj) {
-        this.log.debug('got message ' + JSON.stringify(obj));
-        if (typeof obj === 'object' && obj.message) {
-            switch (obj.command) {
-                case 'readNow':
-                    // we should read sensors now...
-                    if (typeof obj.message === 'string') {
-                        this.readNow(obj.message);
-                    }
-                    else {
-                        this.readNow();
-                    }
-                    break;
-                case 'read':
-                    // read a sensor
-                    if (typeof obj.message === 'string') {
-                        const sens = this.getSensor(obj.message);
-                        if (!sens) {
-                            this.log.debug('no such sensor');
-                            return this.sendTo(obj.from, obj.command, { err: 'No such sensor', value: null }, obj.callback);
+        return __awaiter(this, void 0, void 0, function* () {
+            this.log.debug('got message ' + JSON.stringify(obj));
+            if (typeof obj === 'object' && obj.message) {
+                switch (obj.command) {
+                    case 'readNow':
+                        // we should read sensors now...
+                        if (typeof obj.message === 'string') {
+                            this.readNow(obj.message);
                         }
-                        sens.read((err, value) => {
-                            if (err) {
-                                this.log.debug(err.toString());
-                                this.sendTo(obj.from, obj.command, { err: err.toString(), value: null }, obj.callback);
+                        else {
+                            this.readNow();
+                        }
+                        break;
+                    case 'read':
+                        // read a sensor
+                        if (typeof obj.message === 'string') {
+                            const sens = this.getSensor(obj.message);
+                            if (!sens) {
+                                this.log.debug('no such sensor');
+                                return this.sendTo(obj.from, obj.command, { err: 'No such sensor', value: null }, obj.callback);
                             }
-                            else {
-                                this.sendTo(obj.from, obj.command, { err: null, value: value }, obj.callback);
+                            sens.read((err, value) => {
+                                if (err) {
+                                    this.log.debug(err.toString());
+                                    this.sendTo(obj.from, obj.command, { err: err.toString(), value: null }, obj.callback);
+                                }
+                                else {
+                                    this.sendTo(obj.from, obj.command, { err: null, value: value }, obj.callback);
+                                }
+                            });
+                        }
+                        else {
+                            this.log.debug('no address or id given');
+                            return this.sendTo(obj.from, obj.command, { err: 'No sensor address or id given', value: null }, obj.callback);
+                        }
+                        break;
+                    case 'search':
+                        // search for sensors
+                        // don't do anything if no callback is provided
+                        if (!obj.callback)
+                            return;
+                        try {
+                            const files = yield readDir(this.config.w1DevicesPath);
+                            const proms = [];
+                            for (let i = 0; i < files.length; i++) {
+                                if (!files[i].match(/^w1_bus_master\d+$/)) {
+                                    continue;
+                                }
+                                this.log.debug(`reading ${this.config.w1DevicesPath}/${files[i]}/w1_master_slaves`);
+                                proms.push(readFile(`${this.config.w1DevicesPath}/${files[i]}/w1_master_slaves`, 'utf8'));
                             }
-                        });
-                    }
-                    else {
-                        this.log.debug('no address or id given');
-                        return this.sendTo(obj.from, obj.command, { err: 'No sensor address or id given', value: null }, obj.callback);
-                    }
-                    break;
-                case 'search':
-                    // search for sensors
-                    // don't do anything if no callback is provided
-                    if (!obj.callback)
-                        return;
-                    readFile(`${this.config.w1DevicesPath}/w1_bus_master1/w1_master_slaves`, 'utf8')
-                        .then((data) => {
-                        data = data.trim();
-                        this.sendTo(obj.from, obj.command, { err: null, sensors: data.split('\n') }, obj.callback);
-                    })
-                        .catch((err) => {
-                        this.sendTo(obj.from, obj.command, { err: err.toString(), sensors: [] }, obj.callback);
-                    });
-                    break;
+                            const sensors = (yield Promise.all(proms)).reduce((acc, cur) => {
+                                acc.push(...cur.trim().split('\n'));
+                                return acc;
+                            }, []);
+                            this.log.debug(`sensors found: ${JSON.stringify(sensors)}`);
+                            this.sendTo(obj.from, obj.command, { err: null, sensors }, obj.callback);
+                        }
+                        catch (err) {
+                            this.log.warn(`Error while searching for sensors: ${err.toString()}`);
+                            this.sendTo(obj.from, obj.command, { err: err.toString(), sensors: [] }, obj.callback);
+                        }
+                        break;
+                }
             }
-        }
+        });
     }
 }
 __decorate([
