@@ -5,13 +5,14 @@
     "allowJs": false,
     "checkJs": false,
     "noEmit": false,
-    "declaration": false
+    "declaration": false,
+    "outDir": "./remote/build/"
   },
   "include": [
-    "src/**/*.ts"
+    "remote/src/**/*.ts"
   ],
   "exclude": [
-    "src/**/*.test.ts",
-    "remote/*"
+    "remote/src/**/*.test.ts",
+    "src/*"
   ]
 }

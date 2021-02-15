@@ -73,6 +73,18 @@
       }
 
       /**
+       * Create a random hex string.
+       */
+      function genHexString (len) {
+        const hex = '0123456789abcdef';
+        let output = '';
+        for (let i = 0; i < len; ++i) {
+          output += hex.charAt(Math.floor(Math.random() * hex.length));
+        }
+        return output;
+      }
+
+      /**
        * Adopt the curValues or the given values to the values table.
        */
       function curValues2table (newValues) {
@@ -84,6 +96,7 @@
           // add change events
           $('#values .values-input[data-name="id"], \
              #values .values-input[data-name="address"], \
+             #values .values-input[data-name="remoteSystemId"], \
              #values .values-input[data-name="name"], \
              #values .values-input[data-name="interval"]')
           .on('change', function () {
@@ -131,6 +144,22 @@
           }
         });
 
+        // create new encryption key
+        if (!$('#remoteKey').val()) {
+          $('#remoteKey').val(genHexString(64));
+        }
+        $('.button-recreate-key').on('click', () => {
+          $('#remoteKey').val(genHexString(64));
+          onChange();
+        });
+
+        // get connected remote systems
+        getConnectedRemoteSystems();
+        $('.button-get-remote-systems').on('click', () => {
+          getConnectedRemoteSystems();
+        });
+
+        // search devies button
         $('.table-button-search').on('click', searchDevices);
 
         // check default interval on changes
@@ -153,6 +182,7 @@
                 unit:          obj.common.unit,
 
                 address:       obj.native.address,
+                remoteSystemId: obj.native.remoteSystemId,
                 interval:      obj.native.interval,
                 factor:        obj.native.factor,
                 offset:        obj.native.offset,
@@ -193,6 +223,14 @@
           setError($address, false);
         } else {
           setError($address, 'Invalid address');
+          errorCount++;
+        }
+
+        const $remoteSystemId = $('#values .values-input[data-name="remoteSystemId"][data-index="' + id + '"]');
+        if ($remoteSystemId.val().match(/^([0-9a-zA-Z][0-9a-zA-Z-_.]+[0-9a-zA-Z]|[0-9a-zA-Z]+)?$/)) {
+          setError($remoteSystemId, false);
+        } else {
+          setError($remoteSystemId, 'Invalid system ID');
           errorCount++;
         }
 
@@ -258,6 +296,7 @@
                 unit:          '°C',
 
                 address:       address,
+                remoteSystemId: '', // TODO:
                 interval:      null,
                 factor:        1,
                 offset:        0,
@@ -281,6 +320,34 @@
                 $('input.sensor-found').removeClass('sensor-found');
               }, 3000);
             }, 100);
+          });
+        });
+      }
+
+      function getConnectedRemoteSystems () {
+        // check if the adapter instance is active
+        socket.emit('getState', `system.adapter.${adapter}.${instance}.alive`, (err, state) => {
+          if (!state || !state.val) {
+            showError(_('The adapter instance must be started to search for sensors.'));
+            return;
+          }
+
+          // send search request to the adapter instance
+          sendTo(adapter + '.' + instance, 'getRemoteSystems', {}, (ret) => {
+            if (!ret) {
+              showError(_('No response!'));
+              return;
+            }
+            if (!Array.isArray(ret)) {
+              ret = [];
+            }
+
+            if (ret.length > 0) {
+              $('#remoteSystems').html(ret.map((s) => `<code>${s}</code>`).join(', '));
+            } else {
+              $('#remoteSystems').html('-');
+            }
+
           });
         });
       }
@@ -362,6 +429,10 @@
               _obj.native.interval = newValues[v].interval;
               changed = true;
             }
+            if (_obj.native.remoteSystemId !== newValues[v].remoteSystemId) {
+              _obj.native.remoteSystemId = newValues[v].remoteSystemId;
+              changed = true;
+            }
             if (_obj.native.factor !== newValues[v].factor) {
               _obj.native.factor = newValues[v].factor;
               changed = true;
@@ -393,6 +464,7 @@
               },
               native: {
                 address:     newValues[v].address,
+                remoteSystemId: newValues[v].remoteSystemId,
                 interval:    newValues[v].interval,
                 factor:      newValues[v].factor,
                 offset:      newValues[v].offset,
@@ -454,6 +526,30 @@
     </div>
   </div>
 
+  <div class="row">
+    <div class="input-field col s12 m6 l3">
+      <input type="checkbox" id="remoteEnabled" class="value" />
+      <label class="translate" for="remoteEnabled">Enable remote sensors</label><br />
+      <span class="translate">When enabled the adapter starts a server and accepts connections from <em>ioBroker.ds18b20-remote</em> clients.</span>
+    </div>
+
+    <div class="input-field col s12 m6 l2">
+      <input type="text" id="remotePort" class="value" />
+      <label class="translate" for="remotePort">Server port</label>
+      <span class="translate">The port to start the server for remote clients on. Default is<code>1820</code>.</span>
+    </div>
+
+    <div class="input-field col s11 m11 l6">
+      <input type="text" id="remoteKey" class="value" readonly />
+      <label class="translate" for="remoteKey">Encyption key</label>
+      <span class="translate">Hex key to encrypt the client connections. This key must be set on all clients. Use the button on the right to create a new key.</span>
+    </div>
+
+    <div class="input-field col s1 m1 l1">
+      <a class="btn-floating btn-small waves-effect waves-light blue button-recreate-key"><i class="material-icons">autorenew</i></a>
+    </div>
+  </div>
+
   <!-- sensors -->
   <div class="row">
     <div class="col s12" id="values">
@@ -465,6 +561,7 @@
           <tr>
             <th data-name="_index"     style="width:30px"></th>
             <th data-name="address"    style="width:150px" class="translate">Address</th>
+            <th data-name="remoteSystemId" style="width:150px" class="translate">Remote system ID</th>
             <th data-name="name"       style="width:150px" class="translate">Name</th>
             <th data-name="interval"   style="width:60px" class="translate">Query interval</th>
             <th data-name="unit"       style="width:60px" class="translate" data-default="°C">Unit</th>
@@ -481,6 +578,11 @@
   </div>
   <div class="row">
     <div class="col s12 translate"><em>Hint:</em> Click on the ?-button at the top to get help and some examples.</div>
+  </div>
+
+  <div class="row" id="remoteSystemsWrapper">
+    <div class="col s12 translate">Connected remote systems <a class="btn-floating btn-small waves-effect waves-light blue button-get-remote-systems"><i class="material-icons">autorenew</i></a></div>
+    <div class="col s12" id="remoteSystems">-</div>
   </div>
 
 </div>

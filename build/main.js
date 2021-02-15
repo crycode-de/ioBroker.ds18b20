@@ -20,13 +20,16 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.Ds18b20Adapter = void 0;
 const util_1 = require("util");
 const fs = require("fs");
 const readFile = util_1.promisify(fs.readFile);
 const readDir = util_1.promisify(fs.readdir);
+const crypto = require("crypto");
 const utils = require("@iobroker/adapter-core");
 const core_decorators_1 = require("core-decorators");
 const sensor_1 = require("./sensor");
+const remote_server_1 = require("./remote-server");
 /**
  * The ds18b20 adapter.
  */
@@ -41,6 +44,10 @@ class Ds18b20Adapter extends utils.Adapter {
          * Mapping of the ioBroker object IDs to the sensor class instances.
          */
         this.sensors = {};
+        /**
+         * The server for remote sensors if enabled.
+         */
+        this.remoteSensorServer = null;
         this.on('ready', this.onReady);
         this.on('stateChange', this.onStateChange);
         this.on('message', this.onMessage);
@@ -59,6 +66,33 @@ class Ds18b20Adapter extends utils.Adapter {
             if (!this.config.w1DevicesPath) {
                 this.config.w1DevicesPath = '/sys/bus/w1/devices';
             }
+            // remote sensor server
+            if (this.config.remoteEnabled) {
+                // check decrypt native and show a warning in case of unsupportet
+                if (this.supportsFeature && !this.supportsFeature('ADAPTER_AUTO_DECRYPT_NATIVE')) {
+                    this.log.warn('The server for remote sensors is enabled but decrypt native is not supported! The encryption key will be stored in unencrypted in the ioBroker database. To get decrypt native support, please upgrade js-controller to v3.0 or greater.');
+                }
+                // check the port
+                if (!this.config.remotePort || this.config.remotePort <= 0) {
+                    this.log.warn('Config: Invalid port for the remote sensor server! Using default port 1820.');
+                    this.config.remotePort = 1820;
+                }
+                // check the key
+                if (typeof this.config.remoteKey !== 'string' || this.config.remoteKey.length !== 64) {
+                    this.config.remoteKey = crypto.randomBytes(32).toString('hex');
+                    this.log.error(`Config: Invalid key for the remote sensor server! Using random key "${this.config.remoteKey}".`);
+                }
+                this.remoteSensorServer = new remote_server_1.RemoteSensorServer(this.config.remotePort, this.config.remoteKey, this);
+                this.remoteSensorServer.on('listening', () => {
+                    this.log.info(`Remote sensor server is listening on port ${this.config.remotePort}`);
+                    this.updateInfoConnection();
+                });
+                this.remoteSensorServer.on('error', (err) => {
+                    this.log.warn(`Remote sensor server error: ${err.toString()}`);
+                    this.log.debug(`${err.toString()} ${err.stack}`);
+                    this.updateInfoConnection();
+                });
+            }
             // setup sensors
             this.getForeignObjects(this.namespace + '.sensors.*', 'state', (err, objects) => {
                 if (err) {
@@ -71,6 +105,10 @@ class Ds18b20Adapter extends utils.Adapter {
                         this.log.warn(`Object ${obj._id} has no valid address!`);
                         continue;
                     }
+                    if (obj.native.remoteSystemId && !this.config.remoteEnabled) {
+                        this.log.warn(`Object ${obj._id} is configured as remote sensor but remote sensors of ${obj.native.remoteSystemId} are not enabled!`);
+                        continue;
+                    }
                     this.sensors[obj._id] = new sensor_1.Sensor({
                         w1DevicesPath: this.config.w1DevicesPath,
                         id: obj._id,
@@ -79,8 +117,9 @@ class Ds18b20Adapter extends utils.Adapter {
                         nullOnError: !!obj.native.nullOnError,
                         factor: typeof obj.native.factor === 'number' ? obj.native.factor : 1,
                         offset: typeof obj.native.offset === 'number' ? obj.native.offset : 0,
-                        decimals: typeof obj.native.decimals === 'number' ? obj.native.decimals : null
-                    });
+                        decimals: typeof obj.native.decimals === 'number' ? obj.native.decimals : null,
+                        remoteSystemId: typeof obj.native.remoteSystemId === 'string' ? obj.native.remoteSystemId : null,
+                    }, this);
                     this.sensors[obj._id].on('value', this.handleSensorValue);
                     this.sensors[obj._id].on('error', this.handleSensorError);
                     this.sensors[obj._id].on('errorStateChanged', this.handleSensorErrorStateChanged);
@@ -100,6 +139,10 @@ class Ds18b20Adapter extends utils.Adapter {
                 // stop all intervals from the sensors
                 for (const address in this.sensors) {
                     this.sensors[address].stop();
+                }
+                // stop the remote sensor server
+                if (this.remoteSensorServer) {
+                    yield this.remoteSensorServer.stop();
                 }
                 // reset connection state
                 yield this.setStateAsync('info.connection', false, true);
@@ -139,16 +182,29 @@ class Ds18b20Adapter extends utils.Adapter {
      */
     handleSensorErrorStateChanged(hasError, id) {
         this.log.debug(`error state of sensor ${this.sensors[id].address} changed to ${hasError}`);
+        this.updateInfoConnection();
+    }
+    /**
+     * Update the info.connection state depending on the error state of all
+     * sensors and the listening state of the remote sensor server.
+     */
+    updateInfoConnection() {
+        // check if remote sensor server is listening if enabled
+        if (this.remoteSensorServer && !this.remoteSensorServer.isListening()) {
+            // server enabled but not listening
+            this.setStateAsync('info.connection', false, true);
+            return;
+        }
         // check all sensors for errors
         for (const id in this.sensors) {
             if (this.sensors[id].hasError) {
                 // at least one sensor has an error, set connection state to false
-                this.setState('info.connection', false, true);
+                this.setStateAsync('info.connection', false, true);
                 return;
             }
         }
         // all sensors are ok, set connection state to true
-        this.setState('info.connection', true, true);
+        this.setStateAsync('info.connection', true, true);
     }
     /**
      * Get a defined sensor from it's ioBroker ID or 1-wire address.
@@ -257,6 +313,18 @@ class Ds18b20Adapter extends utils.Adapter {
                             return this.sendTo(obj.from, obj.command, { err: 'No sensor address or id given', value: null }, obj.callback);
                         }
                         break;
+                    case 'getRemoteSystems':
+                        // get connected remote systems
+                        // don't do anything if no callback is provided
+                        if (!obj.callback)
+                            return;
+                        if (!this.remoteSensorServer) {
+                            this.sendTo(obj.from, obj.command, [], obj.callback);
+                            return;
+                        }
+                        const systems = this.remoteSensorServer.getConnectedSystems();
+                        this.sendTo(obj.from, obj.command, systems, obj.callback);
+                        break;
                     case 'search':
                         // search for sensors
                         // don't do anything if no callback is provided
@@ -310,6 +378,7 @@ __decorate([
 __decorate([
     core_decorators_1.autobind
 ], Ds18b20Adapter.prototype, "onMessage", null);
+exports.Ds18b20Adapter = Ds18b20Adapter;
 if (module.parent) {
     // Export the constructor in compact mode
     module.exports = (options) => new Ds18b20Adapter(options);

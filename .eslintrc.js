@@ -30,6 +30,7 @@ module.exports = {
     ],
     '@typescript-eslint/no-parameter-properties': 'off',
     '@typescript-eslint/no-explicit-any': 'off',
+    '@typescript-eslint/no-inferrable-types': 'off',
     '@typescript-eslint/no-use-before-define': [
       'error',
       {

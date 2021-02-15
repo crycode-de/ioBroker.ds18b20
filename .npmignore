@@ -37,7 +37,10 @@ admin/i18n
 maintenance/**
 
 build/lib/*-dev.js
+build/common/types.*
 **/*.d.ts
 
 docs
 .mocharc*
+
+remote

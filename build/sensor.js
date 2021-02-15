@@ -8,6 +8,15 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Sensor = void 0;
 const events_1 = require("events");
@@ -24,12 +33,13 @@ class Sensor extends events_1.EventEmitter {
      * Constructor for a new sensor.
      * @param opts The options for the Sensor.
      */
-    constructor(opts) {
+    constructor(opts, adapter) {
         super();
         /**
          * Timer for interval sensor readings.
          */
         this.timer = null;
+        this.adapter = adapter;
         this.id = opts.id;
         this.address = opts.address.replace(/[^0-9a-f-]/g, ''); // remove all bad chars!
         this.nullOnError = opts.nullOnError;
@@ -38,6 +48,7 @@ class Sensor extends events_1.EventEmitter {
         this.decimals = opts.decimals;
         this.hasError = true; // true on init while we don't know the current state
         this.w1DevicesPath = opts.w1DevicesPath;
+        this.remoteSystemId = opts.remoteSystemId;
         // start interval and inital read if interval is set
         if (opts.interval && opts.interval > 0) {
             // smallest interval is 500ms
@@ -55,69 +66,92 @@ class Sensor extends events_1.EventEmitter {
      * @param  cb Optional callback function.
      */
     read(cb) {
-        // read the file
-        readFile(`${this.w1DevicesPath}/${this.address}/w1_slave`, 'utf8')
-            // process data
-            .then((data) => {
-            const lines = data.split('\n');
-            if (lines[0].indexOf('YES') > -1) {
-                // checksum ok
-                const bytes = lines[0].split(' ');
-                if (bytes[0] === bytes[1] && bytes[0] === bytes[2] && bytes[0] === bytes[3] && bytes[0] === bytes[4] && bytes[0] === bytes[5] && bytes[0] === bytes[6] && bytes[0] === bytes[7] && bytes[0] === bytes[8]) {
-                    // all bytes are the same
-                    throw new Error('Communication error');
+        var _a;
+        return __awaiter(this, void 0, void 0, function* () {
+            if (this.remoteSystemId) {
+                // remote sensor - send request
+                try {
+                    yield ((_a = this.adapter.remoteSensorServer) === null || _a === void 0 ? void 0 : _a.read(this.remoteSystemId, this.address));
                 }
-                const m = lines[1].match(/t=(-?\d+)/);
-                if (!m) {
-                    throw new Error('Parse error');
+                catch (err) {
+                    this.emit('error', err, this.id);
+                    if (typeof cb === 'function') {
+                        cb(err, null);
+                    }
                 }
-                return parseInt(m[1], 10) / 1000;
-            }
-            else if (lines[0].indexOf('NO') > -1) {
-                // checksum error
-                throw new Error('Checksum error');
             }
             else {
-                // read error
-                throw new Error('Read error');
+                // local sensor - read the file
+                readFile(`${this.w1DevicesPath}/${this.address}/w1_slave`, 'utf8')
+                    .then((raw) => this.processData(raw, cb));
             }
-        })
-            // check for specific errors
-            .then((val) => {
-            if (val === 85) {
-                throw new Error('No temperature read');
-            }
-            else if (val === -127) {
-                throw new Error('Device disconnected');
-            }
-            else if (val < -80 || val > 150) {
-                // From datasheet: Measures Temperatures from -55°C to +125°C
-                throw new Error('Read temperature is out of possible range');
-            }
-            return { err: null, val: val };
-        })
-            // handle errors
-            .catch((err) => {
-            this.emit('error', err, this.id);
-            return { err: err, val: null };
-        })
-            // evaluate the result
-            .then((data) => {
-            if (data.val !== null) {
-                data.val = data.val * this.factor + this.offset;
-                if (this.decimals !== null) {
-                    data.val = tools_1.round(data.val, this.decimals);
+        });
+    }
+    /**
+     * Process the raw data from a sensor file.
+     * @param rawData The raw data read from the sensor file.
+     * @param cb Optional callback function.
+     */
+    processData(rawData, cb) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const lines = rawData.split('\n');
+            let val = null;
+            let err = null;
+            try {
+                if (lines[0].indexOf('YES') > -1) {
+                    // checksum ok
+                    const bytes = lines[0].split(' ');
+                    if (bytes[0] === bytes[1] && bytes[0] === bytes[2] && bytes[0] === bytes[3] && bytes[0] === bytes[4] && bytes[0] === bytes[5] && bytes[0] === bytes[6] && bytes[0] === bytes[7] && bytes[0] === bytes[8]) {
+                        // all bytes are the same
+                        throw new Error('Communication error');
+                    }
+                    const m = lines[1].match(/t=(-?\d+)/);
+                    if (!m) {
+                        throw new Error('Parse error');
+                    }
+                    val = parseInt(m[1], 10) / 1000;
+                }
+                else if (lines[0].indexOf('NO') > -1) {
+                    // checksum error
+                    throw new Error('Checksum error');
+                }
+                else {
+                    // read error
+                    throw new Error('Read error');
+                }
+                // check for specific errors
+                if (val === 85) {
+                    throw new Error('No temperature read');
+                }
+                else if (val === -127) {
+                    throw new Error('Device disconnected');
+                }
+                else if (val < -80 || val > 150) {
+                    // From datasheet: Measures Temperatures from -55°C to +125°C
+                    throw new Error('Read temperature is out of possible range');
                 }
             }
-            if (data.val !== null || this.nullOnError) {
-                this.emit('value', data.val, this.id);
+            catch (e) {
+                this.emit('error', e, this.id);
+                err = e;
+                val = null;
             }
-            if (this.hasError !== (data.val === null)) {
-                this.hasError = (data.val === null);
+            // evaluate the result
+            if (val !== null) {
+                val = val * this.factor + this.offset;
+                if (this.decimals !== null) {
+                    val = tools_1.round(val, this.decimals);
+                }
+            }
+            if (val !== null || this.nullOnError) {
+                this.emit('value', val, this.id);
+            }
+            if (this.hasError !== (val === null)) {
+                this.hasError = (val === null);
                 this.emit('errorStateChanged', this.hasError, this.id);
             }
             if (typeof cb === 'function') {
-                cb(data.err, data.val);
+                cb(err, val);
             }
         });
     }
