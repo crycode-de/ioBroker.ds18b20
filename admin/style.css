@@ -27,6 +27,9 @@
 }
 
 .sensor-found {
+  animation: sensor-found 3s ease-out;
+  animation-iteration-count: 1;
+
   -moz-animation: sensor-found 3s ease-out;
   -moz-animation-iteration-count: 1;
 
@@ -51,4 +54,16 @@
 
 @-ms-keyframes sensor-found {
   50% { background-color: #00ff00; }
+}
+
+/* hide arrows in number inputs */
+input[type="number"] {
+  -webkit-appearance: textfield;
+  -moz-appearance: textfield;
+  appearance: textfield;
+}
+
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
 }

@@ -313,5 +313,122 @@ systemDictionary = {
     "es": "Ruta del sistema donde se puede acceder a los dispositivos de 1 cable. El valor predeterminado es <code>/sys/bus/w1/devices</code> .",
     "pl": "Ścieżka systemowa, do której można uzyskać dostęp do urządzeń 1-przewodowych. Domyślnie jest to <code>/sys/bus/w1/devices</code> .",
     "zh-cn": "可以访问1线设备的系统路径。默认值为<code>/sys/bus/w1/devices</code> 。"
+  },
+
+  "Invalid system ID": {
+    "en": "Invalid system ID",
+    "de": "Ungültige System-ID",
+    "ru": "Неверный идентификатор системы",
+    "pt": "ID de sistema inválido",
+    "nl": "Ongeldige systeem-ID",
+    "fr": "ID système non valide",
+    "it": "ID di sistema non valido",
+    "es": "ID de sistema no válido",
+    "pl": "Nieprawidłowy identyfikator systemu",
+    "zh-cn": "无效的系统ID"
+  },
+
+  "Enable remote sensors": {
+    "en": "Enable remote sensors",
+    "de": "Entfernte Sensoren aktivieren",
+    "ru": "Включить удаленные датчики",
+    "pt": "Habilitar sensores remotos",
+    "nl": "Schakel externe sensoren in",
+    "fr": "Activer les capteurs à distance",
+    "it": "Abilita sensori remoti",
+    "es": "Habilitar sensores remotos",
+    "pl": "Włącz zdalne czujniki",
+    "zh-cn": "启用远程传感器"
+  },
+
+  "When enabled the adapter starts a server and accepts connections from <em>ioBroker.ds18b20-remote</em> clients.": {
+    "en": "When enabled the adapter starts a server and accepts connections from <em>ioBroker.ds18b20-remote</em> clients.",
+    "de": "Wenn aktiviert, startet der Adapter einen Server und akzeptiert Verbindungen von <em>ioBroker.ds18b20-remote</em> Clients.",
+    "ru": "Если этот параметр включен, адаптер запускает сервер и принимает подключения от клиентов <em>ioBroker.ds18b20-remote</em> .",
+    "pt": "Quando ativado, o adaptador inicia um servidor e aceita conexões de clientes <em>ioBroker.ds18b20-remote</em> .",
+    "nl": "Indien ingeschakeld start de adapter een server en accepteert hij verbindingen van <em>ioBroker.ds18b20-remote</em> clients.",
+    "fr": "Lorsqu'il est activé, l'adaptateur démarre un serveur et accepte les connexions clients <em>distants ioBroker.ds18b20remote</em> .",
+    "it": "Quando è abilitato, l'adattatore avvia un server e accetta connessioni da client <em>ioBroker.ds18b20-remote</em> .",
+    "es": "Cuando está habilitado, el adaptador inicia un servidor y acepta conexiones de clientes <em>ioBroker.ds18b20-remote</em> .",
+    "pl": "Po włączeniu adapter uruchamia serwer i akceptuje połączenia od klientów <em>ioBroker.ds18b20-remote</em> .",
+    "zh-cn": "启用后，适配器将启动服务器并接受来自<em>ioBroker.ds18b20-remote</em>客户端的连接。"
+  },
+
+  "Server port": {
+    "en": "Server port",
+    "de": "Server Port",
+    "ru": "Порт сервера",
+    "pt": "Porta do servidor",
+    "nl": "Server poort",
+    "fr": "Port de serveur",
+    "it": "Porta del server",
+    "es": "Puerto de servicio",
+    "pl": "Port serwera",
+    "zh-cn": "服务器端口"
+  },
+
+  "The port to start the server for remote clients on. Default is <code>1820</code>.": {
+    "en": "The port to start the server for remote clients on. Default is <code>1820</code>.",
+    "de": "Der Port, an dem der Server für Remote-Clients gestartet werden soll. Standard ist <code>1820</code>.",
+    "ru": "Порт для запуска сервера для удаленных клиентов. По умолчанию <code>1820</code>.",
+    "pt": "A porta para iniciar o servidor para clientes remotos. O padrão é <code>1820</code>.",
+    "nl": "De poort om de server voor externe clients op te starten. De standaardwaarde is <code>1820</code>.",
+    "fr": "Le port sur lequel démarrer le serveur pour les clients distants. La valeur par défaut est <code>1820</code>.",
+    "it": "La porta su cui avviare il server per i client remoti. L'impostazione predefinita è <code>1820</code>.",
+    "es": "El puerto para iniciar el servidor para clientes remotos. El valor predeterminado es <code>1820</code>.",
+    "pl": "Port do uruchamiania serwera dla klientów zdalnych. Wartość domyślna to <code>1820</code>.",
+    "zh-cn": "用于启动远程客户端服务器的端口。默认值为<code>1820</code>。"
+  },
+
+  "Encryption key": {
+    "en": "Encryption key",
+    "de": "Verschlüsselungsschlüssel",
+    "ru": "Ключ шифрования",
+    "pt": "Chave de encriptação",
+    "nl": "Versleutelingssleutel",
+    "fr": "Clé de cryptage",
+    "it": "Chiave di crittografia",
+    "es": "Clave de encriptación",
+    "pl": "Klucz szyfrowania",
+    "zh-cn": "加密金钥"
+  },
+
+  "Key to encrypt the client connections. This key must be set on all clients. Use the button on the right to create a new key.": {
+    "en": "Key to encrypt the client connections. This key must be set on all clients. Use the button on the right to create a new key.",
+    "de": "Schlüssel zum Verschlüsseln der Clientverbindungen. Dieser Schlüssel muss auf allen Clients bekannt sein. Über den Button rechts kann ein neuer Schlüssel erzeugt werden.",
+    "ru": "Ключ для шифрования клиентских подключений. Этот ключ должен быть установлен на всех клиентах. Используйте кнопку справа, чтобы создать новый ключ.",
+    "pt": "Chave para criptografar as conexões do cliente. Essa chave deve ser definida em todos os clientes. Use o botão à direita para criar uma nova chave.",
+    "nl": "Sleutel om de clientverbindingen te versleutelen. Deze sleutel moet op alle clients worden ingesteld. Gebruik de knop aan de rechterkant om een nieuwe sleutel te maken.",
+    "fr": "Clé pour crypter les connexions client. Cette clé doit être définie sur tous les clients. Utilisez le bouton à droite pour créer une nouvelle clé.",
+    "it": "Chiave per crittografare le connessioni client. Questa chiave deve essere impostata su tutti i client. Usa il pulsante a destra per creare una nuova chiave.",
+    "es": "Clave para cifrar las conexiones del cliente. Esta clave debe configurarse en todos los clientes. Utilice el botón de la derecha para crear una nueva clave.",
+    "pl": "Klucz do szyfrowania połączeń klientów. Ten klucz musi być ustawiony na wszystkich klientach. Użyj przycisku po prawej stronie, aby utworzyć nowy klucz.",
+    "zh-cn": "加密客户端连接的密钥。必须在所有客户端上设置此密钥。使用右侧的按钮创建一个新密钥。"
+  },
+
+  "Remote system ID": {
+    "en": "Remote system ID",
+    "de": "Entfernte System-ID",
+    "ru": "ID удаленной системы",
+    "pt": "ID do sistema remoto",
+    "nl": "Systeem-ID op afstand",
+    "fr": "ID du système distant",
+    "it": "ID sistema remoto",
+    "es": "ID del sistema remoto",
+    "pl": "Identyfikator systemu zdalnego",
+    "zh-cn": "远端系统编号"
+  },
+
+  "Connected remote systems": {
+    "en": "Connected remote systems",
+    "de": "Verbundene entfernte Systeme",
+    "ru": "Подключенные удаленные системы",
+    "pt": "Sistemas remotos conectados",
+    "nl": "Verbonden systemen op afstand",
+    "fr": "Systèmes distants connectés",
+    "it": "Sistemi remoti connessi",
+    "es": "Sistemas remotos conectados",
+    "pl": "Połączone systemy zdalne",
+    "zh-cn": "连接的远程系统"
   }
 };
