@@ -186,7 +186,7 @@ export class Ds18b20Adapter extends utils.Adapter {
 
   /**
    * Handler for incoming sensor values.
-   * @param value The value.
+   * @param value The value or null in case of an error.
    * @param id    The ioBroker ID of the sensor.
    */
   @autobind
@@ -195,10 +195,18 @@ export class Ds18b20Adapter extends utils.Adapter {
 
     this.log.debug(`got value ${value} from sensor ${this.sensors[id].address}`);
 
-    this.setStateAsync(id, {
-      ack: true,
-      val: value
-    });
+    if (value === null) {
+      this.setStateAsync(id, {
+        ack: true,
+        val: null,
+        q: 0x81, // general problem by sensor
+      });
+    } else {
+      this.setStateAsync(id, {
+        ack: true,
+        val: value,
+      });
+    }
   }
 
   /**
