@@ -8,6 +8,9 @@ class Logger {
         }
         console.log('[Debug]', ...args);
     }
+    log(...args) {
+        console.log(...args);
+    }
     info(...args) {
         console.log('[Info]', ...args);
     }

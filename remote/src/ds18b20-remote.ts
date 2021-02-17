@@ -1,7 +1,23 @@
+/**
+ * ioBroker.ds18b20-remote
+ *
+ * Remote client for the ioBroker.ds18b20 adapter.
+ * This client has zero dependencies and can be started on any linux os running
+ * Node.js.
+ *
+ * The client will connect to the ioBroker adapter using a TCP socket and
+ * provide an interface to let the adapter read 1-wire sensors connected to the
+ * client system.
+ *
+ * MIT License
+ *
+ * Copyright (c) 2021 Peter Müller <peter@crycode.de> (https://crycode.de)
+ */
+
+import { promisify } from 'util';
 import { Socket } from 'net';
 import * as fs from 'fs';
 import * as os from 'os';
-import { promisify } from 'util';
 
 const readDir = promisify(fs.readdir);
 const readFile = promisify(fs.readFile);
@@ -13,9 +29,7 @@ import {
   decrypt,
 } from './common/crypt';
 
-import {
-  RemoteData,
-} from './common/types';
+import { RemoteData } from './common/types';
 
 class Ds18b20Remote {
 
@@ -46,6 +60,11 @@ class Ds18b20Remote {
     this.onError = this.onError.bind(this);
 
     this.log = new Logger();
+
+    this.log.log('ioBroker.ds18b20-remote');
+
+    // read env vars from a .env file in cwd
+    this.readDotEnv();
 
     // get the system ID
     if (process.env.SYSTEM_ID) {
@@ -262,6 +281,49 @@ class Ds18b20Remote {
         }
       });
     })
+  }
+
+  /**
+   * Read env vars from a .env file in the current working dir if exists.
+   */
+  private readDotEnv (): void {
+    if (!fs.existsSync('.env')) return;
+
+    let data: string[];
+    try {
+      data = fs.readFileSync('.env', 'utf-8').split('\n').map((l) => l.trim());
+    } catch (err) {
+      this.log.debug('can\'t read .env file', err);
+      return;
+    }
+
+    const envKeys = [
+      'ADAPTER_HOST',
+      'ADAPTER_KEY',
+      'ADAPTER_PORT',
+      'DEBUG',
+      'SYSTEM_ID',
+      'W1_DEVICES_PATH',
+    ];
+
+    for (const line of data) {
+      if (!line || line.startsWith('#')) continue;
+
+      const idx = line.indexOf('=');
+      if (idx <= 0) continue;
+
+      const key = line.slice(0, idx).trim();
+      const val = line.slice(idx + 1).trim().replace(/(^"|"$)/g, '');
+
+      if (envKeys.indexOf(key) >= 0) {
+        // ignore if this env is already set
+        if (process.env[key]) continue;
+
+        // set this env
+        process.env[key] = val;
+        this.log.debug(`read ${key}=${val} from .env file`);
+      }
+    }
   }
 
   private exit (): void {

@@ -5,8 +5,7 @@ nbproject
 
 .vscode/
 
-# Sourcemaps
-maps/
+.env
 
 # npm package files
 iobroker.*.tgz
