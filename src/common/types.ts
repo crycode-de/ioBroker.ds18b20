@@ -18,6 +18,14 @@ export interface SensorObject extends ioBroker.StateObject {
 }
 
 /**
+ * Result of sensor search.
+ */
+export interface SearchSensor {
+  address: string;
+  remoteSystemId: string;
+}
+
+/**
  * Remote data request/response for client information.
  */
 export interface RemoteDataClientInfo {

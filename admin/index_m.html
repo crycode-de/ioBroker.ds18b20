@@ -126,6 +126,15 @@
         onChange2 = onChange;
 
         if (!settings) return;
+
+        // set default settings (mainly for updated adapters)
+        if (!settings.remotePort) {
+          settings.remotePort = 1820;
+        }
+        if (!settings.remoteKey) {
+          settings.remoteKey = genHexString(64);
+        }
+
         $('.value').each(function () {
           const $key = $(this);
           const id = $key.attr('id');
@@ -145,9 +154,6 @@
         });
 
         // create new encryption key
-        if (!$('#remoteKey').val()) {
-          $('#remoteKey').val(genHexString(64));
-        }
         $('.button-recreate-key').on('click', () => {
           $('#remoteKey').val(genHexString(64));
           onChange();
@@ -160,7 +166,10 @@
         });
 
         // search devies button
-        $('.table-button-search').on('click', searchDevices);
+        $('.table-button-search').on('click', () => {
+          getConnectedRemoteSystems();
+          searchDevices();
+        });
 
         // check default interval on changes
         $defaultInterval = $('#defaultInterval');
@@ -282,21 +291,21 @@
             const newValues = JSON.parse(JSON.stringify(curValues));
 
             foundSensorsLoop:
-            for (const address of ret.sensors) {
+            for (const searchSensor of ret.sensors) {
               // check if this sensor already exists
               for (let v = 0; v < curValues.length; v++) {
-                if (newValues[v].address === address) {
+                if (newValues[v].address === searchSensor.address && newValues[v].remoteSystemId === searchSensor.remoteSystemId) {
                   continue foundSensorsLoop;
                 }
               }
 
               // create new line
               const line = {
-                name:          address,
+                name:          searchSensor.address,
                 unit:          '°C',
 
-                address:       address,
-                remoteSystemId: '', // TODO:
+                address:       searchSensor.address,
+                remoteSystemId: searchSensor.remoteSystemId,
                 interval:      null,
                 factor:        1,
                 offset:        0,
@@ -312,7 +321,8 @@
             setTimeout(() => {
               $('#values .values-input[data-name="address"]').each((_i, elem) => {
                 const $elem = $(elem);
-                if (ret.sensors.indexOf($elem.val()) !== -1) {
+                const val = $elem.val();
+                if (ret.sensors.find((searchSensor) => searchSensor.address === val)) {
                   $elem.addClass('sensor-found');
                 }
               });

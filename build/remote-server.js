@@ -91,6 +91,46 @@ class RemoteSensorServer extends events_1.EventEmitter {
             return raw;
         });
     }
+    search() {
+        return __awaiter(this, void 0, void 0, function* () {
+            const sensors = [];
+            const proms = [];
+            for (const socketId in this.sockets) {
+                const client = this.sockets[socketId];
+                // timestamp for the request, used to identify response
+                const requestTs = Date.now();
+                // send the request (async but don't wait)
+                this.send(client.socket, {
+                    cmd: 'search',
+                    ts: requestTs,
+                    systemId: client.systemId,
+                });
+                // wait for feedback with a timeout of 5 seconds
+                proms.push(new Promise((resolve, reject) => {
+                    let timeout = null;
+                    const handler = (data) => {
+                        if (typeof data !== 'object' || data.systemId !== client.systemId || data.ts !== requestTs)
+                            return;
+                        if (timeout)
+                            clearTimeout(timeout);
+                        this.removeListener('sensorData', handler);
+                        if (!Array.isArray(data.addresses)) {
+                            data.addresses = [];
+                        }
+                        resolve(data.addresses.map((a) => ({ address: a, remoteSystemId: client.systemId })));
+                    };
+                    timeout = setTimeout(() => {
+                        this.removeListener('sensorData', handler);
+                        reject(new Error(`No response from remote system ${client.systemId}`));
+                    }, 5000);
+                    this.on('searchData', handler);
+                }));
+            }
+            const results = yield Promise.all(proms);
+            results.forEach((r) => sensors.push(...r));
+            return sensors;
+        });
+    }
     stop() {
         return new Promise((resolve) => {
             this.server.close(() => resolve());
@@ -166,7 +206,7 @@ class RemoteSensorServer extends events_1.EventEmitter {
                 break;
             case 'search':
                 // got search data
-                this.emit('sensorSearch', data);
+                this.emit('searchData', data);
                 break;
             default:
                 this.adapter.log.warn(`Unknown command from remote system ${socketId}.`);

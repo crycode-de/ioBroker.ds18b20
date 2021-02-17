@@ -22,6 +22,7 @@ import { RemoteSensorServer } from './remote-server';
 
 import {
   SensorObject,
+  SearchSensor,
 } from './common/types';
 
 declare global {
@@ -133,7 +134,7 @@ export class Ds18b20Adapter extends utils.Adapter {
         }
 
         if (obj.native.remoteSystemId && !this.config.remoteEnabled) {
-          this.log.warn(`Object ${obj._id} is configured as remote sensor but remote sensors of ${obj.native.remoteSystemId} are not enabled!`);
+          this.log.warn(`Object ${obj._id} is configured as remote sensor of ${obj.native.remoteSystemId} but remote sensors are not enabled!`);
           continue;
         }
 
@@ -390,6 +391,10 @@ export class Ds18b20Adapter extends utils.Adapter {
           // don't do anything if no callback is provided
           if (!obj.callback) return;
 
+          const sensors: SearchSensor[] = [];
+          let err: Error | null = null;
+
+          // local sensors
           try {
             const files = await readDir(this.config.w1DevicesPath);
 
@@ -402,17 +407,33 @@ export class Ds18b20Adapter extends utils.Adapter {
               proms.push(readFile(`${this.config.w1DevicesPath}/${files[i]}/w1_master_slaves`, 'utf8'));
             }
 
-            const sensors: string[] = (await Promise.all(proms)).reduce<string[]>((acc, cur) => {
+            const localSensors: SearchSensor[] = (await Promise.all(proms)).reduce<string[]>((acc, cur) => {
               acc.push(...cur.trim().split('\n'));
               return acc;
-            }, []);
-            this.log.debug(`sensors found: ${JSON.stringify(sensors)}`);
-            this.sendTo(obj.from, obj.command, { err: null, sensors }, obj.callback);
+            }, []).map((addr) => ({ address: addr, remoteSystemId: '' }));
 
-          } catch (err) {
-            this.log.warn(`Error while searching for sensors: ${err.toString()}`);
-            this.sendTo(obj.from, obj.command, { err: err.toString(), sensors: [] }, obj.callback);
+            sensors.push(...localSensors);
+
+          } catch (er) {
+            this.log.warn(`Error while searching for local sensors: ${er.toString()}`);
+            if (!this.config.remoteEnabled) {
+              err = er;
+            }
           }
+
+          // remote sensors
+          if (this.config.remoteEnabled && this.remoteSensorServer) {
+            try {
+              const remoteSensors = await this.remoteSensorServer.search();
+              sensors.push(...remoteSensors);
+            } catch (er) {
+              this.log.warn(`Error while searching for remote sensors: ${er.toString()}`);
+              err = er; // TODO: should we send or ignore this error?
+            }
+          }
+
+          this.log.debug(`sensors found: ${JSON.stringify(sensors)}`);
+          this.sendTo(obj.from, obj.command, { err, sensors }, obj.callback);
 
           break;
       }

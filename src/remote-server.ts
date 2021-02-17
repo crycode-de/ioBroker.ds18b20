@@ -14,7 +14,12 @@ import { autobind } from 'core-decorators';
 
 import { Ds18b20Adapter } from './main';
 import { decrypt, encrypt } from './common/crypt';
-import { RemoteData, RemoteDataRead } from './common/types';
+import {
+  RemoteData,
+  RemoteDataRead,
+  RemoteDataSearch,
+  SearchSensor,
+} from './common/types';
 
 /**
  * Information about a connected client.
@@ -112,6 +117,53 @@ export class RemoteSensorServer extends EventEmitter {
     return raw;
   }
 
+  public async search (): Promise<SearchSensor[]> {
+    const sensors: SearchSensor[] = [];
+
+    const proms: Promise<SearchSensor[]>[] = [];
+
+    for (const socketId in this.sockets) {
+      const client = this.sockets[socketId];
+
+      // timestamp for the request, used to identify response
+      const requestTs = Date.now();
+
+      // send the request (async but don't wait)
+      this.send(client.socket, {
+        cmd: 'search',
+        ts: requestTs,
+        systemId: client.systemId,
+      });
+
+      // wait for feedback with a timeout of 5 seconds
+      proms.push(new Promise<SearchSensor[]>((resolve, reject) => {
+        let timeout: NodeJS.Timeout | null = null;
+
+        const handler = (data: RemoteDataSearch): void => {
+          if (typeof data !== 'object' || data.systemId !== client.systemId || data.ts !== requestTs) return;
+          if (timeout) clearTimeout(timeout);
+          this.removeListener('sensorData', handler);
+          if (!Array.isArray(data.addresses)) {
+            data.addresses = [];
+          }
+          resolve(data.addresses.map((a) => ({ address: a, remoteSystemId: client.systemId })));
+        };
+
+        timeout = setTimeout(() => {
+          this.removeListener('sensorData', handler);
+          reject(new Error(`No response from remote system ${client.systemId}`));
+        }, 5000);
+
+        this.on('searchData', handler);
+      }));
+    }
+
+    const results = await Promise.all(proms);
+    results.forEach((r) => sensors.push(...r));
+
+    return sensors;
+  }
+
   public stop (): Promise<void> {
     return new Promise<void>((resolve) => {
       this.server.close(() => resolve());
@@ -201,7 +253,7 @@ export class RemoteSensorServer extends EventEmitter {
 
       case 'search':
         // got search data
-        this.emit('sensorSearch', data);
+        this.emit('searchData', data);
         break;
 
       default:

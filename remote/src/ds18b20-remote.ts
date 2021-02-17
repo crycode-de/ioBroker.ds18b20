@@ -3,6 +3,7 @@ import * as fs from 'fs';
 import * as os from 'os';
 import { promisify } from 'util';
 
+const readDir = promisify(fs.readdir);
 const readFile = promisify(fs.readFile);
 
 import { Logger } from './logger';
@@ -175,7 +176,7 @@ class Ds18b20Remote {
           raw = await readFile(`${this.w1DevicesPath}/${data.address}/w1_slave`, 'utf8');
           this.log.debug(`Read from file ${this.w1DevicesPath}/${data.address}/w1_slave:`, raw);
         } catch (err) {
-          this.log.warn(`Read from file ${this.w1DevicesPath}/${data.address}/w1_slave failed!`);
+          this.log.warn(`Read from file ${this.w1DevicesPath}/${data.address}/w1_slave failed! ${err.toString()}`);
           this.log.debug(err);
           raw = '';
         }
@@ -188,8 +189,41 @@ class Ds18b20Remote {
         });
         break;
 
+      case 'search':
+        // search for sensors
+        try {
+          const files = await readDir(this.w1DevicesPath);
+
+          const proms: Promise<string>[] = [];
+          for (let i = 0; i < files.length; i++) {
+            if (!files[ i ].match(/^w1_bus_master\d+$/)) {
+              continue;
+            }
+            this.log.debug(`reading ${this.w1DevicesPath}/${files[ i ]}/w1_master_slaves`);
+            proms.push(readFile(`${this.w1DevicesPath}/${files[ i ]}/w1_master_slaves`, 'utf8'));
+          }
+
+          const addresses: string[] = (await Promise.all(proms)).reduce<string[]>((acc, cur) => {
+            acc.push(...cur.trim().split('\n'));
+            return acc;
+          }, []);
+
+          await this.send({
+            cmd: 'search',
+            ts: data.ts,
+            systemId: data.systemId,
+            addresses
+          });
+
+        } catch (err) {
+          this.log.warn(`Searching for sensors failed! ${err.toString()}`);
+          this.log.debug(err);
+        }
+
+        break;
+
       default:
-        this.log.warn(`Unknown command "${data.cmd}" from adapter`);
+        this.log.warn(`Unknown command from adapter`);
     }
   }
 

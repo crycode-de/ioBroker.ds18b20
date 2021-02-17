@@ -13,6 +13,7 @@ const net_1 = require("net");
 const fs = require("fs");
 const os = require("os");
 const util_1 = require("util");
+const readDir = util_1.promisify(fs.readdir);
 const readFile = util_1.promisify(fs.readFile);
 const logger_1 = require("./logger");
 const crypt_1 = require("./common/crypt");
@@ -144,7 +145,7 @@ class Ds18b20Remote {
                         this.log.debug(`Read from file ${this.w1DevicesPath}/${data.address}/w1_slave:`, raw);
                     }
                     catch (err) {
-                        this.log.warn(`Read from file ${this.w1DevicesPath}/${data.address}/w1_slave failed!`);
+                        this.log.warn(`Read from file ${this.w1DevicesPath}/${data.address}/w1_slave failed! ${err.toString()}`);
                         this.log.debug(err);
                         raw = '';
                     }
@@ -155,8 +156,36 @@ class Ds18b20Remote {
                         raw,
                     });
                     break;
+                case 'search':
+                    // search for sensors
+                    try {
+                        const files = yield readDir(this.w1DevicesPath);
+                        const proms = [];
+                        for (let i = 0; i < files.length; i++) {
+                            if (!files[i].match(/^w1_bus_master\d+$/)) {
+                                continue;
+                            }
+                            this.log.debug(`reading ${this.w1DevicesPath}/${files[i]}/w1_master_slaves`);
+                            proms.push(readFile(`${this.w1DevicesPath}/${files[i]}/w1_master_slaves`, 'utf8'));
+                        }
+                        const addresses = (yield Promise.all(proms)).reduce((acc, cur) => {
+                            acc.push(...cur.trim().split('\n'));
+                            return acc;
+                        }, []);
+                        yield this.send({
+                            cmd: 'search',
+                            ts: data.ts,
+                            systemId: data.systemId,
+                            addresses
+                        });
+                    }
+                    catch (err) {
+                        this.log.warn(`Searching for sensors failed! ${err.toString()}`);
+                        this.log.debug(err);
+                    }
+                    break;
                 default:
-                    this.log.warn(`Unknown command "${data.cmd}" from adapter`);
+                    this.log.warn(`Unknown command from adapter`);
             }
         });
     }
