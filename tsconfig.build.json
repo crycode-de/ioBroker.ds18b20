@@ -12,6 +12,6 @@
   ],
   "exclude": [
     "src/**/*.test.ts",
-    "remote/*"
+    "remote",
   ]
 }

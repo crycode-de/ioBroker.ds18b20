@@ -66,24 +66,27 @@ class Sensor extends events_1.EventEmitter {
      * @param  cb Optional callback function.
      */
     read(cb) {
-        var _a;
         return __awaiter(this, void 0, void 0, function* () {
-            if (this.remoteSystemId) {
-                // remote sensor - send request
-                try {
-                    yield ((_a = this.adapter.remoteSensorServer) === null || _a === void 0 ? void 0 : _a.read(this.remoteSystemId, this.address));
-                }
-                catch (err) {
-                    this.emit('error', err, this.id);
-                    if (typeof cb === 'function') {
-                        cb(err, null);
+            let raw;
+            try {
+                if (this.remoteSystemId) {
+                    // remote sensor - send request
+                    if (!this.adapter.remoteSensorServer) {
+                        throw new Error('Remote sensors not enabled');
                     }
+                    raw = yield this.adapter.remoteSensorServer.read(this.remoteSystemId, this.address);
                 }
+                else {
+                    // local sensor - read the file
+                    raw = yield readFile(`${this.w1DevicesPath}/${this.address}/w1_slave`, 'utf8');
+                }
+                this.processData(raw, cb);
             }
-            else {
-                // local sensor - read the file
-                readFile(`${this.w1DevicesPath}/${this.address}/w1_slave`, 'utf8')
-                    .then((raw) => this.processData(raw, cb));
+            catch (err) {
+                this.emit('error', err, this.id);
+                if (typeof cb === 'function') {
+                    cb(err, null);
+                }
             }
         });
     }

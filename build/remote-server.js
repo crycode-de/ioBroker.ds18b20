@@ -61,14 +61,34 @@ class RemoteSensorServer extends events_1.EventEmitter {
             }
             if (!client) {
                 // client not connected
-                this.adapter.log.warn(`No remote client ${clientSystemId} is not connected.`);
-                throw new Error('Client not connected');
+                throw new Error(`Remote system ${clientSystemId} is not connected.`);
             }
-            yield this.send(client.socket, {
+            // timestamp for the request, used to identify response
+            const requestTs = Date.now();
+            // send the request (async but don't wait)
+            this.send(client.socket, {
                 cmd: 'read',
+                ts: requestTs,
                 address: sensorAddress,
             });
-            // TODO: handle the response for callback functions
+            // wait for feedback with a timeout of 5 seconds
+            const raw = yield new Promise((resolve, reject) => {
+                let timeout = null;
+                const handler = (data) => {
+                    if (typeof data !== 'object' || data.address !== sensorAddress || data.ts !== requestTs)
+                        return;
+                    if (timeout)
+                        clearTimeout(timeout);
+                    this.removeListener('sensorData', handler);
+                    resolve(data.raw || '');
+                };
+                timeout = setTimeout(() => {
+                    this.removeListener('sensorData', handler);
+                    reject(new Error('No response from remote system'));
+                }, 5000);
+                this.on('sensorData', handler);
+            });
+            return raw;
         });
     }
     stop() {
@@ -82,10 +102,10 @@ class RemoteSensorServer extends events_1.EventEmitter {
         socket.on('close', () => {
             this.adapter.log.debug(`socket closed ${socketId}`);
             if (this.sockets[socketId]) {
-                this.adapter.log.info(`Remote client ${this.sockets[socketId].systemId} (${socketId}) disconnected`);
+                this.adapter.log.info(`Remote system ${this.sockets[socketId].systemId} (${socketId}) disconnected`);
             }
             else {
-                this.adapter.log.info(`Remote client ${socketId} disconnected`);
+                this.adapter.log.info(`Remote system ${socketId} disconnected`);
             }
             delete this.sockets[socketId];
         });
@@ -102,7 +122,7 @@ class RemoteSensorServer extends events_1.EventEmitter {
         });
         // set timeout to close unknown sockets after 5 seconds
         this.socketTimeouts[socketId] = setTimeout(() => {
-            this.adapter.log.warn(`Disconnection remote ${socketId} due to inactivity`);
+            this.adapter.log.warn(`Disconnecting remote ${socketId} due to inactivity before identification`);
             socket.destroy();
             delete this.socketTimeouts[socketId];
         }, 5000);
@@ -138,20 +158,18 @@ class RemoteSensorServer extends events_1.EventEmitter {
                     socket: socket,
                     systemId: data.systemId,
                 };
-                this.adapter.log.info(`Remote client ${data.systemId} connected from ${socket.remoteAddress}`);
+                this.adapter.log.info(`Remote system ${data.systemId} connected from ${socket.remoteAddress}`);
                 break;
             case 'read':
                 // got sensor data
-                const sensor = this.adapter.getSensor(data.address);
-                if (!sensor) {
-                    this.adapter.log.warn(`Got remote data for unknown sensor ${data.address}.`);
-                    return;
-                }
-                sensor.processData(data.raw || '');
+                this.emit('sensorData', data);
+                break;
             case 'search':
-            // got search data
+                // got search data
+                this.emit('sensorSearch', data);
+                break;
             default:
-                this.adapter.log.warn(`Unknown command "${data.cmd}" from client ${socketId}.`);
+                this.adapter.log.warn(`Unknown command from remote system ${socketId}.`);
         }
     }
     send(socket, data) {

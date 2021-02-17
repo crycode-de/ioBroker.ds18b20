@@ -31,6 +31,7 @@ export interface RemoteDataClientInfo {
 export interface RemoteDataRead {
   cmd: 'read';
   address: string;
+  ts: number;
   raw?: string;
 }
 
@@ -39,6 +40,7 @@ export interface RemoteDataRead {
  */
 export interface RemoteDataSearch {
   cmd: 'search';
+  ts: number;
   addresses?: string[];
   systemId?: string;
 }

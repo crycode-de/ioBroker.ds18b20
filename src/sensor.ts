@@ -140,21 +140,27 @@ export class Sensor extends EventEmitter {
   @autobind
   public async read (cb?: (err: Error | null, val: number | null) => void): Promise<void> {
 
-    if (this.remoteSystemId) {
-      // remote sensor - send request
-      try {
-        await this.adapter.remoteSensorServer?.read(this.remoteSystemId, this.address);
-      } catch (err) {
-        this.emit('error', err, this.id);
-        if (typeof cb === 'function') {
-          cb(err, null);
+    let raw: string;
+
+    try {
+      if (this.remoteSystemId) {
+        // remote sensor - send request
+        if (!this.adapter.remoteSensorServer) {
+          throw new Error('Remote sensors not enabled');
         }
+        raw = await this.adapter.remoteSensorServer.read(this.remoteSystemId, this.address);
+      } else {
+        // local sensor - read the file
+        raw = await readFile(`${this.w1DevicesPath}/${this.address}/w1_slave`, 'utf8');
       }
 
-    } else {
-      // local sensor - read the file
-      readFile(`${this.w1DevicesPath}/${this.address}/w1_slave`, 'utf8')
-        .then((raw) => this.processData(raw, cb));
+      this.processData(raw, cb);
+
+    } catch (err) {
+      this.emit('error', err, this.id);
+      if (typeof cb === 'function') {
+        cb(err, null);
+      }
     }
   }
 

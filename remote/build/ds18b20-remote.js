@@ -10,12 +10,16 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const net_1 = require("net");
+const fs = require("fs");
 const os = require("os");
-require("source-map-support/register");
+const util_1 = require("util");
+const readFile = util_1.promisify(fs.readFile);
+const logger_1 = require("./logger");
 const crypt_1 = require("./common/crypt");
 class Ds18b20Remote {
     constructor() {
         this.reconnectTimeout = null;
+        this.shouldExit = false;
         this.recvData = '';
         // bind methods
         this.connect = this.connect.bind(this);
@@ -23,39 +27,51 @@ class Ds18b20Remote {
         this.onClose = this.onClose.bind(this);
         this.onData = this.onData.bind(this);
         this.onError = this.onError.bind(this);
+        this.log = new logger_1.Logger();
         // get the system ID
         if (process.env.SYSTEM_ID) {
             this.systemId = process.env.SYSTEM_ID.trim();
         }
         else {
             this.systemId = os.hostname();
-            console.warn(`[Warn] Using the hostname ${this.systemId} as system ID. Please set SYSTEM_ID to a unique value.`);
+            this.log.warn(`Using the hostname ${this.systemId} as system ID. Please set SYSTEM_ID to a unique value.`);
         }
+        this.log.debug(`systemId`, this.systemId);
         // get adapter port
         if (process.env.ADAPTER_PORT) {
             try {
                 this.adapterPort = parseInt(process.env.ADAPTER_PORT, 10);
             }
             catch (err) {
-                console.error(`[Error] Invalid ADAPTER_PORT!`, err);
+                this.log.error(`Invalid ADAPTER_PORT!`, err);
                 process.exit(1);
             }
         }
         else {
             this.adapterPort = 1820;
         }
+        this.log.debug(`adapterPort`, this.adapterPort);
         // get adapter host
         this.adapterHost = (process.env.ADAPTER_HOST || '').trim();
         if (this.adapterHost.length <= 0) {
-            console.error(`[Error] No ADAPTER_HOST given!`);
+            this.log.error(`No ADAPTER_HOST given!`);
             process.exit(1);
         }
+        this.log.debug(`adapterHost`, this.adapterHost);
         // get the encryption key
         this.adapterKey = Buffer.from(process.env.ADAPTER_KEY || '', 'hex');
         if (this.adapterKey.length !== 32) {
-            console.error(`[Error] ADAPTER_KEY is no valid key!`);
+            this.log.error(`ADAPTER_KEY is no valid key!`);
             process.exit(1);
         }
+        this.log.debug(`adapterKey`, this.adapterKey);
+        // get the 1-wire devices path
+        this.w1DevicesPath = process.env.W1_DEVICES_PATH || '/sys/bus/w1/devices';
+        if (!fs.existsSync(this.w1DevicesPath)) {
+            this.log.error(`The 1-wire devices path ${this.w1DevicesPath} does not exist!`);
+            process.exit(1);
+        }
+        this.log.debug(`w1DevicesPath`, this.w1DevicesPath);
         // register signal handlers
         process.on('SIGINT', this.exit);
         process.on('SIGTERM', this.exit);
@@ -71,12 +87,12 @@ class Ds18b20Remote {
         if (this.reconnectTimeout) {
             clearTimeout(this.reconnectTimeout);
         }
-        console.log(`[Info] Connecting to ${this.adapterHost}:${this.adapterPort} ...`);
+        this.log.info(`Connecting to ${this.adapterHost}:${this.adapterPort} ...`);
         this.socket.connect({
             host: this.adapterHost,
             port: this.adapterPort,
         }, () => {
-            console.log(`[Info] Connected`);
+            this.log.info(`Connected with adapter`);
             if (this.reconnectTimeout) {
                 clearTimeout(this.reconnectTimeout);
             }
@@ -93,49 +109,77 @@ class Ds18b20Remote {
         }
     }
     handleSocketData(raw) {
-        // try to decrypt and parse the data
-        let data;
-        try {
-            const dataStr = crypt_1.decrypt(raw, this.adapterKey);
-            data = JSON.parse(dataStr);
-        }
-        catch (err) {
-            console.warn(`[Warn] Decrypt of data failed! ${err.toString()}`);
-            // close the socket
-            this.socket.end();
-            return;
-        }
-        switch (data.cmd) {
-            case 'clientInfo':
-                console.info('[Info] Sending client info to the adapter');
-                this.send({
-                    cmd: 'clientInfo',
-                    systemId: this.systemId,
-                });
-                break;
-            default:
-                console.warn(`[Warn] Unknown command "${data.cmd}" from adapter`);
-        }
+        return __awaiter(this, void 0, void 0, function* () {
+            // try to decrypt and parse the data
+            let data;
+            try {
+                const dataStr = crypt_1.decrypt(raw, this.adapterKey);
+                data = JSON.parse(dataStr);
+            }
+            catch (err) {
+                this.log.warn(`Decrypt of data failed! ${err.toString()}`);
+                // close the socket
+                this.socket.end();
+                return;
+            }
+            this.log.debug('message from adapter:', data);
+            switch (data.cmd) {
+                case 'clientInfo':
+                    // get client info
+                    this.log.info('Sending client info to the adapter');
+                    this.send({
+                        cmd: 'clientInfo',
+                        systemId: this.systemId,
+                    });
+                    break;
+                case 'read':
+                    // read sensor data
+                    if (!data.address) {
+                        this.log.warn(`Got read command without address from adapter!`);
+                        return;
+                    }
+                    let raw;
+                    try {
+                        raw = yield readFile(`${this.w1DevicesPath}/${data.address}/w1_slave`, 'utf8');
+                        this.log.debug(`Read from file ${this.w1DevicesPath}/${data.address}/w1_slave:`, raw);
+                    }
+                    catch (err) {
+                        this.log.warn(`Read from file ${this.w1DevicesPath}/${data.address}/w1_slave failed!`);
+                        this.log.debug(err);
+                        raw = '';
+                    }
+                    yield this.send({
+                        cmd: 'read',
+                        address: data.address,
+                        ts: data.ts,
+                        raw,
+                    });
+                    break;
+                default:
+                    this.log.warn(`Unknown command "${data.cmd}" from adapter`);
+            }
+        });
     }
     onError(err) {
-        console.warn(`[Warn] Socket error:`, err);
+        this.log.warn(`Socket error:`, err);
         // close the socket on an error
         this.socket.end();
         this.reconnect();
     }
     onClose() {
-        console.info('[Info] Socket closed');
+        this.log.info('Socket closed');
         this.reconnect();
     }
     reconnect() {
-        if (!this.reconnectTimeout) {
+        if (!this.reconnectTimeout && !this.shouldExit) {
             // schedule reconnect
-            console.log(`[Info] Reconnect in 30 seconds`);
+            this.log.info(`Reconnect in 30 seconds`);
             this.reconnectTimeout = setTimeout(this.connect, 30000);
         }
     }
     send(data) {
         return __awaiter(this, void 0, void 0, function* () {
+            this.log.debug('send to adapter:', data);
             return new Promise((resolve, reject) => {
                 this.socket.write(crypt_1.encrypt(JSON.stringify(data), this.adapterKey) + '\n', (err) => {
                     if (err) {
@@ -149,6 +193,7 @@ class Ds18b20Remote {
         });
     }
     exit() {
+        this.shouldExit = true;
         if (this.reconnectTimeout) {
             clearTimeout(this.reconnectTimeout);
         }
