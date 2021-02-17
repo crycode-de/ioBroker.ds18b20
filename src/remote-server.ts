@@ -182,6 +182,12 @@ export class RemoteSensorServer extends EventEmitter {
       } else {
         this.adapter.log.info(`Remote system ${socketId} disconnected`);
       }
+
+      if (this.socketTimeouts[socketId]) {
+        clearTimeout(this.socketTimeouts[socketId]);
+        delete this.socketTimeouts[socketId];
+      }
+
       delete this.sockets[socketId];
     });
 

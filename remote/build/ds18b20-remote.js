@@ -87,6 +87,7 @@ class Ds18b20Remote {
     connect() {
         if (this.reconnectTimeout) {
             clearTimeout(this.reconnectTimeout);
+            this.reconnectTimeout = null;
         }
         this.log.info(`Connecting to ${this.adapterHost}:${this.adapterPort} ...`);
         this.socket.connect({
@@ -190,7 +191,8 @@ class Ds18b20Remote {
         });
     }
     onError(err) {
-        this.log.warn(`Socket error:`, err);
+        this.log.warn(`Socket error:`, err.toString());
+        this.log.debug(err);
         // close the socket on an error
         this.socket.end();
         this.reconnect();
