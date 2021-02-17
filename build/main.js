@@ -60,8 +60,6 @@ class Ds18b20Adapter extends utils.Adapter {
         return __awaiter(this, void 0, void 0, function* () {
             // Reset the connection indicator during startup
             this.setState('info.connection', false, true);
-            // Debug log the current config
-            this.log.debug('config: ' + JSON.stringify(this.config));
             // set default devices path if not defined
             if (!this.config.w1DevicesPath) {
                 this.config.w1DevicesPath = '/sys/bus/w1/devices';

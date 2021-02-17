@@ -224,9 +224,6 @@
         "compact": true,
         "materialize": true,
         "messagebox": true,
-        "encryptedNative": [
-            "remoteKey"
-        ],
         "dependencies": [
             {
                 "js-controller": ">=2.0.0"
@@ -245,6 +242,12 @@
         "remotePort": 1820,
         "w1DevicesPath": "/sys/bus/w1/devices"
     },
+    "encryptedNative": [
+        "remoteKey"
+    ],
+    "protectedNative": [
+        "remoteKey"
+    ],
     "objects": [],
     "instanceObjects": [
         {
