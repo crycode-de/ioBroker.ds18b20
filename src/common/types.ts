@@ -18,9 +18,9 @@ export interface SensorObject extends ioBroker.StateObject {
 }
 
 /**
- * Result of sensor search.
+ * Result of sensor search. (singe sensor)
  */
-export interface SearchSensor {
+export interface SearchedSensor {
   address: string;
   remoteSystemId: string;
 }

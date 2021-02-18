@@ -1,3 +1,6 @@
+/**
+ * Server for remote connections.
+ */
 
 import { EventEmitter } from 'events';
 
@@ -6,9 +9,6 @@ import {
   Server,
   Socket,
 } from 'net';
-/**
- *  Class for the server to handle remote sensors.
- */
 
 import { autobind } from 'core-decorators';
 
@@ -18,7 +18,7 @@ import {
   RemoteData,
   RemoteDataRead,
   RemoteDataSearch,
-  SearchSensor,
+  SearchedSensor,
 } from './common/types';
 
 /**
@@ -29,21 +29,58 @@ interface RemoteClient {
   systemId: string;
 }
 
+/**
+ * Interface to declare events for the RemoteSensorServer class.
+ */
+export interface RemoteSensorServer {
+  on (event: 'listening', listener: () => void): this;
+  on (event: 'error', listener: (err: Error) => void): this;
+  on (event: 'sensorData', listener: (data: RemoteDataRead) => void): this;
+  on (event: 'searchData', listener: (data: RemoteDataSearch) => void): this;
+
+  emit (event: 'listening'): boolean;
+  emit (event: 'error', err: Error): boolean;
+  emit (event: 'sensorData', data: RemoteDataRead): boolean;
+  emit (event: 'searchData', data: RemoteDataSearch): boolean;
+}
+
+/**
+ * Server for remote connections.
+ */
 export class RemoteSensorServer extends EventEmitter {
 
+  /**
+   * Instance of the adapter.
+   */
   private adapter: Ds18b20Adapter;
-  private encyptionKey: Buffer;
 
+  /**
+   * Buffer containing the 32 bit encryption key.
+   */
+  private encryptionKey: Buffer;
+
+  /**
+   * Instance of the tcp server to handle socket connections.
+   */
   private server: Server;
 
+  /**
+   * Connected sockets.
+   */
   private sockets: Record<string, RemoteClient> = {};
+
+  /**
+   * Timeouts for sockets.
+   * Used to disconnect a socket after idle before it is identified.
+   */
   private socketTimeouts: Record<string, NodeJS.Timeout> = {};
 
   constructor (port: number, encKey: string, adapter: Ds18b20Adapter) {
     super();
 
-    this.encyptionKey = Buffer.from(encKey, 'hex');
     this.adapter = adapter;
+
+    this.encryptionKey = Buffer.from(encKey, 'hex');
 
     this.server = createServer();
 
@@ -58,10 +95,16 @@ export class RemoteSensorServer extends EventEmitter {
     });
   }
 
+  /**
+   * Returns if the server is listening for connections.
+   */
   public isListening (): boolean {
     return this.server && this.server.listening;
   }
 
+  /**
+   * Returns an array of the system IDs of all currently connected remote systems.
+   */
   public getConnectedSystems (): string[] {
     const systems: string[] = [];
     for (const socketId in this.sockets) {
@@ -70,6 +113,11 @@ export class RemoteSensorServer extends EventEmitter {
     return systems;
   }
 
+  /**
+   * Read from a remote sensor.
+   * @param clientSystemId The system ID of the remote client to send the request to.
+   * @param sensorAddress The sensor address.
+   */
   public async read (clientSystemId: string, sensorAddress: string): Promise<string> {
     // get the socket
     let client: RemoteClient | null = null;
@@ -117,10 +165,14 @@ export class RemoteSensorServer extends EventEmitter {
     return raw;
   }
 
-  public async search (): Promise<SearchSensor[]> {
-    const sensors: SearchSensor[] = [];
+  /**
+   * Search for sensors an all currently connected remote systems.
+   */
+  public async search (): Promise<SearchedSensor[]> {
+    const sensors: SearchedSensor[] = [];
 
-    const proms: Promise<SearchSensor[]>[] = [];
+    // array of promises for parallel search on all remote systems
+    const proms: Promise<SearchedSensor[]>[] = [];
 
     for (const socketId in this.sockets) {
       const client = this.sockets[socketId];
@@ -136,7 +188,7 @@ export class RemoteSensorServer extends EventEmitter {
       });
 
       // wait for feedback with a timeout of 5 seconds
-      proms.push(new Promise<SearchSensor[]>((resolve, reject) => {
+      proms.push(new Promise<SearchedSensor[]>((resolve, reject) => {
         let timeout: NodeJS.Timeout | null = null;
 
         const handler = (data: RemoteDataSearch): void => {
@@ -164,12 +216,19 @@ export class RemoteSensorServer extends EventEmitter {
     return sensors;
   }
 
+  /**
+   * Stop the server and close all socket connections.
+   */
   public stop (): Promise<void> {
     return new Promise<void>((resolve) => {
       this.server.close(() => resolve());
     });
   }
 
+  /**
+   * Handler for new socket connections.
+   * @param socket The connected socket.
+   */
   @autobind
   private handleConnection (socket: Socket): void {
     const socketId = `${socket.remoteAddress}:${socket.remotePort}`;
@@ -215,12 +274,18 @@ export class RemoteSensorServer extends EventEmitter {
     this.send(socket, { cmd: 'clientInfo' });
   }
 
+  /**
+   * Handler for received encrypted messages from a socket.
+   * @param socketId The ID of the related socket.
+   * @param socket The socket from which the data was received.
+   * @param raw The encrypted received data.
+   */
   private handleSocketData (socketId: string, socket: Socket, raw: string): void {
 
     // try to decrypt and parse the data
     let data: RemoteData;
     try {
-      const dataStr = decrypt(raw, this.encyptionKey);
+      const dataStr = decrypt(raw, this.encryptionKey);
       data = JSON.parse(dataStr);
     } catch (err) {
       this.adapter.log.warn(`Decrypt of data from ${socketId} failed! ${err.toString()}`);
@@ -267,9 +332,15 @@ export class RemoteSensorServer extends EventEmitter {
     }
   }
 
+  /**
+   * Send some data to a remote system.
+   * The data will be stringified and encrypted before sending.
+   * @param socket The socket to send the data to.
+   * @param data The data object to send.
+   */
   private async send (socket: Socket, data: RemoteData): Promise<void> {
     return new Promise<void>((resolve, reject) => {
-      socket.write(encrypt(JSON.stringify(data), this.encyptionKey) + '\n', (err) => {
+      socket.write(encrypt(JSON.stringify(data), this.encryptionKey) + '\n', (err) => {
         if (err) {
           reject(err);
         } else {

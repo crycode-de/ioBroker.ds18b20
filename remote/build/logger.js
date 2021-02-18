@@ -2,14 +2,14 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Logger = void 0;
 class Logger {
+    log(...args) {
+        console.log(...args);
+    }
     debug(...args) {
         if (!process.env.DEBUG) {
             return;
         }
         console.log('[Debug]', ...args);
-    }
-    log(...args) {
-        console.log(...args);
     }
     info(...args) {
         console.log('[Info]', ...args);

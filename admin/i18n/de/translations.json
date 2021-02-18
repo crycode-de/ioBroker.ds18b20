@@ -31,5 +31,5 @@
     "The default time between sensor queries in milliseconds.": "Die Standardzeit zwischen Sensorabfragen in Millisekunden.",
     "The port to start the server for remote clients on. Default is <code>1820</code>.": "Der Port, an dem der Server für Remote-Clients gestartet werden soll. Standard ist <code>1820</code>.",
     "Unit": "Einheit",
-    "When enabled the adapter starts a server and accepts connections from <a href=\"https://www.npmjs.com/package/ioBroker-ds18b20-remote\" target=\"_blank\">ioBroker-ds18b20-remote</a> clients.": "Wenn aktiviert, startet der Adapter einen Server und akzeptiert Verbindungen von <a href=\"https://www.npmjs.com/package/ioBroker-ds18b20-remote\" target=\"_blank\">ioBroker-ds18b20-remote</a> Clients."
+    "When enabled the adapter starts a server and accepts connections from <a href=\"https://www.npmjs.com/package/iobroker-ds18b20-remote\" target=\"_blank\">iobroker-ds18b20-remote</a> clients.": "Wenn aktiviert, startet der Adapter einen Server und akzeptiert Verbindungen von <a href=\"https://www.npmjs.com/package/iobroker-ds18b20-remote\" target=\"_blank\">iobroker-ds18b20-remote</a> Clients."
 }

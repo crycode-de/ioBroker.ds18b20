@@ -31,24 +31,76 @@ import {
 
 import { RemoteData } from './common/types';
 
+/**
+ * Keys to read from a .env file into process.env
+ */
+const ENV_KEYS = [
+  'ADAPTER_HOST',
+  'ADAPTER_KEY',
+  'ADAPTER_PORT',
+  'DEBUG',
+  'SYSTEM_ID',
+  'W1_DEVICES_PATH',
+];
+
+/**
+ * Main class for ioBroker-ds18b20-remote
+ */
 class Ds18b20Remote {
 
+  /**
+   * Host where the adapter runs on.
+   */
   private readonly adapterHost: string;
+
+  /**
+   * Port on which the adapter is listening for remote connections.
+   * Default is `1820`.
+   */
   private readonly adapterPort: number;
+
+  /**
+   * Encryption key used to encrypt/decrypt the communication with the adapter.
+   */
   private readonly adapterKey: Buffer;
 
+  /**
+   * ID of this remote system.
+   * This should be unique. Defaults to the system hostname.
+   */
   private readonly systemId: string;
 
+  /**
+   * System path to the 1-wire devices. Default is `/sys/bus/w1/devices`.
+   */
   private readonly w1DevicesPath: string;
 
+  /**
+   * The socket used to communicate with the adapter.
+   */
   private socket: Socket;
 
+  /**
+   * Timeout to trigger socket reconnects.
+   */
   private reconnectTimeout: NodeJS.Timeout | null = null;
 
+  /**
+   * Flag if ds18b20-remote should exit.
+   * If `true` a reconnect won't be possible.
+   */
   private shouldExit: boolean = false;
 
+  /**
+   * String of the received data.
+   * All received data chunks will be appended to this until we got `\n`.
+   * On `\n` data before it will be processed.
+   */
   private recvData: string = '';
 
+  /**
+   * Our simple logger.
+   */
   private readonly log: Logger;
 
   constructor () {
@@ -60,7 +112,6 @@ class Ds18b20Remote {
     this.onError = this.onError.bind(this);
 
     this.log = new Logger();
-
     this.log.log('ioBroker-ds18b20-remote');
 
     // read env vars from a .env file in cwd
@@ -112,7 +163,7 @@ class Ds18b20Remote {
     }
     this.log.debug(`w1DevicesPath`, this.w1DevicesPath);
 
-    // register signal handlers
+    // register signal handlers for exit
     process.on('SIGINT', this.exit);
     process.on('SIGTERM', this.exit);
 
@@ -123,15 +174,22 @@ class Ds18b20Remote {
     this.socket.on('data', this.onData);
     this.socket.on('error', this.onError);
 
-
     // try to connect
     this.connect();
   }
 
+  /**
+   * Try to connect to the adapter.
+   */
   private connect (): void {
     if (this.reconnectTimeout) {
       clearTimeout(this.reconnectTimeout);
       this.reconnectTimeout = null;
+    }
+
+    // don't connect if we should exit
+    if (this.shouldExit) {
+      return;
     }
 
     this.log.info(`Connecting to ${this.adapterHost}:${this.adapterPort} ...`)
@@ -148,9 +206,14 @@ class Ds18b20Remote {
     });
   }
 
+  /**
+   * Handle incoming data chunks.
+   * @param data A data chunk.
+   */
   private onData (data: Buffer): void {
     this.recvData += data.toString();
 
+    // check for \n and process the data
     const idx = this.recvData.indexOf('\n');
     if (idx > 0) {
       const raw = this.recvData.slice(0, idx);
@@ -159,6 +222,10 @@ class Ds18b20Remote {
     }
   }
 
+  /**
+   * Handle a message from the adapter.
+   * @param raw The raw (encoded) message from the adapter.
+   */
   private async handleSocketData (raw: string): Promise<void> {
     // try to decrypt and parse the data
     let data: RemoteData;
@@ -247,6 +314,11 @@ class Ds18b20Remote {
     }
   }
 
+  /**
+   * Handler for socket errors.
+   * Each error will trigger a socket disconnect and reconnect.
+   * @param err The error.
+   */
   private onError (err: Error): void {
     this.log.warn(`Socket error:`, err.toString());
     this.log.debug(err);
@@ -257,11 +329,17 @@ class Ds18b20Remote {
     this.reconnect();
   }
 
+  /**
+   * Handler for socket close events.
+   */
   private onClose (): void {
     this.log.info('Socket closed');
     this.reconnect();
   }
 
+  /**
+   * Init a reconnect after 30 seconds.
+   */
   private reconnect (): void {
     if (!this.reconnectTimeout && !this.shouldExit) {
       // schedule reconnect
@@ -270,6 +348,11 @@ class Ds18b20Remote {
     }
   }
 
+  /**
+   * Send some data to the adapter.
+   * The data will be stringified and encrypted before sending.
+   * @param data The data object to send.
+   */
   private async send (data: RemoteData): Promise<void> {
     this.log.debug('send to adapter:', data);
     return new Promise<void>((resolve, reject) => {
@@ -297,15 +380,6 @@ class Ds18b20Remote {
       return;
     }
 
-    const envKeys = [
-      'ADAPTER_HOST',
-      'ADAPTER_KEY',
-      'ADAPTER_PORT',
-      'DEBUG',
-      'SYSTEM_ID',
-      'W1_DEVICES_PATH',
-    ];
-
     for (const line of data) {
       if (!line || line.startsWith('#')) continue;
 
@@ -315,7 +389,7 @@ class Ds18b20Remote {
       const key = line.slice(0, idx).trim();
       const val = line.slice(idx + 1).trim().replace(/(^"|"$)/g, '');
 
-      if (envKeys.indexOf(key) >= 0) {
+      if (ENV_KEYS.indexOf(key) >= 0) {
         // ignore if this env is already set
         if (process.env[key]) continue;
 
@@ -326,6 +400,10 @@ class Ds18b20Remote {
     }
   }
 
+  /**
+   * Handler process exit.
+   * This will stop all timeouts and close the socket connection.
+   */
   private exit (): void {
     this.shouldExit = true;
 
@@ -337,4 +415,5 @@ class Ds18b20Remote {
   }
 }
 
+// create an instance of the main class for startup
 new Ds18b20Remote();

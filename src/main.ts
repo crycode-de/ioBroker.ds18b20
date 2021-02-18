@@ -22,7 +22,7 @@ import { RemoteSensorServer } from './remote-server';
 
 import {
   SensorObject,
-  SearchSensor,
+  SearchedSensor,
 } from './common/types';
 
 declare global {
@@ -84,9 +84,9 @@ export class Ds18b20Adapter extends utils.Adapter {
 
     // remote sensor server
     if (this.config.remoteEnabled) {
-      // check decrypt native and show a warning in case of unsupportet
+      // check decrypt native support and show a warning in case of unsupported
       if (this.supportsFeature && !this.supportsFeature('ADAPTER_AUTO_DECRYPT_NATIVE')) {
-        this.log.warn('The server for remote sensors is enabled but decrypt native is not supported! The encryption key will be stored in unencrypted in the ioBroker database. To get decrypt native support, please upgrade js-controller to v3.0 or greater.');
+        this.log.warn('The server for remote sensors is enabled but decrypt native is not supported! The encryption key will be stored unencrypted in the ioBroker database. To get decrypt native support, please upgrade js-controller to v3.0 or greater.');
       }
 
       // check the port
@@ -221,7 +221,7 @@ export class Ds18b20Adapter extends utils.Adapter {
    * Handler for changes of error state of a sensor.
    * This will change the info.connection state of the adapter to true if all
    * sensors are ok and false if at least one sensor has an error.
-   * @param hasError Indecator if the sensor has an error or not.
+   * @param hasError Indicator if the sensor has an error or not.
    * @param id       The ioBroker ID of the sensor.
    */
   @autobind
@@ -330,7 +330,7 @@ export class Ds18b20Adapter extends utils.Adapter {
 
   /**
    * Some message was sent to this instance over message box (e.g. by a script).
-   * @param obj The receied ioBroker message.
+   * @param obj The received ioBroker message.
    */
   @autobind
   private async onMessage(obj: ioBroker.Message): Promise<void> {
@@ -388,7 +388,7 @@ export class Ds18b20Adapter extends utils.Adapter {
           // don't do anything if no callback is provided
           if (!obj.callback) return;
 
-          const sensors: SearchSensor[] = [];
+          const sensors: SearchedSensor[] = [];
           let err: Error | null = null;
 
           // local sensors
@@ -404,7 +404,7 @@ export class Ds18b20Adapter extends utils.Adapter {
               proms.push(readFile(`${this.config.w1DevicesPath}/${files[i]}/w1_master_slaves`, 'utf8'));
             }
 
-            const localSensors: SearchSensor[] = (await Promise.all(proms)).reduce<string[]>((acc, cur) => {
+            const localSensors: SearchedSensor[] = (await Promise.all(proms)).reduce<string[]>((acc, cur) => {
               acc.push(...cur.trim().split('\n'));
               return acc;
             }, []).map((addr) => ({ address: addr, remoteSystemId: '' }));
@@ -425,7 +425,6 @@ export class Ds18b20Adapter extends utils.Adapter {
               sensors.push(...remoteSensors);
             } catch (er) {
               this.log.warn(`Error while searching for remote sensors: ${er.toString()}`);
-              err = er; // TODO: should we send or ignore this error?
             }
           }
 

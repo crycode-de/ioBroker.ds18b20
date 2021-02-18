@@ -120,7 +120,7 @@ export class Sensor extends EventEmitter {
     this.w1DevicesPath = opts.w1DevicesPath;
     this.remoteSystemId = opts.remoteSystemId;
 
-    // start interval and inital read if interval is set
+    // start interval and initial read if interval is set
     if (opts.interval && opts.interval > 0) {
       // smallest interval is 500ms
       if (opts.interval < 500) {
@@ -140,9 +140,9 @@ export class Sensor extends EventEmitter {
   @autobind
   public async read (cb?: (err: Error | null, val: number | null) => void): Promise<void> {
 
-    let raw: string;
-
     try {
+      let raw: string;
+
       if (this.remoteSystemId) {
         // remote sensor - send request
         if (!this.adapter.remoteSensorServer) {

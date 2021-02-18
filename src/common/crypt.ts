@@ -6,6 +6,12 @@ import * as crypto from 'crypto';
 
 const IV_LENGTH = 16; // For AES, this is always 16
 
+/**
+ * Encrypt a string with the given key.
+ * @param text The string to encrypt.
+ * @param key The key to use.
+ * @throws An error if the key has not 32 bytes.
+ */
 export function encrypt (text: crypto.BinaryLike, key: Buffer): string {
   const iv = crypto.randomBytes(IV_LENGTH);
   const cipher = crypto.createCipheriv('aes-256-cbc', key, iv);
@@ -16,6 +22,12 @@ export function encrypt (text: crypto.BinaryLike, key: Buffer): string {
   return iv.toString('hex') + ':' + encrypted.toString('hex');
 }
 
+/**
+ * Decrypt an encrypted string with the given key.
+ * @param text The encrypted string to decrypt.
+ * @param key The key to use.
+ * @throws An error if the key has not 32 bytes isn't valid.
+ */
 export function decrypt (text: string, key: Buffer): string {
   const textParts = text.split(':');
   const iv = Buffer.from(textParts.shift() as string, 'hex');
