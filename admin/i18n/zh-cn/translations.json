@@ -31,5 +31,5 @@
     "The default time between sensor queries in milliseconds.": "传感器查询之间的默认时间（以毫秒为单位）。",
     "The port to start the server for remote clients on. Default is <code>1820</code>.": "用于启动远程客户端服务器的端口。默认值为<code>1820</code>。",
     "Unit": "单元",
-    "When enabled the adapter starts a server and accepts connections from <a href=\"https://www.npmjs.com/package/iobroker.ds18b20-remote\" target=\"_blank\">ioBroker.ds18b20-remote</a> clients.": "启用后，适配器将启动服务器并接受来自<a href=\"https://www.npmjs.com/package/iobroker.ds18b20-remote\" target=\"_blank\">ioBroker.ds18b20-remote</a>客户端的连接。"
+    "When enabled the adapter starts a server and accepts connections from <a href=\"https://www.npmjs.com/package/ioBroker-ds18b20-remote\" target=\"_blank\">ioBroker-ds18b20-remote</a> clients.": "启用后，适配器将启动服务器并接受来自<a href=\"https://www.npmjs.com/package/ioBroker-ds18b20-remote\" target=\"_blank\">ioBroker-ds18b20-remote</a>客户端的连接。"
 }

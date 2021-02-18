@@ -341,17 +341,17 @@ systemDictionary = {
     "zh-cn": "启用远程传感器"
   },
 
-  "When enabled the adapter starts a server and accepts connections from <a href=\"https://www.npmjs.com/package/iobroker.ds18b20-remote\" target=\"_blank\">ioBroker.ds18b20-remote</a> clients.": {
-    "en": "When enabled the adapter starts a server and accepts connections from <a href=\"https://www.npmjs.com/package/iobroker.ds18b20-remote\" target=\"_blank\">ioBroker.ds18b20-remote</a> clients.",
-    "de": "Wenn aktiviert, startet der Adapter einen Server und akzeptiert Verbindungen von <a href=\"https://www.npmjs.com/package/iobroker.ds18b20-remote\" target=\"_blank\">ioBroker.ds18b20-remote</a> Clients.",
-    "ru": "Если этот параметр включен, адаптер запускает сервер и принимает подключения от клиентов <a href=\"https://www.npmjs.com/package/iobroker.ds18b20-remote\" target=\"_blank\">ioBroker.ds18b20-remote</a> .",
-    "pt": "Quando ativado, o adaptador inicia um servidor e aceita conexões de clientes <a href=\"https://www.npmjs.com/package/iobroker.ds18b20-remote\" target=\"_blank\">ioBroker.ds18b20-remote</a> .",
-    "nl": "Indien ingeschakeld start de adapter een server en accepteert hij verbindingen van <a href=\"https://www.npmjs.com/package/iobroker.ds18b20-remote\" target=\"_blank\">ioBroker.ds18b20-remote</a> clients.",
-    "fr": "Lorsqu'il est activé, l'adaptateur démarre un serveur et accepte les connexions clients <a href=\"https://www.npmjs.com/package/iobroker.ds18b20-remote\" target=\"_blank\">ioBroker.ds18b20-remote</a>.",
-    "it": "Quando è abilitato, l'adattatore avvia un server e accetta connessioni da client <a href=\"https://www.npmjs.com/package/iobroker.ds18b20-remote\" target=\"_blank\">ioBroker.ds18b20-remote</a> .",
-    "es": "Cuando está habilitado, el adaptador inicia un servidor y acepta conexiones de clientes <a href=\"https://www.npmjs.com/package/iobroker.ds18b20-remote\" target=\"_blank\">ioBroker.ds18b20-remote</a> .",
-    "pl": "Po włączeniu adapter uruchamia serwer i akceptuje połączenia od klientów <a href=\"https://www.npmjs.com/package/iobroker.ds18b20-remote\" target=\"_blank\">ioBroker.ds18b20-remote</a> .",
-    "zh-cn": "启用后，适配器将启动服务器并接受来自<a href=\"https://www.npmjs.com/package/iobroker.ds18b20-remote\" target=\"_blank\">ioBroker.ds18b20-remote</a>客户端的连接。"
+  "When enabled the adapter starts a server and accepts connections from <a href=\"https://www.npmjs.com/package/ioBroker-ds18b20-remote\" target=\"_blank\">ioBroker-ds18b20-remote</a> clients.": {
+    "en": "When enabled the adapter starts a server and accepts connections from <a href=\"https://www.npmjs.com/package/ioBroker-ds18b20-remote\" target=\"_blank\">ioBroker-ds18b20-remote</a> clients.",
+    "de": "Wenn aktiviert, startet der Adapter einen Server und akzeptiert Verbindungen von <a href=\"https://www.npmjs.com/package/ioBroker-ds18b20-remote\" target=\"_blank\">ioBroker-ds18b20-remote</a> Clients.",
+    "ru": "Если этот параметр включен, адаптер запускает сервер и принимает подключения от клиентов <a href=\"https://www.npmjs.com/package/ioBroker-ds18b20-remote\" target=\"_blank\">ioBroker-ds18b20-remote</a> .",
+    "pt": "Quando ativado, o adaptador inicia um servidor e aceita conexões de clientes <a href=\"https://www.npmjs.com/package/ioBroker-ds18b20-remote\" target=\"_blank\">ioBroker-ds18b20-remote</a> .",
+    "nl": "Indien ingeschakeld start de adapter een server en accepteert hij verbindingen van <a href=\"https://www.npmjs.com/package/ioBroker-ds18b20-remote\" target=\"_blank\">ioBroker-ds18b20-remote</a> clients.",
+    "fr": "Lorsqu'il est activé, l'adaptateur démarre un serveur et accepte les connexions clients <a href=\"https://www.npmjs.com/package/ioBroker-ds18b20-remote\" target=\"_blank\">ioBroker-ds18b20-remote</a>.",
+    "it": "Quando è abilitato, l'adattatore avvia un server e accetta connessioni da client <a href=\"https://www.npmjs.com/package/ioBroker-ds18b20-remote\" target=\"_blank\">ioBroker-ds18b20-remote</a> .",
+    "es": "Cuando está habilitado, el adaptador inicia un servidor y acepta conexiones de clientes <a href=\"https://www.npmjs.com/package/ioBroker-ds18b20-remote\" target=\"_blank\">ioBroker-ds18b20-remote</a> .",
+    "pl": "Po włączeniu adapter uruchamia serwer i akceptuje połączenia od klientów <a href=\"https://www.npmjs.com/package/ioBroker-ds18b20-remote\" target=\"_blank\">ioBroker-ds18b20-remote</a> .",
+    "zh-cn": "启用后，适配器将启动服务器并接受来自<a href=\"https://www.npmjs.com/package/ioBroker-ds18b20-remote\" target=\"_blank\">ioBroker-ds18b20-remote</a>客户端的连接。"
   },
 
   "Server port": {

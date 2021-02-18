@@ -1,6 +1,6 @@
 "use strict";
 /**
- * ioBroker.ds18b20-remote
+ * ioBroker-ds18b20-remote
  *
  * Remote client for the ioBroker.ds18b20 adapter.
  * This client has zero dependencies and can be started on any linux os running
@@ -44,7 +44,7 @@ class Ds18b20Remote {
         this.onData = this.onData.bind(this);
         this.onError = this.onError.bind(this);
         this.log = new logger_1.Logger();
-        this.log.log('ioBroker.ds18b20-remote');
+        this.log.log('ioBroker-ds18b20-remote');
         // read env vars from a .env file in cwd
         this.readDotEnv();
         // get the system ID
