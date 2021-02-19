@@ -2,6 +2,7 @@
     "<em>Hint:</em> Click on the ?-button at the top to get help and some examples.": "<em>Hinweis:</em> Klicke auf den ?-Button weiter oben um Hilfe und einige Beispiele zu erhalten.",
     "Add entry": "Eintrag hinzufügen",
     "Address": "Adresse",
+    "After that you have to edit the created <code>.env</code> file and fill in at least the host and the encryption key.": "Danach muss erstellte <code>.env</code> Datei bearbeitet und mindestens der Host und der Verschlüsselungsschlüssel eingetragen werden.",
     "Allowed chars: a-z A-Z 0-9 - _": "Zulässige Zeichen: a-z A-Z 0-9 - _",
     "Connected remote systems": "Verbundene entfernte Systeme",
     "Decimals": "Dezimalstellen",
@@ -22,6 +23,7 @@
     "Offset": "Offset",
     "Path of the 1-wire devices": "Pfad der 1-Wire Geräte",
     "Query interval": "Abfrageintervall",
+    "Remote client setup instructions": "Anweisungen zur Einrichtung entfernter Clients",
     "Remote system ID": "Entfernte System-ID",
     "Search Sensors": "Sensoren suchen",
     "Server port": "Server Port",
@@ -30,6 +32,8 @@
     "The adapter instance must be started to search for sensors.": "Die Adapterinstanz muss gestartet sein, um nach Sensoren zu suchen.",
     "The default time between sensor queries in milliseconds.": "Die Standardzeit zwischen Sensorabfragen in Millisekunden.",
     "The port to start the server for remote clients on. Default is <code>1820</code>.": "Der Port, an dem der Server für Remote-Clients gestartet werden soll. Standard ist <code>1820</code>.",
+    "Then you may start the remote client manually or as a SystemD service like shown in the setup output.": "Anschließend kann der Client manuell oder als SystemD-Dienst gestartet werden, wie in der Ausgabe des Setups gezeigt.",
+    "To setup a remote client please make sure Node.js is installed and run the following commands on the remote system. This will create all necessary files to run the remote client.": "Um einen entfernten Client einzurichten, stelle bitte sicher, dass Node.js installiert ist und führe die folgenden Befehle auf dem entfernten System aus. Dadurch werden alle erforderlichen Dateien zum Ausführen des Clients erstellt.",
     "Unit": "Einheit",
-    "When enabled the adapter starts a server and accepts connections from <a href=\"https://www.npmjs.com/package/iobroker-ds18b20-remote\" target=\"_blank\">iobroker-ds18b20-remote</a> clients.": "Wenn aktiviert, startet der Adapter einen Server und akzeptiert Verbindungen von <a href=\"https://www.npmjs.com/package/iobroker-ds18b20-remote\" target=\"_blank\">iobroker-ds18b20-remote</a> Clients."
+    "When enabled the adapter starts a server and accepts connections from <em>ioBroker.ds18b20 remote clients</em>. (see below)": "Wenn aktiviert, startet der Adapter einen Server und akzeptiert Verbindungen von <em>ioBroker.ds18b20 Remote Clients</em>. (siehe weiter unten)"
 }

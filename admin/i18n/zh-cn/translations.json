@@ -2,6 +2,7 @@
     "<em>Hint:</em> Click on the ?-button at the top to get help and some examples.": "<em>提示：</em>点击顶部的 ？ - 按钮获取帮助和一些示例。",
     "Add entry": "添加条目",
     "Address": "地址",
+    "After that you have to edit the created <code>.env</code> file and fill in at least the host and the encryption key.": "之后，您必须编辑创建的<code>.env</code>文件，并至少填写主机和加密密钥。",
     "Allowed chars: a-z A-Z 0-9 - _": "允许的字符：a-z A-Z 0-9  -  _",
     "Connected remote systems": "连接的远程系统",
     "Decimals": "小数点",
@@ -22,6 +23,7 @@
     "Offset": "抵消",
     "Path of the 1-wire devices": "1线设备的路径",
     "Query interval": "查询间隔",
+    "Remote client setup instructions": "远程客户端安装说明",
     "Remote system ID": "远端系统编号",
     "Search Sensors": "搜索传感器",
     "Server port": "服务器端口",
@@ -30,6 +32,8 @@
     "The adapter instance must be started to search for sensors.": "必须启动适配器实例以搜索传感器。",
     "The default time between sensor queries in milliseconds.": "传感器查询之间的默认时间（以毫秒为单位）。",
     "The port to start the server for remote clients on. Default is <code>1820</code>.": "用于启动远程客户端服务器的端口。默认值为<code>1820</code>。",
+    "Then you may start the remote client manually or as a SystemD service like shown in the setup output.": "然后，您可以手动启动远程客户端，也可以将其作为SystemD服务启动，如设置输出中所示。",
+    "To setup a remote client please make sure Node.js is installed and run the following commands on the remote system. This will create all necessary files to run the remote client.": "要设置远程客户端，请确保已安装Node.js并在远程系统上运行以下命令。这将创建运行远程客户端所需的所有文件。",
     "Unit": "单元",
-    "When enabled the adapter starts a server and accepts connections from <a href=\"https://www.npmjs.com/package/iobroker-ds18b20-remote\" target=\"_blank\">iobroker-ds18b20-remote</a> clients.": "启用后，适配器将启动服务器并接受来自<a href=\"https://www.npmjs.com/package/iobroker-ds18b20-remote\" target=\"_blank\">iobroker-ds18b20-remote</a>客户端的连接。"
+    "When enabled the adapter starts a server and accepts connections from <em>ioBroker.ds18b20 remote clients</em>. (see below)": "启用后，适配器将启动服务器并接受来自<em>ioBroker.ds18b20远程客户端</em>的连接。 （见下文）"
 }

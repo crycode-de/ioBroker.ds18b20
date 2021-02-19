@@ -341,17 +341,17 @@ systemDictionary = {
     "zh-cn": "启用远程传感器"
   },
 
-  "When enabled the adapter starts a server and accepts connections from <a href=\"https://www.npmjs.com/package/iobroker-ds18b20-remote\" target=\"_blank\">iobroker-ds18b20-remote</a> clients.": {
-    "en": "When enabled the adapter starts a server and accepts connections from <a href=\"https://www.npmjs.com/package/iobroker-ds18b20-remote\" target=\"_blank\">iobroker-ds18b20-remote</a> clients.",
-    "de": "Wenn aktiviert, startet der Adapter einen Server und akzeptiert Verbindungen von <a href=\"https://www.npmjs.com/package/iobroker-ds18b20-remote\" target=\"_blank\">iobroker-ds18b20-remote</a> Clients.",
-    "ru": "Если этот параметр включен, адаптер запускает сервер и принимает подключения от клиентов <a href=\"https://www.npmjs.com/package/iobroker-ds18b20-remote\" target=\"_blank\">iobroker-ds18b20-remote</a> .",
-    "pt": "Quando ativado, o adaptador inicia um servidor e aceita conexões de clientes <a href=\"https://www.npmjs.com/package/iobroker-ds18b20-remote\" target=\"_blank\">iobroker-ds18b20-remote</a> .",
-    "nl": "Indien ingeschakeld start de adapter een server en accepteert hij verbindingen van <a href=\"https://www.npmjs.com/package/iobroker-ds18b20-remote\" target=\"_blank\">iobroker-ds18b20-remote</a> clients.",
-    "fr": "Lorsqu'il est activé, l'adaptateur démarre un serveur et accepte les connexions clients <a href=\"https://www.npmjs.com/package/iobroker-ds18b20-remote\" target=\"_blank\">iobroker-ds18b20-remote</a>.",
-    "it": "Quando è abilitato, l'adattatore avvia un server e accetta connessioni da client <a href=\"https://www.npmjs.com/package/iobroker-ds18b20-remote\" target=\"_blank\">iobroker-ds18b20-remote</a> .",
-    "es": "Cuando está habilitado, el adaptador inicia un servidor y acepta conexiones de clientes <a href=\"https://www.npmjs.com/package/iobroker-ds18b20-remote\" target=\"_blank\">iobroker-ds18b20-remote</a> .",
-    "pl": "Po włączeniu adapter uruchamia serwer i akceptuje połączenia od klientów <a href=\"https://www.npmjs.com/package/iobroker-ds18b20-remote\" target=\"_blank\">iobroker-ds18b20-remote</a> .",
-    "zh-cn": "启用后，适配器将启动服务器并接受来自<a href=\"https://www.npmjs.com/package/iobroker-ds18b20-remote\" target=\"_blank\">iobroker-ds18b20-remote</a>客户端的连接。"
+  "When enabled the adapter starts a server and accepts connections from <em>ioBroker.ds18b20 remote clients</em>. (see below)": {
+    "en": "When enabled the adapter starts a server and accepts connections from <em>ioBroker.ds18b20 remote clients</em>. (see below)",
+    "de": "Wenn aktiviert, startet der Adapter einen Server und akzeptiert Verbindungen von <em>ioBroker.ds18b20 Remote Clients</em>. (siehe weiter unten)",
+    "ru": "При включении адаптер запускает сервер и принимает соединения от <em>удаленных клиентов ioBroker.ds18b20</em>. (Смотри ниже)",
+    "pt": "Quando ativado, o adaptador inicia um servidor e aceita conexões de <em>clientes remotos ioBroker.ds18b20</em>. (ver abaixo)",
+    "nl": "Indien ingeschakeld start de adapter een server en accepteert hij verbindingen van <em>ioBroker.ds18b20 remote clients</em>. (zie hieronder)",
+    "fr": "Lorsqu'il est activé, l'adaptateur démarre un serveur et accepte les connexions des <em>clients distants ioBroker.ds18b20</em>. (voir ci-dessous)",
+    "it": "Quando è abilitato, l'adattatore avvia un server e accetta connessioni da <em>client remoti ioBroker.ds18b20</em>. (vedi sotto)",
+    "es": "Cuando está habilitado, el adaptador inicia un servidor y acepta conexiones de <em>clientes remotos ioBroker.ds18b20</em>. (vea abajo)",
+    "pl": "Po włączeniu adapter uruchamia serwer i akceptuje połączenia od <em>zdalnych klientów ioBroker.ds18b20</em>. (patrz poniżej)",
+    "zh-cn": "启用后，适配器将启动服务器并接受来自<em>ioBroker.ds18b20远程客户端</em>的连接。 （见下文）"
   },
 
   "Server port": {
@@ -430,5 +430,57 @@ systemDictionary = {
     "es": "Sistemas remotos conectados",
     "pl": "Połączone systemy zdalne",
     "zh-cn": "连接的远程系统"
+  },
+
+  "Remote client setup instructions": {
+    "en": "Remote client setup instructions",
+    "de": "Anweisungen zur Einrichtung entfernter Clients",
+    "ru": "Инструкции по настройке удаленного клиента",
+    "pt": "Instruções de configuração do cliente remoto",
+    "nl": "Installatie-instructies voor externe client",
+    "fr": "Instructions de configuration du client distant",
+    "it": "Istruzioni per la configurazione del client remoto",
+    "es": "Instrucciones de configuración de cliente remoto",
+    "pl": "Instrukcje instalacji klienta zdalnego",
+    "zh-cn": "远程客户端安装说明"
+  },
+
+  "To setup a remote client please make sure Node.js is installed and run the following commands on the remote system. This will create all necessary files to run the remote client.": {
+    "en": "To setup a remote client please make sure Node.js is installed and run the following commands on the remote system. This will create all necessary files to run the remote client.",
+    "de": "Um einen entfernten Client einzurichten, stelle bitte sicher, dass Node.js installiert ist und führe die folgenden Befehle auf dem entfernten System aus. Dadurch werden alle erforderlichen Dateien zum Ausführen des Clients erstellt.",
+    "ru": "Чтобы настроить удаленный клиент, убедитесь, что установлен Node.js, и выполните следующие команды в удаленной системе. Это создаст все необходимые файлы для запуска удаленного клиента.",
+    "pt": "Para configurar um cliente remoto, certifique-se de que o Node.js esteja instalado e execute os seguintes comandos no sistema remoto. Isso criará todos os arquivos necessários para executar o cliente remoto.",
+    "nl": "Om een externe client in te stellen, zorg ervoor dat Node.js is geïnstalleerd en voer de volgende opdrachten uit op het externe systeem. Hiermee worden alle benodigde bestanden gemaakt om de externe client te starten.",
+    "fr": "Pour configurer un client distant, assurez-vous que Node.js est installé et exécutez les commandes suivantes sur le système distant. Cela créera tous les fichiers nécessaires pour exécuter le client distant.",
+    "it": "Per configurare un client remoto, assicurati che Node.js sia installato ed esegui i seguenti comandi sul sistema remoto. Questo creerà tutti i file necessari per eseguire il client remoto.",
+    "es": "Para configurar un cliente remoto, asegúrese de que Node.js esté instalado y ejecute los siguientes comandos en el sistema remoto. Esto creará todos los archivos necesarios para ejecutar el cliente remoto.",
+    "pl": "Aby skonfigurować klienta zdalnego, upewnij się, że Node.js jest zainstalowany i uruchom następujące polecenia w systemie zdalnym. Spowoduje to utworzenie wszystkich plików niezbędnych do uruchomienia klienta zdalnego.",
+    "zh-cn": "要设置远程客户端，请确保已安装Node.js并在远程系统上运行以下命令。这将创建运行远程客户端所需的所有文件。"
+  },
+
+  "After that you have to edit the created <code>.env</code> file and fill in at least the host and the encryption key.": {
+    "en": "After that you have to edit the created <code>.env</code> file and fill in at least the host and the encryption key.",
+    "de": "Danach muss erstellte <code>.env</code> Datei bearbeitet und mindestens der Host und der Verschlüsselungsschlüssel eingetragen werden.",
+     "ru": "После этого вы должны отредактировать созданный файл <code>.env</code> и указать хотя бы хост и ключ шифрования.",
+    "pt": "Depois disso, você deve editar o arquivo <code>.env</code> criado e preencher pelo menos o host e a chave de criptografia.",
+    "nl": "Daarna moet u het aangemaakte <code>.env</code> -bestand bewerken en minimaal de host en de coderingssleutel invullen.",
+    "fr": "Après cela, vous devez éditer le fichier <code>.env</code> créé et renseigner au moins l'hôte et la clé de cryptage.",
+    "it": "Dopo di che devi modificare il file <code>.env</code> creato e inserire almeno l'host e la chiave di crittografia.",
+    "es": "Después de eso, debe editar el archivo <code>.env</code> creado y completar al menos el host y la clave de cifrado.",
+    "pl": "Następnie musisz edytować utworzony plik <code>.env</code> i podać przynajmniej nazwę hosta i klucz szyfrowania.",
+    "zh-cn": "之后，您必须编辑创建的<code>.env</code>文件，并至少填写主机和加密密钥。"
+  },
+
+  "Then you may start the remote client manually or as a SystemD service like shown in the setup output.": {
+    "en": "Then you may start the remote client manually or as a SystemD service like shown in the setup output.",
+    "de": "Anschließend kann der Client manuell oder als SystemD-Dienst gestartet werden, wie in der Ausgabe des Setups gezeigt.",
+    "ru": "Затем вы можете запустить удаленный клиент вручную или как службу SystemD, как показано в выходных данных настройки.",
+    "pt": "Em seguida, você pode iniciar o cliente remoto manualmente ou como um serviço SystemD, conforme mostrado na saída de configuração.",
+    "nl": "Vervolgens kunt u de externe client handmatig starten of als een SystemD-service, zoals weergegeven in de setup-uitvoer.",
+    "fr": "Ensuite, vous pouvez démarrer le client distant manuellement ou en tant que service SystemD comme indiqué dans la sortie de configuration.",
+    "it": "Quindi è possibile avviare il client remoto manualmente o come servizio SystemD come mostrato nell'output del setup.",
+    "es": "Luego, puede iniciar el cliente remoto manualmente o como un servicio SystemD como se muestra en la salida de configuración.",
+    "pl": "Następnie możesz uruchomić klienta zdalnego ręcznie lub jako usługę SystemD, jak pokazano w danych wyjściowych instalacji.",
+    "zh-cn": "然后，您可以手动启动远程客户端，也可以将其作为SystemD服务启动，如设置输出中所示。"
   }
 };

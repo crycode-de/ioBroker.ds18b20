@@ -2,6 +2,7 @@
     "<em>Hint:</em> Click on the ?-button at the top to get help and some examples.": "<em>Подсказка:</em> Нажмите на ?-Кнопка вверху, чтобы получить помощь и несколько примеров.",
     "Add entry": "Добавить запись",
     "Address": "Адрес",
+    "After that you have to edit the created <code>.env</code> file and fill in at least the host and the encryption key.": "После этого вы должны отредактировать созданный файл <code>.env</code> и указать хотя бы хост и ключ шифрования.",
     "Allowed chars: a-z A-Z 0-9 - _": "Допустимые символы: a-z A-Z 0-9 - _",
     "Connected remote systems": "Подключенные удаленные системы",
     "Decimals": "Десятичные",
@@ -22,6 +23,7 @@
     "Offset": "офсет",
     "Path of the 1-wire devices": "Дорожка 1-проводных приборов",
     "Query interval": "Интервал запроса",
+    "Remote client setup instructions": "Инструкции по настройке удаленного клиента",
     "Remote system ID": "ID удаленной системы",
     "Search Sensors": "Датчики поиска",
     "Server port": "Порт сервера",
@@ -30,6 +32,8 @@
     "The adapter instance must be started to search for sensors.": "Экземпляр адаптера должен быть запущен для поиска датчиков.",
     "The default time between sensor queries in milliseconds.": "Время по умолчанию между запросами датчиков в миллисекундах.",
     "The port to start the server for remote clients on. Default is <code>1820</code>.": "Порт для запуска сервера для удаленных клиентов. По умолчанию <code>1820</code>.",
+    "Then you may start the remote client manually or as a SystemD service like shown in the setup output.": "Затем вы можете запустить удаленный клиент вручную или как службу SystemD, как показано в выходных данных настройки.",
+    "To setup a remote client please make sure Node.js is installed and run the following commands on the remote system. This will create all necessary files to run the remote client.": "Чтобы настроить удаленный клиент, убедитесь, что установлен Node.js, и выполните следующие команды в удаленной системе. Это создаст все необходимые файлы для запуска удаленного клиента.",
     "Unit": "Единица измерения",
-    "When enabled the adapter starts a server and accepts connections from <a href=\"https://www.npmjs.com/package/iobroker-ds18b20-remote\" target=\"_blank\">iobroker-ds18b20-remote</a> clients.": "Если этот параметр включен, адаптер запускает сервер и принимает подключения от клиентов <a href=\"https://www.npmjs.com/package/iobroker-ds18b20-remote\" target=\"_blank\">iobroker-ds18b20-remote</a> ."
+    "When enabled the adapter starts a server and accepts connections from <em>ioBroker.ds18b20 remote clients</em>. (see below)": "При включении адаптер запускает сервер и принимает соединения от <em>удаленных клиентов ioBroker.ds18b20</em>. (Смотри ниже)"
 }

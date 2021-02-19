@@ -2,6 +2,7 @@
     "<em>Hint:</em> Click on the ?-button at the top to get help and some examples.": "<em>Suggerimento: fai</em> clic sul pulsante ? In alto per ottenere assistenza e alcuni esempi.",
     "Add entry": "Aggiungi voce",
     "Address": "Indirizzo",
+    "After that you have to edit the created <code>.env</code> file and fill in at least the host and the encryption key.": "Dopo di che devi modificare il file <code>.env</code> creato e inserire almeno l'host e la chiave di crittografia.",
     "Allowed chars: a-z A-Z 0-9 - _": "Caratteri consentiti: a-z A-Z 0-9 - _",
     "Connected remote systems": "Sistemi remoti connessi",
     "Decimals": "Decimali",
@@ -22,6 +23,7 @@
     "Offset": "Compensare",
     "Path of the 1-wire devices": "Percorso dei dispositivi a 1 filo",
     "Query interval": "Intervallo di query",
+    "Remote client setup instructions": "Istruzioni per la configurazione del client remoto",
     "Remote system ID": "ID sistema remoto",
     "Search Sensors": "Cerca sensori",
     "Server port": "Porta del server",
@@ -30,6 +32,8 @@
     "The adapter instance must be started to search for sensors.": "L'istanza dell'adattatore deve essere avviata per cercare i sensori.",
     "The default time between sensor queries in milliseconds.": "Il tempo predefinito tra le query del sensore in millisecondi.",
     "The port to start the server for remote clients on. Default is <code>1820</code>.": "La porta su cui avviare il server per i client remoti. L'impostazione predefinita è <code>1820</code>.",
+    "Then you may start the remote client manually or as a SystemD service like shown in the setup output.": "Quindi è possibile avviare il client remoto manualmente o come servizio SystemD come mostrato nell'output del setup.",
+    "To setup a remote client please make sure Node.js is installed and run the following commands on the remote system. This will create all necessary files to run the remote client.": "Per configurare un client remoto, assicurati che Node.js sia installato ed esegui i seguenti comandi sul sistema remoto. Questo creerà tutti i file necessari per eseguire il client remoto.",
     "Unit": "Unità",
-    "When enabled the adapter starts a server and accepts connections from <a href=\"https://www.npmjs.com/package/iobroker-ds18b20-remote\" target=\"_blank\">iobroker-ds18b20-remote</a> clients.": "Quando è abilitato, l'adattatore avvia un server e accetta connessioni da client <a href=\"https://www.npmjs.com/package/iobroker-ds18b20-remote\" target=\"_blank\">iobroker-ds18b20-remote</a> ."
+    "When enabled the adapter starts a server and accepts connections from <em>ioBroker.ds18b20 remote clients</em>. (see below)": "Quando è abilitato, l'adattatore avvia un server e accetta connessioni da <em>client remoti ioBroker.ds18b20</em>. (vedi sotto)"
 }

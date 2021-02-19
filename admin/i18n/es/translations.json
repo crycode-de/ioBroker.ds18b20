@@ -2,6 +2,7 @@
     "<em>Hint:</em> Click on the ?-button at the top to get help and some examples.": "<em>Sugerencia:</em> haga clic en el botón ? En la parte superior para obtener ayuda y algunos ejemplos.",
     "Add entry": "Añadir entrada",
     "Address": "Dirección",
+    "After that you have to edit the created <code>.env</code> file and fill in at least the host and the encryption key.": "Después de eso, debe editar el archivo <code>.env</code> creado y completar al menos el host y la clave de cifrado.",
     "Allowed chars: a-z A-Z 0-9 - _": "Caracteres permitidos: a-z A-Z 0-9 - _",
     "Connected remote systems": "Sistemas remotos conectados",
     "Decimals": "Decimales",
@@ -22,6 +23,7 @@
     "Offset": "Compensar",
     "Path of the 1-wire devices": "Ruta de los dispositivos de 1 cable",
     "Query interval": "Intervalo de consulta",
+    "Remote client setup instructions": "Instrucciones de configuración de cliente remoto",
     "Remote system ID": "ID del sistema remoto",
     "Search Sensors": "Sensores de búsqueda",
     "Server port": "Puerto de servicio",
@@ -30,6 +32,8 @@
     "The adapter instance must be started to search for sensors.": "La instancia del adaptador debe iniciarse para buscar sensores.",
     "The default time between sensor queries in milliseconds.": "El tiempo predeterminado entre consultas del sensor en milisegundos.",
     "The port to start the server for remote clients on. Default is <code>1820</code>.": "El puerto para iniciar el servidor para clientes remotos. El valor predeterminado es <code>1820</code>.",
+    "Then you may start the remote client manually or as a SystemD service like shown in the setup output.": "Luego, puede iniciar el cliente remoto manualmente o como un servicio SystemD como se muestra en la salida de configuración.",
+    "To setup a remote client please make sure Node.js is installed and run the following commands on the remote system. This will create all necessary files to run the remote client.": "Para configurar un cliente remoto, asegúrese de que Node.js esté instalado y ejecute los siguientes comandos en el sistema remoto. Esto creará todos los archivos necesarios para ejecutar el cliente remoto.",
     "Unit": "Unidad",
-    "When enabled the adapter starts a server and accepts connections from <a href=\"https://www.npmjs.com/package/iobroker-ds18b20-remote\" target=\"_blank\">iobroker-ds18b20-remote</a> clients.": "Cuando está habilitado, el adaptador inicia un servidor y acepta conexiones de clientes <a href=\"https://www.npmjs.com/package/iobroker-ds18b20-remote\" target=\"_blank\">iobroker-ds18b20-remote</a> ."
+    "When enabled the adapter starts a server and accepts connections from <em>ioBroker.ds18b20 remote clients</em>. (see below)": "Cuando está habilitado, el adaptador inicia un servidor y acepta conexiones de <em>clientes remotos ioBroker.ds18b20</em>. (vea abajo)"
 }

@@ -125,6 +125,9 @@
         // save onChange function for later use
         onChange2 = onChange;
 
+        // remote-setup-url
+        $('#remote-setup-url').html(`${window.location.href.split(/\/[^\/]+$/)[0]}/remote-client-setup.js`);
+
         if (!settings) return;
 
         // set default settings (mainly for updated adapters)
@@ -165,7 +168,7 @@
           getConnectedRemoteSystems();
         });
 
-        // search devies button
+        // search devices button
         $('.table-button-search').on('click', () => {
           getConnectedRemoteSystems();
           searchDevices();
@@ -542,7 +545,7 @@
     <div class="input-field col s12 m6 l3">
       <input type="checkbox" id="remoteEnabled" class="value" />
       <label class="translate" for="remoteEnabled">Enable remote sensors</label><br />
-      <span class="translate">When enabled the adapter starts a server and accepts connections from <a href="https://www.npmjs.com/package/iobroker-ds18b20-remote" target="_blank">iobroker-ds18b20-remote</a> clients.</span>
+      <span class="translate">When enabled the adapter starts a server and accepts connections from <em>ioBroker.ds18b20 remote clients</em>. (see below)</span>
     </div>
 
     <div class="input-field col s12 m6 l2">
@@ -593,8 +596,21 @@
   </div>
 
   <div class="row" id="remoteSystemsWrapper">
-    <div class="col s12"><span class="translate">Connected remote systems</span> <a class="btn-floating btn-small waves-effect waves-light blue button-get-remote-systems"><i class="material-icons">autorenew</i></a></div>
+    <div class="col s12"><span style="font-size: larger;" class="translate">Connected remote systems</span> <a class="btn-floating btn-small waves-effect waves-light blue button-get-remote-systems"><i class="material-icons">autorenew</i></a></div>
     <div class="col s12" id="remoteSystems">-</div>
+  </div>
+
+  <div class="row">
+    <div class="col s12"><span style="font-size: larger;" class="translate">Remote client setup instructions</span></div>
+    <div class="col s12">
+      <p class="translate">To setup a remote client please make sure Node.js is installed and run the following commands on the remote system. This will create all necessary files to run the remote client.</p>
+      <pre>
+        wget -O remote-client-setup.js <span id="remote-setup-url"></span>
+        node remote-client-setup.js
+      </pre>
+      <p class="translate">After that you have to edit the created <code>.env</code> file and fill in at least the host and the encryption key.</p>
+      <p class="translate">Then you may start the remote client manually or as a SystemD service like shown in the setup output.</p>
+    </div>
   </div>
 
 </div>

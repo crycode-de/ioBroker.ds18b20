@@ -2,6 +2,7 @@
     "<em>Hint:</em> Click on the ?-button at the top to get help and some examples.": "<em>Hint:</em> Click on the ?-button at the top to get help and some examples.",
     "Add entry": "Add entry",
     "Address": "Address",
+    "After that you have to edit the created <code>.env</code> file and fill in at least the host and the encryption key.": "After that you have to edit the created <code>.env</code> file and fill in at least the host and the encryption key.",
     "Allowed chars: a-z A-Z 0-9 - _": "Allowed chars: a-z A-Z 0-9 - _",
     "Connected remote systems": "Connected remote systems",
     "Decimals": "Decimals",
@@ -22,6 +23,7 @@
     "Offset": "Offset",
     "Path of the 1-wire devices": "Path of the 1-wire devices",
     "Query interval": "Query interval",
+    "Remote client setup instructions": "Remote client setup instructions",
     "Remote system ID": "Remote system ID",
     "Search Sensors": "Search Sensors",
     "Server port": "Server port",
@@ -30,6 +32,8 @@
     "The adapter instance must be started to search for sensors.": "The adapter instance must be started to search for sensors.",
     "The default time between sensor queries in milliseconds.": "The default time between sensor queries in milliseconds.",
     "The port to start the server for remote clients on. Default is <code>1820</code>.": "The port to start the server for remote clients on. Default is <code>1820</code>.",
+    "Then you may start the remote client manually or as a SystemD service like shown in the setup output.": "Then you may start the remote client manually or as a SystemD service like shown in the setup output.",
+    "To setup a remote client please make sure Node.js is installed and run the following commands on the remote system. This will create all necessary files to run the remote client.": "To setup a remote client please make sure Node.js is installed and run the following commands on the remote system. This will create all necessary files to run the remote client.",
     "Unit": "Unit",
-    "When enabled the adapter starts a server and accepts connections from <a href=\"https://www.npmjs.com/package/iobroker-ds18b20-remote\" target=\"_blank\">iobroker-ds18b20-remote</a> clients.": "When enabled the adapter starts a server and accepts connections from <a href=\"https://www.npmjs.com/package/iobroker-ds18b20-remote\" target=\"_blank\">iobroker-ds18b20-remote</a> clients."
+    "When enabled the adapter starts a server and accepts connections from <em>ioBroker.ds18b20 remote clients</em>. (see below)": "When enabled the adapter starts a server and accepts connections from <em>ioBroker.ds18b20 remote clients</em>. (see below)"
 }
