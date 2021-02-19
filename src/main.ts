@@ -20,11 +20,6 @@ import { Sensor } from './sensor';
 
 import { RemoteSensorServer } from './remote-server';
 
-import {
-  SensorObject,
-  SearchedSensor,
-} from './common/types';
-
 declare global {
   // eslint-disable-next-line @typescript-eslint/no-namespace
   namespace ioBroker {

@@ -8,7 +8,7 @@ nbproject
 .env
 
 # npm package files
-iobroker.*.tgz
+iobroker*.tgz
 
 Thumbs.db
 

@@ -54,10 +54,10 @@
   },
   "main": "build/main.js",
   "scripts": {
-    "prebuild": "rimraf ./build ./remote/build",
+    "prebuild": "rimraf ./build ./admin/remote-client-setup.js",
     "build:ts": "tsc -p tsconfig.build.json",
-    "build:ts-remote": "tsc -p tsconfig.build-remote.json",
-    "build": "npm run build:ts; npm run build:ts-remote",
+    "build": "npm run build:ts && npm run build:remote-client-setup",
+    "build:remote-client-setup": "node build-remote-client-setup.js",
     "watch:ts": "tsc -p tsconfig.build.json --watch",
     "watch": "npm run watch:ts",
     "test:ts": "mocha --config .mocharc.ts.json src/**/*.test.ts",

@@ -1,11 +1,7 @@
-/*
- * Types used by the adapter and the remote client.
- */
-
 /**
  * ioBroker object for a single sensor.
  */
-export interface SensorObject extends ioBroker.StateObject {
+declare interface SensorObject extends ioBroker.StateObject {
   native: {
     address: string;
     factor: number;
@@ -20,7 +16,7 @@ export interface SensorObject extends ioBroker.StateObject {
 /**
  * Result of sensor search. (singe sensor)
  */
-export interface SearchedSensor {
+declare interface SearchedSensor {
   address: string;
   remoteSystemId: string;
 }
@@ -28,7 +24,7 @@ export interface SearchedSensor {
 /**
  * Remote data request/response for client information.
  */
-export interface RemoteDataClientInfo {
+declare interface RemoteDataClientInfo {
   cmd: 'clientInfo';
   systemId?: string;
 }
@@ -36,7 +32,7 @@ export interface RemoteDataClientInfo {
 /**
  * Remote data request/response for sensor read.
  */
-export interface RemoteDataRead {
+declare interface RemoteDataRead {
   cmd: 'read';
   address: string;
   ts: number;
@@ -46,7 +42,7 @@ export interface RemoteDataRead {
 /**
  * Remote data request/response for sensor search.
  */
-export interface RemoteDataSearch {
+declare interface RemoteDataSearch {
   cmd: 'search';
   ts: number;
   addresses?: string[];
@@ -56,4 +52,4 @@ export interface RemoteDataSearch {
 /**
  * Remote data request/response for all types.
  */
-export type RemoteData = RemoteDataClientInfo | RemoteDataRead | RemoteDataSearch;
+declare type RemoteData = RemoteDataClientInfo | RemoteDataRead | RemoteDataSearch;

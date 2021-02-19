@@ -1,5 +1,5 @@
 /**
- * ioBroker-ds18b20-remote
+ * ioBroker.ds18b20 remote client
  *
  * Remote client for the ioBroker.ds18b20 adapter.
  * This client has zero dependencies and can be started on any linux os running
@@ -27,9 +27,7 @@ import { Logger } from './logger';
 import {
   encrypt,
   decrypt,
-} from './common/crypt';
-
-import { RemoteData } from './common/types';
+} from './crypt';
 
 /**
  * Keys to read from a .env file into process.env
@@ -44,7 +42,7 @@ const ENV_KEYS = [
 ];
 
 /**
- * Main class for ioBroker-ds18b20-remote
+ * Main class for ioBroker.ds18b20 remote client.
  */
 class Ds18b20Remote {
 
@@ -112,7 +110,7 @@ class Ds18b20Remote {
     this.onError = this.onError.bind(this);
 
     this.log = new Logger();
-    this.log.log('ioBroker-ds18b20-remote');
+    this.log.log('- ioBroker.ds18b20 remote client -');
 
     // read env vars from a .env file in cwd
     this.readDotEnv();

@@ -18,6 +18,7 @@ src/
 tsconfig.json
 tsconfig.*.json
 
+.env
 .eslintrc.json
 .eslintrc.js
 .eslintignore
@@ -37,10 +38,12 @@ admin/i18n
 maintenance/**
 
 build/lib/*-dev.js
-build/common/types.*
+build/remote/ds18b20-remote-client.*
+build/remote/logger.*
+build/remote/setup.*
+build-remote-client-setup.js
+
 **/*.d.ts
 
 docs
 .mocharc*
-
-remote

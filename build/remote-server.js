@@ -19,7 +19,7 @@ exports.RemoteSensorServer = void 0;
 const events_1 = require("events");
 const net_1 = require("net");
 const core_decorators_1 = require("core-decorators");
-const crypt_1 = require("./common/crypt");
+const crypt_1 = require("./remote/crypt");
 class RemoteSensorServer extends events_1.EventEmitter {
     constructor(port, encKey, adapter) {
         super();

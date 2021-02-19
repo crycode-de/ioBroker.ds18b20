@@ -13,13 +13,7 @@ import {
 import { autobind } from 'core-decorators';
 
 import { Ds18b20Adapter } from './main';
-import { decrypt, encrypt } from './common/crypt';
-import {
-  RemoteData,
-  RemoteDataRead,
-  RemoteDataSearch,
-  SearchedSensor,
-} from './common/types';
+import { decrypt, encrypt } from './remote/crypt';
 
 /**
  * Information about a connected client.

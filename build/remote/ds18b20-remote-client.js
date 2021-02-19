@@ -16,7 +16,7 @@ const os = require("os");
 const readDir = util_1.promisify(fs.readdir);
 const readFile = util_1.promisify(fs.readFile);
 const logger_1 = require("./logger");
-const crypt_1 = require("./common/crypt");
+const crypt_1 = require("./crypt");
 const ENV_KEYS = [
     'ADAPTER_HOST',
     'ADAPTER_KEY',
@@ -36,7 +36,7 @@ class Ds18b20Remote {
         this.onData = this.onData.bind(this);
         this.onError = this.onError.bind(this);
         this.log = new logger_1.Logger();
-        this.log.log('ioBroker-ds18b20-remote');
+        this.log.log('- ioBroker.ds18b20 remote client -');
         this.readDotEnv();
         if (process.env.SYSTEM_ID) {
             this.systemId = process.env.SYSTEM_ID.trim();
@@ -256,4 +256,4 @@ class Ds18b20Remote {
     }
 }
 new Ds18b20Remote();
-//# sourceMappingURL=ds18b20-remote.js.map
+//# sourceMappingURL=ds18b20-remote-client.js.map
