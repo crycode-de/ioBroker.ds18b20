@@ -30,7 +30,7 @@ Dies ist ein ioBroker-Adapter zur Integration von DS18B20 1-Wire Temperatursenso
 
 ## Changelog
 
-### 1.4.0 (??)
+### 1.4.0 (2021-02-21)
 * (crycode-de) Support for remote sensors using an own tiny daemon and encrypted TCP sockets
 * (crycode-de) Set `q` flag to `0x81` (general problem by sensor) if a sensor reported a `null` value
 
