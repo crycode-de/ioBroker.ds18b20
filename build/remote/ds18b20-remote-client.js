@@ -129,6 +129,9 @@ class Ds18b20Remote {
             this.log.debug('message from adapter:', data);
             switch (data.cmd) {
                 case 'clientInfo':
+                    if (data.protocolVersion !== common_1.REMOTE_PROTOCOL_VERSION) {
+                        this.log.warn(`Protocol version ${data.protocolVersion} from the adapter does not match the remote client protocol version ${common_1.REMOTE_PROTOCOL_VERSION}! Please reinstall the remote client.`);
+                    }
                     this.log.info('Sending client info to the adapter');
                     this.send({
                         cmd: 'clientInfo',
