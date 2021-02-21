@@ -16,7 +16,7 @@ const os = require("os");
 const readDir = util_1.promisify(fs.readdir);
 const readFile = util_1.promisify(fs.readFile);
 const logger_1 = require("./logger");
-const crypt_1 = require("./crypt");
+const common_1 = require("./common");
 const ENV_KEYS = [
     'ADAPTER_HOST',
     'ADAPTER_KEY',
@@ -118,7 +118,7 @@ class Ds18b20Remote {
         return __awaiter(this, void 0, void 0, function* () {
             let data;
             try {
-                const dataStr = crypt_1.decrypt(raw, this.adapterKey);
+                const dataStr = common_1.decrypt(raw, this.adapterKey);
                 data = JSON.parse(dataStr);
             }
             catch (err) {
@@ -132,6 +132,7 @@ class Ds18b20Remote {
                     this.log.info('Sending client info to the adapter');
                     this.send({
                         cmd: 'clientInfo',
+                        protocolVersion: common_1.REMOTE_PROTOCOL_VERSION,
                         systemId: this.systemId,
                     });
                     break;
@@ -209,7 +210,7 @@ class Ds18b20Remote {
         return __awaiter(this, void 0, void 0, function* () {
             this.log.debug('send to adapter:', data);
             return new Promise((resolve, reject) => {
-                this.socket.write(crypt_1.encrypt(JSON.stringify(data), this.adapterKey) + '\n', (err) => {
+                this.socket.write(common_1.encrypt(JSON.stringify(data), this.adapterKey) + '\n', (err) => {
                     if (err) {
                         reject(err);
                     }

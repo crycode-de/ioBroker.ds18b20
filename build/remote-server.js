@@ -19,7 +19,7 @@ exports.RemoteSensorServer = void 0;
 const events_1 = require("events");
 const net_1 = require("net");
 const core_decorators_1 = require("core-decorators");
-const crypt_1 = require("./remote/crypt");
+const common_1 = require("./remote/common");
 class RemoteSensorServer extends events_1.EventEmitter {
     constructor(port, encKey, adapter) {
         super();
@@ -157,12 +157,12 @@ class RemoteSensorServer extends events_1.EventEmitter {
             socket.destroy();
             delete this.socketTimeouts[socketId];
         }, 5000);
-        this.send(socket, { cmd: 'clientInfo' });
+        this.send(socket, { cmd: 'clientInfo', protocolVersion: common_1.REMOTE_PROTOCOL_VERSION });
     }
     handleSocketData(socketId, socket, raw) {
         let data;
         try {
-            const dataStr = crypt_1.decrypt(raw, this.encryptionKey);
+            const dataStr = common_1.decrypt(raw, this.encryptionKey);
             data = JSON.parse(dataStr);
         }
         catch (err) {
@@ -184,6 +184,9 @@ class RemoteSensorServer extends events_1.EventEmitter {
                     systemId: data.systemId,
                 };
                 this.adapter.log.info(`Remote system ${data.systemId} connected from ${socket.remoteAddress}`);
+                if (data.protocolVersion !== common_1.REMOTE_PROTOCOL_VERSION) {
+                    this.adapter.log.warn(`Protocol version ${data.protocolVersion} from remote system ${data.systemId} does not match the adapter protocol version ${common_1.REMOTE_PROTOCOL_VERSION}! Please reinstall the remote client.`);
+                }
                 break;
             case 'read':
                 this.emit('sensorData', data);
@@ -198,7 +201,7 @@ class RemoteSensorServer extends events_1.EventEmitter {
     send(socket, data) {
         return __awaiter(this, void 0, void 0, function* () {
             return new Promise((resolve, reject) => {
-                socket.write(crypt_1.encrypt(JSON.stringify(data), this.encryptionKey) + '\n', (err) => {
+                socket.write(common_1.encrypt(JSON.stringify(data), this.encryptionKey) + '\n', (err) => {
                     if (err) {
                         reject(err);
                     }

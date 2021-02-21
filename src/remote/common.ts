@@ -1,10 +1,20 @@
 /*
- * Encrypt/decrypt functions used by the adapter and the remote client.
+ * Common functions and constants used by the adapter and the remote client.
  */
 
 import * as crypto from 'crypto';
 
-const IV_LENGTH = 16; // For AES, this is always 16
+/**
+ * Protocol version for the communication.
+ * May change in future versions.
+ */
+export const REMOTE_PROTOCOL_VERSION = 1;
+
+/**
+ * Length of the initialization vector for encryption.
+ * For AES, this is always 16.
+ */
+const IV_LENGTH = 16;
 
 /**
  * Encrypt a string with the given key.

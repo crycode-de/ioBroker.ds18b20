@@ -1,7 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.decrypt = exports.encrypt = void 0;
+exports.decrypt = exports.encrypt = exports.REMOTE_PROTOCOL_VERSION = void 0;
 const crypto = require("crypto");
+exports.REMOTE_PROTOCOL_VERSION = 1;
 const IV_LENGTH = 16;
 function encrypt(text, key) {
     const iv = crypto.randomBytes(IV_LENGTH);
@@ -21,4 +22,4 @@ function decrypt(text, key) {
     return decrypted.toString();
 }
 exports.decrypt = decrypt;
-//# sourceMappingURL=crypt.js.map
+//# sourceMappingURL=common.js.map

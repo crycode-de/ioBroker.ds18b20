@@ -11,8 +11,7 @@ for (const f in files) {
     const content = Buffer.from(files[f], 'base64').toString('utf-8');
     fs.writeFileSync(f, content, { encoding: 'utf-8' });
 }
-const systemDContent = `
-[Unit]
+const systemDContent = `[Unit]
 Description=ioBroker.ds18b20 remote client
 Documentation=https://github.com/crycode-de/ioBroker.ds18b20
 After=network.target
@@ -29,8 +28,7 @@ WantedBy=multi-user.target
 `;
 const systemDFile = path.join(__dirname, SYSTEMD_SERVICE_NAME);
 fs.writeFileSync(systemDFile, systemDContent, { encoding: 'utf-8' });
-const dotEnvContent = `
-# Settings for the ioBroker.ds18b20 remote client
+const dotEnvContent = `# Settings for the ioBroker.ds18b20 remote client
 
 # Unique ID for this remote system
 SYSTEM_ID=my-remote
@@ -54,8 +52,7 @@ const dotEnvFile = path.join(__dirname, '.env');
 if (!fs.existsSync(dotEnvFile)) {
     fs.writeFileSync(dotEnvFile, dotEnvContent, { encoding: 'utf-8' });
 }
-console.log(`
-- ioBroker.ds18b20 remote client -
+console.log(`- ioBroker.ds18b20 remote client -
 
 Basic setup done.
 

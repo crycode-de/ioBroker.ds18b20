@@ -13,7 +13,7 @@ import {
 import { autobind } from 'core-decorators';
 
 import { Ds18b20Adapter } from './main';
-import { decrypt, encrypt } from './remote/crypt';
+import { decrypt, encrypt, REMOTE_PROTOCOL_VERSION } from './remote/common';
 
 /**
  * Information about a connected client.
@@ -265,7 +265,7 @@ export class RemoteSensorServer extends EventEmitter {
     }, 5000);
 
     // request client information
-    this.send(socket, { cmd: 'clientInfo' });
+    this.send(socket, { cmd: 'clientInfo', protocolVersion: REMOTE_PROTOCOL_VERSION });
   }
 
   /**
@@ -309,6 +309,12 @@ export class RemoteSensorServer extends EventEmitter {
         };
 
         this.adapter.log.info(`Remote system ${data.systemId} connected from ${socket.remoteAddress}`);
+
+        // check the protocol version
+        if (data.protocolVersion !== REMOTE_PROTOCOL_VERSION) {
+          this.adapter.log.warn(`Protocol version ${data.protocolVersion} from remote system ${data.systemId} does not match the adapter protocol version ${REMOTE_PROTOCOL_VERSION}! Please reinstall the remote client.`);
+        }
+
         break;
 
       case 'read':

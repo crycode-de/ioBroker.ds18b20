@@ -26,6 +26,7 @@ declare interface SearchedSensor {
  */
 declare interface RemoteDataClientInfo {
   cmd: 'clientInfo';
+  protocolVersion: number;
   systemId?: string;
 }
 

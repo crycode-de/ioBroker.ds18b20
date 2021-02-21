@@ -27,7 +27,8 @@ import { Logger } from './logger';
 import {
   encrypt,
   decrypt,
-} from './crypt';
+  REMOTE_PROTOCOL_VERSION,
+} from './common';
 
 /**
  * Keys to read from a .env file into process.env
@@ -245,6 +246,7 @@ class Ds18b20Remote {
         this.log.info('Sending client info to the adapter')
         this.send({
           cmd: 'clientInfo',
+          protocolVersion: REMOTE_PROTOCOL_VERSION,
           systemId: this.systemId,
         });
         break;
