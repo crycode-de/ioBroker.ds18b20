@@ -72,6 +72,15 @@ jobs:
               if: startsWith(runner.OS, 'windows') == false
               run: DEBUG=testing:* npm run test:integration
 
+            - name: Run remote client setup (unix only)
+              if: startsWith(runner.OS, 'windows') == false
+              run: |
+                  cd admin
+                  node remote-client-setup.js
+                  [ -e ".env" ] || (echo ".env file missing" >&2 && exit 1)
+                  [ -e "ds18b20-remote-client.js" ] || (echo "ds18b20-remote-client.js file missing" >&2 && exit 1)
+                  [ -e "iobroker-ds18b20-remote.service" ] || (echo "iobroker-ds18b20-remote.service file missing" >&2 && exit 1)
+
 # To enable automatic npm releases, create a token on npmjs.org
 # Enter this token as a GitHub secret (with name NPM_TOKEN) in the repository options
 # Then uncomment the following block:
