@@ -185,6 +185,18 @@
             }
         },
         "title": "DS18B20",
+        "titleLang": {
+            "en": "DS18B20",
+            "de": "DS18B20",
+            "ru": "DS18B20",
+            "pt": "DS18B20",
+            "nl": "DS18B20",
+            "fr": "DS18B20",
+            "it": "DS18B20",
+            "es": "DS18B20",
+            "pl": "DS18B20",
+            "zh-cn": "DS18B20"
+        },
         "desc": {
             "en": "This is an ioBroker-Adapter to integrate DS18B20 1-wire temperature sensors.",
             "de": "Dies ist ein ioBroker-Adapter zur Integration von DS18B20 1-Wire Temperatursensoren.",
