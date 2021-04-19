@@ -76,7 +76,7 @@ class RemoteSensorServer extends events_1.EventEmitter {
                 };
                 timeout = setTimeout(() => {
                     this.removeListener('sensorData', handler);
-                    reject(new Error('No response from remote system'));
+                    reject(new Error(`No response from remote system ${client === null || client === void 0 ? void 0 : client.systemId}`));
                 }, 5000);
                 this.on('sensorData', handler);
             });
