@@ -212,12 +212,13 @@ class Ds18b20Remote {
   private onData (data: Buffer): void {
     this.recvData += data.toString();
 
-    // check for \n and process the data
-    const idx = this.recvData.indexOf('\n');
-    if (idx > 0) {
+    // check for `\n` and process the data; recvData may contain multiple `\n`!
+    let idx = this.recvData.indexOf('\n');
+    while (idx > 0) {
       const raw = this.recvData.slice(0, idx);
       this.recvData = this.recvData.slice(idx + 1);
       this.handleSocketData(raw);
+      idx = this.recvData.indexOf('\n');
     }
   }
 

@@ -130,15 +130,8 @@ export class RemoteSensorServer extends EventEmitter {
     // timestamp for the request, used to identify response
     const requestTs = Date.now();
 
-    // send the request (async but don't wait)
-    this.send(client.socket, {
-      cmd: 'read',
-      ts: requestTs,
-      address: sensorAddress,
-    });
-
-    // wait for feedback with a timeout of 5 seconds
-    const raw = await new Promise<string>((resolve, reject) => {
+    // prepare promise to wait for feedback with a timeout of 5 seconds
+    const prom = new Promise<string>((resolve, reject) => {
       let timeout: NodeJS.Timeout | null = null;
 
       const handler = (data: RemoteDataRead): void => {
@@ -155,6 +148,16 @@ export class RemoteSensorServer extends EventEmitter {
 
       this.on('sensorData', handler);
     });
+
+    // send the request (async but don't wait)
+    this.send(client.socket, {
+      cmd: 'read',
+      ts: requestTs,
+      address: sensorAddress,
+    });
+
+    // wait for the feedback promise to resolve
+    const raw = await prom;
 
     return raw;
   }
@@ -249,11 +252,13 @@ export class RemoteSensorServer extends EventEmitter {
     socket.on('data', (data: Buffer) => {
       dataStr += data.toString();
 
-      const idx = dataStr.indexOf('\n');
-      if (idx > 0) {
+      // dataStr may contain multiple `\n`!
+      let idx = dataStr.indexOf('\n');
+      while (idx > 0) {
         const raw = dataStr.slice(0, idx);
         dataStr = dataStr.slice(idx+1);
         this.handleSocketData(socketId, socket, raw);
+        idx = dataStr.indexOf('\n');
       }
     });
 

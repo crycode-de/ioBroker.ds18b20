@@ -107,11 +107,12 @@ class Ds18b20Remote {
     }
     onData(data) {
         this.recvData += data.toString();
-        const idx = this.recvData.indexOf('\n');
-        if (idx > 0) {
+        let idx = this.recvData.indexOf('\n');
+        while (idx > 0) {
             const raw = this.recvData.slice(0, idx);
             this.recvData = this.recvData.slice(idx + 1);
             this.handleSocketData(raw);
+            idx = this.recvData.indexOf('\n');
         }
     }
     handleSocketData(raw) {

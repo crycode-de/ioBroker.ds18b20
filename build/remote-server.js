@@ -59,12 +59,7 @@ class RemoteSensorServer extends events_1.EventEmitter {
                 throw new Error(`Remote system ${clientSystemId} is not connected.`);
             }
             const requestTs = Date.now();
-            this.send(client.socket, {
-                cmd: 'read',
-                ts: requestTs,
-                address: sensorAddress,
-            });
-            const raw = yield new Promise((resolve, reject) => {
+            const prom = new Promise((resolve, reject) => {
                 let timeout = null;
                 const handler = (data) => {
                     if (typeof data !== 'object' || data.address !== sensorAddress || data.ts !== requestTs)
@@ -80,6 +75,12 @@ class RemoteSensorServer extends events_1.EventEmitter {
                 }, 5000);
                 this.on('sensorData', handler);
             });
+            this.send(client.socket, {
+                cmd: 'read',
+                ts: requestTs,
+                address: sensorAddress,
+            });
+            const raw = yield prom;
             return raw;
         });
     }
@@ -145,11 +146,12 @@ class RemoteSensorServer extends events_1.EventEmitter {
         let dataStr = '';
         socket.on('data', (data) => {
             dataStr += data.toString();
-            const idx = dataStr.indexOf('\n');
-            if (idx > 0) {
+            let idx = dataStr.indexOf('\n');
+            while (idx > 0) {
                 const raw = dataStr.slice(0, idx);
                 dataStr = dataStr.slice(idx + 1);
                 this.handleSocketData(socketId, socket, raw);
+                idx = dataStr.indexOf('\n');
             }
         });
         this.socketTimeouts[socketId] = setTimeout(() => {

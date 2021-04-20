@@ -1,8 +1,32 @@
 {
     "common": {
         "name": "ds18b20",
-        "version": "1.4.0",
+        "version": "1.4.1",
         "news": {
+            "1.4.1": {
+                "en": "Fixed bug if multiple remote sensors are used",
+                "de": "Fehler behoben, wenn mehrere Remote-Sensoren verwendet werden",
+                "ru": "Исправлена ошибка при использовании нескольких удаленных датчиков",
+                "pt": "Bug corrigido se vários sensores remotos forem usados",
+                "nl": "Bug opgelost als er meerdere externe sensoren worden gebruikt",
+                "fr": "Correction d'un bug si plusieurs capteurs à distance sont utilisés",
+                "it": "Risolto bug se vengono utilizzati più sensori remoti",
+                "es": "Error solucionado si se utilizan varios sensores remotos",
+                "pl": "Naprawiono błąd, jeśli używanych jest wiele czujników zdalnych",
+                "zh-cn": "修复了使用多个远程传感器时的错误"
+            },
+            "1.4.0": {
+                "en": "Support for remote sensors using an own tiny daemon and encrypted TCP sockets",
+                "de": "Unterstützung für Remote-Sensoren mit einem eigenen kleinen Daemon und verschlüsselten TCP-Sockets",
+                "ru": "Поддержка удаленных датчиков с использованием собственного крошечного демона и зашифрованных TCP-сокетов.",
+                "pt": "Suporte para sensores remotos usando um pequeno daemon próprio e soquetes TCP criptografados",
+                "nl": "Ondersteuning voor externe sensoren met behulp van een eigen kleine daemon en gecodeerde TCP-sockets",
+                "fr": "Prise en charge des capteurs à distance utilisant un petit démon et des sockets TCP cryptés",
+                "it": "Supporto per sensori remoti che utilizzano un proprio minuscolo demone e socket TCP crittografati",
+                "es": "Soporte para sensores remotos usando un pequeño demonio propio y sockets TCP encriptados",
+                "pl": "Obsługa zdalnych czujników przy użyciu własnego małego demona i zaszyfrowanych gniazd TCP",
+                "zh-cn": "使用自己的微型守护程序和加密的TCP套接字支持远程传感器"
+            },
             "1.3.0": {
                 "en": "Searching for sensors now works for multiple 1-wire masters",
                 "de": "Die Suche nach Sensoren funktioniert jetzt für mehrere 1-Wire Master",
