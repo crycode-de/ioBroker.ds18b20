@@ -406,7 +406,7 @@ export class Ds18b20Adapter extends utils.Adapter {
 
             sensors.push(...localSensors);
 
-          } catch (er) {
+          } catch (er: any) {
             this.log.warn(`Error while searching for local sensors: ${er.toString()}`);
             if (!this.config.remoteEnabled) {
               err = er;
@@ -418,7 +418,7 @@ export class Ds18b20Adapter extends utils.Adapter {
             try {
               const remoteSensors = await this.remoteSensorServer.search();
               sensors.push(...remoteSensors);
-            } catch (er) {
+            } catch (er: any) {
               this.log.warn(`Error while searching for remote sensors: ${er.toString()}`);
             }
           }

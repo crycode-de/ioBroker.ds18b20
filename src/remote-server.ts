@@ -286,7 +286,7 @@ export class RemoteSensorServer extends EventEmitter {
     try {
       const dataStr = decrypt(raw, this.encryptionKey);
       data = JSON.parse(dataStr);
-    } catch (err) {
+    } catch (err: any) {
       this.adapter.log.warn(`Decrypt of data from ${socketId} failed! ${err.toString()}`);
       // close the socket
       socket.destroy();

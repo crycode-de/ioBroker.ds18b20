@@ -13,8 +13,8 @@ const util_1 = require("util");
 const net_1 = require("net");
 const fs = require("fs");
 const os = require("os");
-const readDir = util_1.promisify(fs.readdir);
-const readFile = util_1.promisify(fs.readFile);
+const readDir = (0, util_1.promisify)(fs.readdir);
+const readFile = (0, util_1.promisify)(fs.readFile);
 const logger_1 = require("./logger");
 const common_1 = require("./common");
 const ENV_KEYS = [
@@ -119,7 +119,7 @@ class Ds18b20Remote {
         return __awaiter(this, void 0, void 0, function* () {
             let data;
             try {
-                const dataStr = common_1.decrypt(raw, this.adapterKey);
+                const dataStr = (0, common_1.decrypt)(raw, this.adapterKey);
                 data = JSON.parse(dataStr);
             }
             catch (err) {
@@ -214,7 +214,7 @@ class Ds18b20Remote {
         return __awaiter(this, void 0, void 0, function* () {
             this.log.debug('send to adapter:', data);
             return new Promise((resolve, reject) => {
-                this.socket.write(common_1.encrypt(JSON.stringify(data), this.adapterKey) + '\n', (err) => {
+                this.socket.write((0, common_1.encrypt)(JSON.stringify(data), this.adapterKey) + '\n', (err) => {
                     if (err) {
                         reject(err);
                     }

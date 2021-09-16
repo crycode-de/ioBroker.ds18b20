@@ -232,7 +232,7 @@ class Ds18b20Remote {
     try {
       const dataStr = decrypt(raw, this.adapterKey);
       data = JSON.parse(dataStr);
-    } catch (err) {
+    } catch (err: any) {
       this.log.warn(`Decrypt of data failed! ${err.toString()}`);
       // close the socket
       this.socket.end();
@@ -267,7 +267,7 @@ class Ds18b20Remote {
         try {
           raw = await readFile(`${this.w1DevicesPath}/${data.address}/w1_slave`, 'utf8');
           this.log.debug(`Read from file ${this.w1DevicesPath}/${data.address}/w1_slave:`, raw);
-        } catch (err) {
+        } catch (err: any) {
           this.log.warn(`Read from file ${this.w1DevicesPath}/${data.address}/w1_slave failed! ${err.toString()}`);
           this.log.debug(err);
           raw = '';
@@ -307,7 +307,7 @@ class Ds18b20Remote {
             addresses
           });
 
-        } catch (err) {
+        } catch (err: any) {
           this.log.warn(`Searching for sensors failed! ${err.toString()}`);
           this.log.debug(err);
         }

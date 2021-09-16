@@ -90,7 +90,7 @@ export class Sensor extends EventEmitter {
   /**
    * Timer for interval sensor readings.
    */
-  private timer: number | null = null;
+  private timer: NodeJS.Timer | null = null;
 
   /**
    * System path where the 1-wire devices can be read.
@@ -156,7 +156,7 @@ export class Sensor extends EventEmitter {
 
       this.processData(raw, cb);
 
-    } catch (err) {
+    } catch (err: any) {
       this.emit('error', err, this.id);
       if (typeof cb === 'function') {
         cb(err, null);
@@ -209,7 +209,7 @@ export class Sensor extends EventEmitter {
         throw new Error('Read temperature is out of possible range');
       }
 
-    } catch (e) {
+    } catch (e: any) {
       this.emit('error', e, this.id);
       err = e;
       val = null;

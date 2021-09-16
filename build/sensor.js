@@ -19,7 +19,7 @@ exports.Sensor = void 0;
 const events_1 = require("events");
 const util_1 = require("util");
 const fs = require("fs");
-const readFile = util_1.promisify(fs.readFile);
+const readFile = (0, util_1.promisify)(fs.readFile);
 const core_decorators_1 = require("core-decorators");
 const tools_1 = require("./lib/tools");
 class Sensor extends events_1.EventEmitter {
@@ -108,7 +108,7 @@ class Sensor extends events_1.EventEmitter {
             if (val !== null) {
                 val = val * this.factor + this.offset;
                 if (this.decimals !== null) {
-                    val = tools_1.round(val, this.decimals);
+                    val = (0, tools_1.round)(val, this.decimals);
                 }
             }
             if (val !== null || this.nullOnError) {

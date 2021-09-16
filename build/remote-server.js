@@ -27,7 +27,7 @@ class RemoteSensorServer extends events_1.EventEmitter {
         this.socketTimeouts = {};
         this.adapter = adapter;
         this.encryptionKey = Buffer.from(encKey, 'hex');
-        this.server = net_1.createServer();
+        this.server = (0, net_1.createServer)();
         this.server.on('connection', this.handleConnection);
         this.server.on('error', (err) => {
             this.emit('error', err);
@@ -164,7 +164,7 @@ class RemoteSensorServer extends events_1.EventEmitter {
     handleSocketData(socketId, socket, raw) {
         let data;
         try {
-            const dataStr = common_1.decrypt(raw, this.encryptionKey);
+            const dataStr = (0, common_1.decrypt)(raw, this.encryptionKey);
             data = JSON.parse(dataStr);
         }
         catch (err) {
@@ -203,7 +203,7 @@ class RemoteSensorServer extends events_1.EventEmitter {
     send(socket, data) {
         return __awaiter(this, void 0, void 0, function* () {
             return new Promise((resolve, reject) => {
-                socket.write(common_1.encrypt(JSON.stringify(data), this.encryptionKey) + '\n', (err) => {
+                socket.write((0, common_1.encrypt)(JSON.stringify(data), this.encryptionKey) + '\n', (err) => {
                     if (err) {
                         reject(err);
                     }
