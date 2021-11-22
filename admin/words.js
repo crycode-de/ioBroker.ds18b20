@@ -445,9 +445,9 @@ systemDictionary = {
     "zh-cn": "远程客户端安装说明"
   },
 
-  "To setup a remote client please make sure Node.js is installed and run the following commands on the remote system. This will create all necessary files to run the remote client.": {
-    "en": "To setup a remote client please make sure Node.js is installed and run the following commands on the remote system. This will create all necessary files to run the remote client.",
-    "de": "Um einen entfernten Client einzurichten, stelle bitte sicher, dass Node.js installiert ist und führe die folgenden Befehle auf dem entfernten System aus. Dadurch werden alle erforderlichen Dateien zum Ausführen des Clients erstellt.",
+  "To setup a remote client please make sure Node.js is installed and run the following commands on the remote system. This will create all necessary files in <code>~/ds18b20-remote/</code> to run the remote client.": {
+    "en": "To setup a remote client please make sure Node.js is installed and run the following commands on the remote system. This will create all necessary files in <code>~/ds18b20-remote/</code> to run the remote client.",
+    "de": "Um einen entfernten Client einzurichten, stelle bitte sicher, dass Node.js installiert ist und führe die folgenden Befehle auf dem entfernten System aus. Dadurch werden alle erforderlichen Dateien zum Ausführen des Clients in <code>~/ds18b20-remote/</code> erstellt.",
     "ru": "Чтобы настроить удаленный клиент, убедитесь, что установлен Node.js, и выполните следующие команды в удаленной системе. Это создаст все необходимые файлы для запуска удаленного клиента.",
     "pt": "Para configurar um cliente remoto, certifique-se de que o Node.js esteja instalado e execute os seguintes comandos no sistema remoto. Isso criará todos os arquivos necessários para executar o cliente remoto.",
     "nl": "Om een externe client in te stellen, zorg ervoor dat Node.js is geïnstalleerd en voer de volgende opdrachten uit op het externe systeem. Hiermee worden alle benodigde bestanden gemaakt om de externe client te starten.",

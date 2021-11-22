@@ -33,7 +33,7 @@
     "The default time between sensor queries in milliseconds.": "O tempo padrão entre as consultas do sensor em milissegundos.",
     "The port to start the server for remote clients on. Default is <code>1820</code>.": "A porta para iniciar o servidor para clientes remotos. O padrão é <code>1820</code>.",
     "Then you may start the remote client manually or as a SystemD service like shown in the setup output.": "Em seguida, você pode iniciar o cliente remoto manualmente ou como um serviço SystemD, conforme mostrado na saída de configuração.",
-    "To setup a remote client please make sure Node.js is installed and run the following commands on the remote system. This will create all necessary files to run the remote client.": "Para configurar um cliente remoto, certifique-se de que o Node.js esteja instalado e execute os seguintes comandos no sistema remoto. Isso criará todos os arquivos necessários para executar o cliente remoto.",
+    "To setup a remote client please make sure Node.js is installed and run the following commands on the remote system. This will create all necessary files in <code>~/ds18b20-remote/</code> to run the remote client.": "Para configurar um cliente remoto, certifique-se de que o Node.js esteja instalado e execute os seguintes comandos no sistema remoto. Isso criará todos os arquivos necessários para executar o cliente remoto.",
     "Unit": "Unidade",
     "When enabled the adapter starts a server and accepts connections from <em>ioBroker.ds18b20 remote clients</em>. (see below)": "Quando ativado, o adaptador inicia um servidor e aceita conexões de <em>clientes remotos ioBroker.ds18b20</em>. (ver abaixo)"
 }

@@ -33,7 +33,7 @@
     "The default time between sensor queries in milliseconds.": "传感器查询之间的默认时间（以毫秒为单位）。",
     "The port to start the server for remote clients on. Default is <code>1820</code>.": "用于启动远程客户端服务器的端口。默认值为<code>1820</code>。",
     "Then you may start the remote client manually or as a SystemD service like shown in the setup output.": "然后，您可以手动启动远程客户端，也可以将其作为SystemD服务启动，如设置输出中所示。",
-    "To setup a remote client please make sure Node.js is installed and run the following commands on the remote system. This will create all necessary files to run the remote client.": "要设置远程客户端，请确保已安装Node.js并在远程系统上运行以下命令。这将创建运行远程客户端所需的所有文件。",
+    "To setup a remote client please make sure Node.js is installed and run the following commands on the remote system. This will create all necessary files in <code>~/ds18b20-remote/</code> to run the remote client.": "要设置远程客户端，请确保已安装Node.js并在远程系统上运行以下命令。这将创建运行远程客户端所需的所有文件。",
     "Unit": "单元",
     "When enabled the adapter starts a server and accepts connections from <em>ioBroker.ds18b20 remote clients</em>. (see below)": "启用后，适配器将启动服务器并接受来自<em>ioBroker.ds18b20远程客户端</em>的连接。 （见下文）"
 }

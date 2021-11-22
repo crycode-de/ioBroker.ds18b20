@@ -603,8 +603,10 @@
   <div class="row">
     <div class="col s12"><span style="font-size: larger;" class="translate">Remote client setup instructions</span></div>
     <div class="col s12">
-      <p class="translate">To setup a remote client please make sure Node.js is installed and run the following commands on the remote system. This will create all necessary files to run the remote client.</p>
+      <p class="translate">To setup a remote client please make sure Node.js is installed and run the following commands on the remote system. This will create all necessary files in <code>~/ds18b20-remote/</code> to run the remote client.</p>
       <pre>
+        mkdir ~/ds18b20-remote
+        cd ~/ds18b20-remote
         wget -O remote-client-setup.js <span id="remote-setup-url"></span>
         node remote-client-setup.js
       </pre>

@@ -33,7 +33,7 @@
     "The default time between sensor queries in milliseconds.": "De standaardtijd tussen sensorquery's in milliseconden.",
     "The port to start the server for remote clients on. Default is <code>1820</code>.": "De poort om de server voor externe clients op te starten. De standaardwaarde is <code>1820</code>.",
     "Then you may start the remote client manually or as a SystemD service like shown in the setup output.": "Vervolgens kunt u de externe client handmatig starten of als een SystemD-service, zoals weergegeven in de setup-uitvoer.",
-    "To setup a remote client please make sure Node.js is installed and run the following commands on the remote system. This will create all necessary files to run the remote client.": "Om een externe client in te stellen, zorg ervoor dat Node.js is geïnstalleerd en voer de volgende opdrachten uit op het externe systeem. Hiermee worden alle benodigde bestanden gemaakt om de externe client te starten.",
+    "To setup a remote client please make sure Node.js is installed and run the following commands on the remote system. This will create all necessary files in <code>~/ds18b20-remote/</code> to run the remote client.": "Om een externe client in te stellen, zorg ervoor dat Node.js is geïnstalleerd en voer de volgende opdrachten uit op het externe systeem. Hiermee worden alle benodigde bestanden gemaakt om de externe client te starten.",
     "Unit": "Eenheid",
     "When enabled the adapter starts a server and accepts connections from <em>ioBroker.ds18b20 remote clients</em>. (see below)": "Indien ingeschakeld start de adapter een server en accepteert hij verbindingen van <em>ioBroker.ds18b20 remote clients</em>. (zie hieronder)"
 }
