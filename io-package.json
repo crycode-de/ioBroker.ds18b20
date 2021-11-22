@@ -1,8 +1,20 @@
 {
     "common": {
         "name": "ds18b20",
-        "version": "1.4.1",
+        "version": "1.4.2",
         "news": {
+            "1.4.2": {
+                "en": "Added some remote-client information, Updated dependencies",
+                "de": "Einige Remote-Client-Informationen hinzugefügt, Abhängigkeiten aktualisiert",
+                "ru": "Добавлена некоторая информация об удаленном клиенте, обновлены зависимости",
+                "pt": "Adicionadas algumas informações do cliente remoto, Dependências atualizadas",
+                "nl": "Wat externe client-informatie toegevoegd, Bijgewerkte afhankelijkheden",
+                "fr": "Ajout d'informations sur le client distant, mises à jour des dépendances",
+                "it": "Aggiunte alcune informazioni sul client remoto, dipendenze aggiornate",
+                "es": "Se agregó información de cliente remoto, dependencias actualizadas",
+                "pl": "Dodano informacje o zdalnym kliencie, Zaktualizowano zależności",
+                "zh-cn": "添加了一些远程客户端信息，更新了依赖项"
+            },
             "1.4.1": {
                 "en": "Fixed bug if multiple remote sensors are used",
                 "de": "Fehler behoben, wenn mehrere Remote-Sensoren verwendet werden",
