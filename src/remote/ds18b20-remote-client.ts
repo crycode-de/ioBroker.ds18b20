@@ -109,6 +109,7 @@ class Ds18b20Remote {
     this.onClose = this.onClose.bind(this);
     this.onData = this.onData.bind(this);
     this.onError = this.onError.bind(this);
+    this.onConnect = this.onConnect.bind(this);
 
     this.log = new Logger();
     this.log.log('- ioBroker.ds18b20 remote client -');
@@ -172,6 +173,7 @@ class Ds18b20Remote {
     this.socket.on('close', this.onClose);
     this.socket.on('data', this.onData);
     this.socket.on('error', this.onError);
+    this.socket.on('connect', this.onConnect);
 
     // try to connect
     this.connect();
@@ -196,13 +198,18 @@ class Ds18b20Remote {
     this.socket.connect({
       host: this.adapterHost,
       port: this.adapterPort,
-    }, () => {
-      this.log.info(`Connected with adapter`);
-      if (this.reconnectTimeout) {
-        clearTimeout(this.reconnectTimeout);
-      }
-      this.reconnectTimeout = null;
     });
+  }
+
+  /**
+   * Handle established connection.
+   */
+  private onConnect (): void {
+    this.log.info(`Connected with adapter`);
+    if (this.reconnectTimeout) {
+      clearTimeout(this.reconnectTimeout);
+    }
+    this.reconnectTimeout = null;
   }
 
   /**
