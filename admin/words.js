@@ -81,6 +81,19 @@ systemDictionary = {
     "zh-cn": "不允许使用空名称"
   },
 
+  "Enabled": {
+    "en": "Enabled",
+    "de": "Aktiviert",
+    "ru": "активирован",
+    "pt": "Habilitado",
+    "nl": "Ingeschakeld",
+    "fr": "Activé",
+    "it": "Abilitato",
+    "es": "Activado",
+    "pl": "Włączony",
+    "zh-cn": "启用"
+  },
+
   "Error": {
     "en": "Error",
     "de": "Error",

@@ -200,6 +200,7 @@
                 offset:        obj.native.offset,
                 decimals:      obj.native.decimals,
                 nullOnError:   obj.native.nullOnError,
+                enabled:       obj.native.enabled !== false, // use this check to be compatible to configs before v1.5.0 where can't be disabled
                 obj:           obj
               };
               curValues.push(line);
@@ -313,7 +314,8 @@
                 factor:        1,
                 offset:        0,
                 decimals:      2,
-                nullOnError:   true
+                nullOnError:   true,
+                enabled:       true,
               };
               newValues.push(line);
 
@@ -464,6 +466,10 @@
               _obj.native.nullOnError = newValues[v].nullOnError;
               changed = true;
             }
+            if (_obj.native.enabled !== newValues[v].enabled) {
+              _obj.native.enabled = newValues[v].enabled;
+              changed = true;
+            }
             newValues[v].obj = _obj;
             if (changed) tasks.push({ id: _obj._id, action: 'update', obj: _obj });
           } else {
@@ -484,7 +490,8 @@
                 factor:      newValues[v].factor,
                 offset:      newValues[v].offset,
                 decimals:    newValues[v].decimals,
-                nullOnError: newValues[v].nullOnError
+                nullOnError: newValues[v].nullOnError,
+                enabled:     newValues[v].enabled,
               },
               type: 'state'
             };
@@ -584,6 +591,7 @@
             <th data-name="offset"     style="width:60px" class="translate" data-default="0">Offset</th>
             <th data-name="decimals"   style="width:60px" class="translate" data-type="number" data-default="2">Decimals</th>
             <th data-name="nullOnError" style="width:60px" class="translate" data-type="checkbox" data-default="true">Null on error</th>
+            <th data-name="enabled" style="width:60px" class="translate" data-type="checkbox" data-default="true">Enabled</th>
             <th data-buttons="delete copy" style="width:80px"></th>
           </tr>
           </thead>

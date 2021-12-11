@@ -9,6 +9,7 @@ declare interface SensorObject extends ioBroker.StateObject {
     decimals: number | null;
     interval: number;
     nullOnError: boolean;
+    enabled: boolean | undefined;
     remoteSystemId: string | null;
   };
 }

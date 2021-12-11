@@ -125,8 +125,13 @@ export class Ds18b20Adapter extends utils.Adapter {
           continue;
         }
 
+        if (obj.native.enabled === false) {
+          this.log.debug(`Sensor ${obj.native.address} is not enabled and will be ignored.`);
+          continue;
+        }
+
         if (obj.native.remoteSystemId && !this.config.remoteEnabled) {
-          this.log.warn(`Object ${obj._id} is configured as remote sensor of ${obj.native.remoteSystemId} but remote sensors are not enabled!`);
+          this.log.warn(`Sensor ${obj.native.address} is configured as remote sensor of ${obj.native.remoteSystemId} but remote sensors are not enabled!`);
           continue;
         }
 
