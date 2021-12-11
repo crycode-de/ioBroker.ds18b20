@@ -1,8 +1,20 @@
 {
     "common": {
         "name": "ds18b20",
-        "version": "1.4.2",
+        "version": "1.5.0",
         "news": {
+            "1.5.0": {
+                "en": "Add setting to disable specific sensors",
+                "de": "Einstellung zum Deaktivieren einzelner Sensoren hinzugefügt",
+                "ru": "Добавить настройку для отключения определенных датчиков",
+                "pt": "Adicionar configuração para desativar sensores específicos",
+                "nl": "Instelling toevoegen om specifieke sensoren uit te schakelen",
+                "fr": "Ajouter un paramètre pour désactiver des capteurs spécifiques",
+                "it": "Aggiungi impostazione per disabilitare sensori specifici",
+                "es": "Agregar configuración para deshabilitar sensores específicos",
+                "pl": "Dodaj ustawienie, aby wyłączyć określone czujniki",
+                "zh-cn": "添加设置以禁用特定传感器"
+            },
             "1.4.2": {
                 "en": "Added some remote-client information, Updated dependencies",
                 "de": "Einige Remote-Client-Informationen hinzugefügt, Abhängigkeiten aktualisiert",

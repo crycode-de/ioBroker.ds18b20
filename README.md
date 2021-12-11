@@ -30,6 +30,12 @@ Dies ist ein ioBroker-Adapter zur Integration von DS18B20 1-Wire Temperatursenso
 
 ## Changelog
 
+### 1.5.0 (2021-12-11)
+* (crycode-de) Add setting to disable specific sensors
+
+### 1.4.2 (2021-11-22)
+* (crycode-de) Added some instructions for installing remote client in admin
+
 ### 1.4.1 (2021-04-20)
 * (crycode-de) Fixed bug if multiple remote sensors are used
 
