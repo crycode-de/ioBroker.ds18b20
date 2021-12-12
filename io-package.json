@@ -1,8 +1,20 @@
 {
     "common": {
         "name": "ds18b20",
-        "version": "1.5.0",
+        "version": "1.5.1",
         "news": {
+            "1.5.1": {
+                "en": "Fix crash on undefined obj.native, Updated remote-client-setup info in admin if https is used",
+                "de": "Absturz bei undefiniertem obj.native behoben, Remote-Client-Setup-Informationen im Admin aktualisiert, wenn https verwendet wird",
+                "ru": "Исправить сбой на undefined obj.native, обновлена информация о настройке удаленного клиента в админке, если используется https",
+                "pt": "Corrigir falha em obj.nativo indefinido, informações de configuração do cliente remoto atualizadas no administrador se https for usado",
+                "nl": "Fix crash op ongedefinieerde obj.native, Bijgewerkte remote-client-setup info in admin als https wordt gebruikt",
+                "fr": "Correction d'un plantage sur obj.native non défini, mise à jour des informations de configuration du client distant dans l'administrateur si https est utilisé",
+                "it": "Risolto il problema con l'arresto anomalo su obj.native non definito, informazioni aggiornate sulla configurazione del client remoto nell'amministratore se viene utilizzato https",
+                "es": "Se corrigió el bloqueo en el obj.native indefinido, se actualizó la información de configuración del cliente remoto en el administrador si se usa https",
+                "pl": "Napraw awarię na undefined obj.native, Zaktualizowano informacje o zdalnej konfiguracji klienta w admin, jeśli używany jest https",
+                "zh-cn": "修复未定义的 obj.native 崩溃，如果使用 https，则更新管理员中的远程客户端设置信息"
+            },
             "1.5.0": {
                 "en": "Add setting to disable specific sensors",
                 "de": "Einstellung zum Deaktivieren einzelner Sensoren hinzugefügt",
