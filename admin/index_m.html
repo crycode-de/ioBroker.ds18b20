@@ -126,7 +126,11 @@
         onChange2 = onChange;
 
         // remote-setup-url
-        $('#remote-setup-url').html(`${window.location.href.split(/\/[^\/]+$/)[0]}/remote-client-setup.js`);
+        let remoteSetupUrl = `${window.location.href.split(/\/[^\/]+$/)[0]}/remote-client-setup.js`;
+        if (remoteSetupUrl.startsWith('https://')){ // with https they often use a self signged certificate, so disable wget's cert check
+          remoteSetupUrl = '--no-check-certificate ' + remoteSetupUrl;
+        }
+        $('#remote-setup-url').html(remoteSetupUrl);
 
         if (!settings) return;
 

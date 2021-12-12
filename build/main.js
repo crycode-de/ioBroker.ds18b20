@@ -65,13 +65,14 @@ class Ds18b20Adapter extends utils.Adapter {
                 });
             }
             this.getForeignObjects(this.namespace + '.sensors.*', 'state', (err, objects) => {
+                var _a;
                 if (err) {
                     this.log.error('error loading sensors data objects');
                     return;
                 }
                 for (const objectId in objects) {
                     const obj = objects[objectId];
-                    if (typeof obj.native.address !== 'string') {
+                    if (typeof ((_a = obj.native) === null || _a === void 0 ? void 0 : _a.address) !== 'string') {
                         this.log.warn(`Object ${obj._id} has no valid address!`);
                         continue;
                     }

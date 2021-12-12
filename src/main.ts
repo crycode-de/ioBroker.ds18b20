@@ -120,7 +120,7 @@ export class Ds18b20Adapter extends utils.Adapter {
       for (const objectId in objects) {
         const obj: SensorObject = objects[objectId] as SensorObject;
 
-        if (typeof obj.native.address !== 'string') {
+        if (typeof obj.native?.address !== 'string') {
           this.log.warn(`Object ${obj._id} has no valid address!`);
           continue;
         }
