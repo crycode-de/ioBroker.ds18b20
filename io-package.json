@@ -1,8 +1,20 @@
 {
     "common": {
         "name": "ds18b20",
-        "version": "1.5.1",
+        "version": "1.5.2",
         "news": {
+            "1.5.2": {
+                "en": "Fix remote client reconnect after multiple failed attempts. Reinstall of remote client needed to apply this fix!",
+                "de": "Fehler bei Wiederherstellung der Remote-Client-Verbindung nach mehreren fehlgeschlagenen Versuchen behoben. Neuinstallation des Remote-Clients erforderlich, um diesen Fix anzuwenden!",
+                "ru": "Исправьте повторное подключение удаленного клиента после нескольких неудачных попыток. Чтобы применить это исправление, необходимо переустановить удаленный клиент!",
+                "pt": "Corrigir a reconexão do cliente remoto após várias tentativas malsucedidas. É necessário reinstalar o cliente remoto para aplicar esta correção!",
+                "nl": "Herstel externe client opnieuw verbinding na meerdere mislukte pogingen. Herinstallatie van externe client nodig om deze oplossing toe te passen!",
+                "fr": "Correction de la reconnexion du client distant après plusieurs tentatives infructueuses. Réinstallation du client distant nécessaire pour appliquer ce correctif !",
+                "it": "Risolto il problema con la riconnessione del client remoto dopo più tentativi falliti. Reinstallazione del client remoto necessaria per applicare questa correzione!",
+                "es": "Corrija la reconexión del cliente remoto después de varios intentos fallidos. ¡Reinstale el cliente remoto necesario para aplicar esta solución!",
+                "pl": "Napraw ponowne połączenie klienta zdalnego po wielu nieudanych próbach. Wymagana ponowna instalacja zdalnego klienta, aby zastosować tę poprawkę!",
+                "zh-cn": "多次尝试失败后修复远程客户端重新连接。应用此修复程序需要重新安装远程客户端！"
+            },
             "1.5.1": {
                 "en": "Fix crash on undefined obj.native, Updated remote-client-setup info in admin if https is used",
                 "de": "Absturz bei undefiniertem obj.native behoben, Remote-Client-Setup-Informationen im Admin aktualisiert, wenn https verwendet wird",
