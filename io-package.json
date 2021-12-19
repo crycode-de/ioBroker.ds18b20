@@ -206,54 +206,6 @@
                 "es": "Implementación propia de la lectura de los datos del sensor. Se corrigió el error en el redondeo de decimales. La ruta de los dispositivos de 1 cable ahora es configurable.",
                 "pl": "Własna implementacja odczytu danych czujnika. Naprawiono błąd w zaokrąglaniu miejsc po przecinku. Ścieżkę urządzeń 1-przewodowych można teraz konfigurować.",
                 "zh-cn": "自己实现读取传感器数据。修正了小数舍入的错误。现在可以配置1线设备路径。"
-            },
-            "1.0.3": {
-                "en": "Added documentation about DS18B20 at a Raspberry Pi; Dependencies updated",
-                "de": "Dokumentation zu DS18B20 an einem Raspberry Pi hinzugefügt; Abhängigkeiten aktualisiert",
-                "ru": "Добавлена документация по DS18B20 на Raspberry Pi; Зависимости обновлены",
-                "pt": "Adicionada documentação sobre o DS18B20 em um Raspberry Pi; Dependências atualizadas",
-                "nl": "Documentatie toegevoegd over DS18B20 op een Raspberry Pi; Afhankelijkheden bijgewerkt",
-                "fr": "Ajout de la documentation sur le DS18B20 sur un Raspberry Pi; Dépendances mises à jour",
-                "it": "Aggiunta documentazione su DS18B20 su un Raspberry Pi; Dipendenze aggiornate",
-                "es": "Se agregó documentación sobre DS18B20 en una Raspberry Pi; Dependencias actualizadas",
-                "pl": "Dodano dokumentację dotyczącą DS18B20 na Raspberry Pi; Zależności zaktualizowane",
-                "zh-cn": "在Raspberry Pi上添加了有关DS18B20的文档；依赖关系已更新"
-            },
-            "1.0.2": {
-                "en": "Display error message when tried to search for sensors without adapter running.",
-                "de": "Zeigt eine Fehlermeldung an, wenn versucht wird nach Sensoren zu suchen, ohne dass der Adapter ausgeführt wird.",
-                "ru": "Отображать сообщение об ошибке при попытке поиска датчиков без работающего адаптера.",
-                "pt": "Exibir mensagem de erro ao tentar procurar sensores sem o adaptador em execução.",
-                "nl": "Geef een foutmelding weer wanneer u probeert te zoeken naar sensoren zonder adapter.",
-                "fr": "Affiche un message d'erreur lorsque vous essayez de rechercher des capteurs sans adaptateur en cours d'exécution.",
-                "it": "Visualizza il messaggio di errore quando si tenta di cercare sensori senza l'adattatore in funzione.",
-                "es": "Muestra un mensaje de error cuando intenta buscar sensores sin el adaptador en ejecución.",
-                "pl": "Wyświetl komunikat o błędzie podczas próby wyszukania czujników bez uruchomionego adaptera.",
-                "zh-cn": "尝试在没有运行适配器的情况下搜索传感器时显示错误消息。"
-            },
-            "1.0.1": {
-                "en": "Type changed to hardware, Renamed command, Added missing documentation",
-                "de": "Typ geändert in Hardware, Befehl umbenannt, fehlende Dokumentation hinzugefügt",
-                "ru": "Тип изменен на аппаратное обеспечение, команда переименована, добавлена недостающая документация",
-                "pt": "Tipo alterado para hardware, comando renomeado, documentação ausente adicionada",
-                "nl": "Type gewijzigd in hardware, opdracht Hernoemd, ontbrekende documentatie toegevoegd",
-                "fr": "Type modifié en matériel, commande renommée, documentation manquante ajoutée",
-                "it": "Tipo modificato in hardware, comando rinominato, aggiunta documentazione mancante",
-                "es": "Tipo cambiado a hardware, comando renombrado, documentación faltante agregada",
-                "pl": "Zmieniono typ na sprzęt, zmieniono nazwę polecenia, dodano brakującą dokumentację",
-                "zh-cn": "将类型更改为硬件，重命名命令，添加了缺少的文档"
-            },
-            "1.0.0": {
-                "en": "initial release",
-                "de": "Erstveröffentlichung",
-                "ru": "Начальная версия",
-                "pt": "lançamento inicial",
-                "nl": "Eerste uitgave",
-                "fr": "Première version",
-                "it": "Versione iniziale",
-                "es": "Versión inicial",
-                "pl": "Pierwsze wydanie",
-                "zh-cn": "首次出版"
             }
         },
         "title": "DS18B20",
