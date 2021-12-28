@@ -1,8 +1,20 @@
 {
     "common": {
         "name": "ds18b20",
-        "version": "1.5.2",
+        "version": "1.5.3",
         "news": {
+            "1.5.3": {
+                "en": "Increased remote client protocol version to inform users that they should update their remote clients",
+                "de": "Versionsnummer des Remote-Client-Protokolls erhöht, um Benutzer zu informieren, dass sie ihre Remote-Clients aktualisieren sollten",
+                "ru": "Увеличенная версия протокола удаленного клиента, чтобы информировать пользователей о том, что они должны обновить свои удаленные клиенты.",
+                "pt": "Maior versão do protocolo do cliente remoto para informar aos usuários que eles devem atualizar seus clientes remotos",
+                "nl": "Verhoogde versie van het externe clientprotocol om gebruikers te informeren dat ze hun externe clients moeten bijwerken",
+                "fr": "Augmentation de la version du protocole client distant pour informer les utilisateurs qu'ils doivent mettre à jour leurs clients distants",
+                "it": "Versione migliorata del protocollo client remoto per informare gli utenti che devono aggiornare i propri client remoti",
+                "es": "Aumento de la versión del protocolo de cliente remoto para informar a los usuarios que deben actualizar sus clientes remotos",
+                "pl": "Zwiększona wersja protokołu klienta zdalnego, aby poinformować użytkowników, że powinni zaktualizować swoich klientów zdalnych",
+                "zh-cn": "增加远程客户端协议版本以通知用户他们应该更新他们的远程客户端"
+            },
             "1.5.2": {
                 "en": "Fix remote client reconnect after multiple failed attempts. Reinstall of remote client needed to apply this fix!",
                 "de": "Fehler bei Wiederherstellung der Remote-Client-Verbindung nach mehreren fehlgeschlagenen Versuchen behoben. Neuinstallation des Remote-Clients erforderlich, um diesen Fix anzuwenden!",
