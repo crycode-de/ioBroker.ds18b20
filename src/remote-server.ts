@@ -143,7 +143,7 @@ export class RemoteSensorServer extends EventEmitter {
 
       timeout = setTimeout(() => {
         this.removeListener('sensorData', handler);
-        reject(new Error(`No response from remote system ${client?.systemId}`));
+        reject(new Error(`No response from remote system ${clientSystemId}`));
       }, 5000);
 
       this.on('sensorData', handler);
@@ -154,7 +154,10 @@ export class RemoteSensorServer extends EventEmitter {
       cmd: 'read',
       ts: requestTs,
       address: sensorAddress,
-    });
+    })
+      .catch((err) => {
+        this.adapter.log.error(`Error while sending request to remote system ${clientSystemId}: ${err}`);
+      });
 
     // wait for the feedback promise to resolve
     const raw = await prom;
@@ -182,7 +185,10 @@ export class RemoteSensorServer extends EventEmitter {
         cmd: 'search',
         ts: requestTs,
         systemId: client.systemId,
-      });
+      })
+        .catch((err) => {
+          this.adapter.log.error(`Error while sending request to remote system ${client.systemId}: ${err}`);
+        });
 
       // wait for feedback with a timeout of 5 seconds
       proms.push(new Promise<SearchedSensor[]>((resolve, reject) => {
@@ -270,7 +276,10 @@ export class RemoteSensorServer extends EventEmitter {
     }, 5000);
 
     // request client information
-    this.send(socket, { cmd: 'clientInfo', protocolVersion: REMOTE_PROTOCOL_VERSION });
+    this.send(socket, { cmd: 'clientInfo', protocolVersion: REMOTE_PROTOCOL_VERSION })
+      .catch((err) => {
+        this.adapter.log.error(`Error while sending request to remote system ${socketId}: ${err}`);
+      });
   }
 
   /**

@@ -71,7 +71,7 @@ class RemoteSensorServer extends events_1.EventEmitter {
                 };
                 timeout = setTimeout(() => {
                     this.removeListener('sensorData', handler);
-                    reject(new Error(`No response from remote system ${client === null || client === void 0 ? void 0 : client.systemId}`));
+                    reject(new Error(`No response from remote system ${clientSystemId}`));
                 }, 5000);
                 this.on('sensorData', handler);
             });
@@ -79,6 +79,9 @@ class RemoteSensorServer extends events_1.EventEmitter {
                 cmd: 'read',
                 ts: requestTs,
                 address: sensorAddress,
+            })
+                .catch((err) => {
+                this.adapter.log.error(`Error while sending request to remote system ${clientSystemId}: ${err}`);
             });
             const raw = yield prom;
             return raw;
@@ -95,6 +98,9 @@ class RemoteSensorServer extends events_1.EventEmitter {
                     cmd: 'search',
                     ts: requestTs,
                     systemId: client.systemId,
+                })
+                    .catch((err) => {
+                    this.adapter.log.error(`Error while sending request to remote system ${client.systemId}: ${err}`);
                 });
                 proms.push(new Promise((resolve, reject) => {
                     let timeout = null;
@@ -159,7 +165,10 @@ class RemoteSensorServer extends events_1.EventEmitter {
             socket.destroy();
             delete this.socketTimeouts[socketId];
         }, 5000);
-        this.send(socket, { cmd: 'clientInfo', protocolVersion: common_1.REMOTE_PROTOCOL_VERSION });
+        this.send(socket, { cmd: 'clientInfo', protocolVersion: common_1.REMOTE_PROTOCOL_VERSION })
+            .catch((err) => {
+            this.adapter.log.error(`Error while sending request to remote system ${socketId}: ${err}`);
+        });
     }
     handleSocketData(socketId, socket, raw) {
         let data;
