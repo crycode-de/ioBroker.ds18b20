@@ -1,8 +1,20 @@
 {
     "common": {
         "name": "ds18b20",
-        "version": "1.5.3",
+        "version": "1.5.4",
         "news": {
+            "1.5.4": {
+                "en": "Catch errors while sending request to remote client",
+                "de": "Fehler beim Senden einer Anfrage an einen Remote-Client werden nun abfangen",
+                "ru": "Выявление ошибок при отправке запроса удаленному клиенту",
+                "pt": "Capture erros ao enviar solicitação ao cliente remoto",
+                "nl": "Vang fouten op tijdens het verzenden van een verzoek naar een externe client",
+                "fr": "Détecter les erreurs lors de l'envoi de la demande au client distant",
+                "it": "Rileva gli errori durante l'invio della richiesta al client remoto",
+                "es": "Detectar errores al enviar una solicitud a un cliente remoto",
+                "pl": "Wyłap błędy podczas wysyłania żądania do zdalnego klienta",
+                "zh-cn": "向远程客户端发送请求时捕获错误"
+            },
             "1.5.3": {
                 "en": "Increased remote client protocol version to inform users that they should update their remote clients",
                 "de": "Versionsnummer des Remote-Client-Protokolls erhöht, um Benutzer zu informieren, dass sie ihre Remote-Clients aktualisieren sollten",
