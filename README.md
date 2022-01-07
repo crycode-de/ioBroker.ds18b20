@@ -5,7 +5,6 @@
 [![Downloads](https://img.shields.io/npm/dm/iobroker.ds18b20.svg)](https://www.npmjs.com/package/iobroker.ds18b20)
 ![Number of Installations (latest)](https://iobroker.live/badges/ds18b20-installed.svg)
 ![Number of Installations (stable)](https://iobroker.live/badges/ds18b20-stable.svg)
-[![Dependency Status](https://img.shields.io/david/crycode-de/iobroker.ds18b20.svg)](https://david-dm.org/crycode-de/iobroker.ds18b20)
 
 [![NPM](https://nodei.co/npm/iobroker.ds18b20.png?downloads=true)](https://nodei.co/npm/iobroker.ds18b20/)
 
