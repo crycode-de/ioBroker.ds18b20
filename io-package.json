@@ -1,8 +1,20 @@
 {
     "common": {
         "name": "ds18b20",
-        "version": "1.5.4",
+        "version": "1.6.0",
         "news": {
+            "1.6.0": {
+                "en": "Added sorting of sensors in admin and keep the sort order. Allow usage of w1_bus_masterX directly as w1DevicesPath.",
+                "de": "Sortierung der Sensoren im Admin hinzugefügt, Sortierreihenfolge wird nun beibehalten. Verwendung von w1_bus_masterX direkt als w1DevicesPath möglich.",
+                "ru": "Добавлена сортировка датчиков в админке и сохранение порядка сортировки. Разрешить использование w1_bus_masterX напрямую как w1DevicesPath.",
+                "pt": "Adicionado classificação de sensores no admin e manter a ordem de classificação. Permitir o uso de w1_bus_masterX diretamente como w1DevicesPath.",
+                "nl": "Sortering van sensoren toegevoegd in admin en sorteervolgorde behouden. Sta gebruik van w1_bus_masterX rechtstreeks toe als w1DevicesPath.",
+                "fr": "Ajout du tri des capteurs dans l'admin et maintien de l'ordre de tri. Autoriser l'utilisation de w1_bus_masterX directement en tant que w1DevicesPath.",
+                "it": "Aggiunto l'ordinamento dei sensori nell'amministratore e mantieni l'ordinamento. Consenti l'utilizzo di w1_bus_masterX direttamente come w1DevicesPath.",
+                "es": "Se agregó clasificación de sensores en administración y mantener el orden de clasificación. Permitir el uso de w1_bus_masterX directamente como w1DevicesPath.",
+                "pl": "Dodano sortowanie czujników w admin i zachowanie porządku sortowania. Zezwól na użycie w1_bus_masterX bezpośrednio jako w1DevicesPath.",
+                "zh-cn": "在管理员中添加传感器排序并保持排序顺序。允许将 w1_bus_masterX 直接用作 w1DevicesPath。"
+            },
             "1.5.4": {
                 "en": "Catch errors while sending request to remote client",
                 "de": "Fehler beim Senden einer Anfrage an einen Remote-Client werden nun abfangen",
