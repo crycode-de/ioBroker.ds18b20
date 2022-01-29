@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.decrypt = exports.encrypt = exports.REMOTE_PROTOCOL_VERSION = void 0;
 const crypto = require("crypto");
-exports.REMOTE_PROTOCOL_VERSION = 2;
+exports.REMOTE_PROTOCOL_VERSION = 3;
 const IV_LENGTH = 16;
 function encrypt(text, key) {
     const iv = crypto.randomBytes(IV_LENGTH);

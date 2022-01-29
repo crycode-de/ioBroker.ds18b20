@@ -294,12 +294,14 @@ class Ds18b20Remote {
           const files = await readDir(this.w1DevicesPath);
 
           const proms: Promise<string>[] = [];
-          for (let i = 0; i < files.length; i++) {
-            if (!files[ i ].match(/^w1_bus_master\d+$/)) {
-              continue;
+          for (const file of files) {
+            if (file.match(/^w1_bus_master\d+$/)) { // devices path used
+              this.log.debug(`reading ${this.w1DevicesPath}/${file}/w1_master_slaves`);
+              proms.push(readFile(`${this.w1DevicesPath}/${file}/w1_master_slaves`, 'utf8'));
+            } else if (file === 'w1_master_slaves') { // path of one w1_bus_masterX used
+              this.log.debug(`reading ${this.w1DevicesPath}/w1_master_slaves`);
+              proms.push(readFile(`${this.w1DevicesPath}/w1_master_slaves`, 'utf8'));
             }
-            this.log.debug(`reading ${this.w1DevicesPath}/${files[ i ]}/w1_master_slaves`);
-            proms.push(readFile(`${this.w1DevicesPath}/${files[ i ]}/w1_master_slaves`, 'utf8'));
           }
 
           const addresses: string[] = (await Promise.all(proms)).reduce<string[]>((acc, cur) => {

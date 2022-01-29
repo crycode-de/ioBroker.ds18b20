@@ -8,7 +8,7 @@ import * as crypto from 'crypto';
  * Protocol version for the communication.
  * May change in future versions.
  */
-export const REMOTE_PROTOCOL_VERSION = 2;
+export const REMOTE_PROTOCOL_VERSION = 3;
 
 /**
  * Length of the initialization vector for encryption.
