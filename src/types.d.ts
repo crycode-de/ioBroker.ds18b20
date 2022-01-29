@@ -10,6 +10,7 @@ declare interface SensorObject extends ioBroker.StateObject {
     interval: number;
     nullOnError: boolean;
     enabled: boolean | undefined;
+    sortOrder: number | undefined; // only used in admin
     remoteSystemId: string | null;
   };
 }

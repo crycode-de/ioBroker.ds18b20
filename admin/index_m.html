@@ -127,7 +127,7 @@
 
         // remote-setup-url
         let remoteSetupUrl = `${window.location.href.split(/\/[^\/]+$/)[0]}/remote-client-setup.js`;
-        if (remoteSetupUrl.startsWith('https://')){ // with https they often use a self signged certificate, so disable wget's cert check
+        if (remoteSetupUrl.startsWith('https://')){ // with https they often use a self signed certificate, so disable wget's cert check
           remoteSetupUrl = '--no-check-certificate ' + remoteSetupUrl;
         }
         $('#remote-setup-url').html(remoteSetupUrl);
@@ -205,10 +205,18 @@
                 decimals:      obj.native.decimals,
                 nullOnError:   obj.native.nullOnError,
                 enabled:       obj.native.enabled !== false, // use this check to be compatible to configs before v1.5.0 where can't be disabled
+                sortOrder:     obj.native.sortOrder || 99999,
                 obj:           obj
               };
               curValues.push(line);
             }
+
+            // sort by sortOrder
+            curValues.sort((a, b) => {
+              if (a.sortOrder < b.sortOrder) return -1;
+              if (a.sortOrder > b.sortOrder) return 1;
+              return 0;
+            });
           }
 
           curValues2table();
@@ -320,6 +328,7 @@
                 decimals:      2,
                 nullOnError:   true,
                 enabled:       true,
+                sortOrder:     99999,
               };
               newValues.push(line);
 
@@ -434,6 +443,7 @@
           newValues[v].offset = parseFloat(newValues[v].offset) || 0;
           newValues[v].factor = parseFloat(newValues[v].factor) || 1;
           newValues[v].decimals = parseInt(newValues[v].decimals, 10) || 2;
+          newValues[v].sortOrder = v + 1;
 
           if (found) {
             const _obj = curValues[t].obj;
@@ -474,6 +484,10 @@
               _obj.native.enabled = newValues[v].enabled;
               changed = true;
             }
+            if (_obj.native.sortOrder !== newValues[v].sortOrder) {
+              _obj.native.sortOrder = newValues[v].sortOrder;
+              changed = true;
+            }
             newValues[v].obj = _obj;
             if (changed) tasks.push({ id: _obj._id, action: 'update', obj: _obj });
           } else {
@@ -496,6 +510,7 @@
                 decimals:    newValues[v].decimals,
                 nullOnError: newValues[v].nullOnError,
                 enabled:     newValues[v].enabled,
+                sortOrder:   newValues[v].sortOrder,
               },
               type: 'state'
             };
@@ -596,7 +611,7 @@
             <th data-name="decimals"   style="width:60px" class="translate" data-type="number" data-default="2">Decimals</th>
             <th data-name="nullOnError" style="width:60px" class="translate" data-type="checkbox" data-default="true">Null on error</th>
             <th data-name="enabled" style="width:60px" class="translate" data-type="checkbox" data-default="true">Enabled</th>
-            <th data-buttons="delete copy" style="width:80px"></th>
+            <th data-buttons="delete copy up down" style="width:80px"></th>
           </tr>
           </thead>
         </table>
