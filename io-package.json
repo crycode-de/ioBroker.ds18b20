@@ -281,6 +281,9 @@
         "type": "hardware",
         "connectionType": "local",
         "dataSource": "poll",
+        "adminUI": {
+            "config": "materialize"
+        },
         "compact": true,
         "materialize": true,
         "messagebox": true,
