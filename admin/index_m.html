@@ -300,7 +300,8 @@
               return;
             }
             if (ret.err) {
-              showError(_(ret.err));
+              console.error(ret.err);
+              showError(_(typeof ret.err === 'object' ? JSON.stringify(ret.err) : ret.err));
               return;
             }
 
