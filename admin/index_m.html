@@ -252,7 +252,7 @@
           const host = web0.native.bind === '0.0.0.0' ? window.location.hostname : web0.native.bind;
           url += `${host}:${web0.native.port}/adapter/${adapter}/remote-client-setup.js`
           $('#remote-setup-url').html(url);
-        })
+        });
       }
 
       /**
