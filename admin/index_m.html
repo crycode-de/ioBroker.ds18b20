@@ -126,11 +126,7 @@
         onChange2 = onChange;
 
         // remote-setup-url
-        let remoteSetupUrl = `${window.location.href.split(/\/[^\/]+$/)[0]}/remote-client-setup.js`;
-        if (remoteSetupUrl.startsWith('https://')){ // with https they often use a self signed certificate, so disable wget's cert check
-          remoteSetupUrl = '--no-check-certificate ' + remoteSetupUrl;
-        }
-        $('#remote-setup-url').html(remoteSetupUrl);
+        updateRemoteClientSetupUrl();
 
         if (!settings) return;
 
@@ -226,6 +222,37 @@
         onChange(false);
         // reinitialize all the Materialize labels on the page if you are dynamically adding inputs:
         if (M) M.updateTextFields();
+      }
+
+      /**
+       * Update the remote client setup url shown in the UI.
+       * If adapter web.0 is installed a local link using this will be provided.
+       * Otherwise a link to github will be provided.
+       */
+      function updateRemoteClientSetupUrl () {
+        const githubUrl = 'https://raw.githubusercontent.com/crycode-de/ioBroker.ds18b20/master/admin/remote-client-setup.js';
+
+        // try to get the config of web.0 instance
+        socket.emit('getObject', 'system.adapter.web.0', (err, web0) => {
+          if (err || !web0 || !web0.native || !web0.native.port) {
+            // not found
+            console.warn('Adapter web.0 not found, using github url');
+            $('#remote-setup-url').html(githubUrl);
+            return;
+          }
+
+          if (web0.native.auth) {
+            // auth enabled
+            console.warn('Adapter web.0 has authentication enabled, using github url');
+            $('#remote-setup-url').html(githubUrl);
+            return;
+          }
+
+          let url = web0.native.secure ? '--no-check-certificate https://' : 'http://';
+          const host = web0.native.bind === '0.0.0.0' ? window.location.hostname : web0.native.bind;
+          url += `${host}:${web0.native.port}/adapter/${adapter}/remote-client-setup.js`
+          $('#remote-setup-url').html(url);
+        })
       }
 
       /**
