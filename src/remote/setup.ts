@@ -11,7 +11,7 @@ import * as path from 'path';
 const SYSTEMD_SERVICE_NAME = 'iobroker-ds18b20-remote.service';
 
 const files: Record<string, string> = {
-  FILE: 'DUMMY' // will be replaced during remote-client-setup creation
+  FILE: 'DUMMY', // will be replaced during remote-client-setup creation
 };
 
 for (const f in files) {

@@ -1,6 +1,0 @@
-{
-    "require": [
-        "./test/mocha.setup.js",
-        "source-map-support/register"
-    ]
-}

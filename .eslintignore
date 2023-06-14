@@ -1,1 +1,3 @@
-build/*
+admin/build/
+build/
+**/.eslintrc.js

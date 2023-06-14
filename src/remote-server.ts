@@ -10,10 +10,14 @@ import {
   Socket,
 } from 'net';
 
-import { autobind } from 'core-decorators';
+import { boundMethod } from 'autobind-decorator';
 
-import { Ds18b20Adapter } from './main';
-import { decrypt, encrypt, REMOTE_PROTOCOL_VERSION } from './remote/common';
+import type { Ds18b20Adapter } from './main';
+import {
+  decrypt,
+  encrypt,
+  REMOTE_PROTOCOL_VERSION,
+} from './remote/common';
 
 /**
  * Information about a connected client.
@@ -67,7 +71,7 @@ export class RemoteSensorServer extends EventEmitter {
    * Timeouts for sockets.
    * Used to disconnect a socket after idle before it is identified.
    */
-  private socketTimeouts: Record<string, NodeJS.Timeout> = {};
+  private socketTimeouts: Record<string, ioBroker.Timeout> = {};
 
   constructor (port: number, encKey: string, adapter: Ds18b20Adapter) {
     super();
@@ -93,7 +97,7 @@ export class RemoteSensorServer extends EventEmitter {
    * Returns if the server is listening for connections.
    */
   public isListening (): boolean {
-    return this.server && this.server.listening;
+    return this.server.listening;
   }
 
   /**
@@ -132,16 +136,18 @@ export class RemoteSensorServer extends EventEmitter {
 
     // prepare promise to wait for feedback with a timeout of 5 seconds
     const prom = new Promise<string>((resolve, reject) => {
-      let timeout: NodeJS.Timeout | null = null;
+      let timeout: ioBroker.Timeout | null = null;
 
       const handler = (data: RemoteDataRead): void => {
         if (typeof data !== 'object' || data.address !== sensorAddress || data.ts !== requestTs) return;
-        if (timeout) clearTimeout(timeout);
+        if (timeout) {
+          this.adapter.clearTimeout(timeout);
+        }
         this.removeListener('sensorData', handler);
         resolve(data.raw || '');
       };
 
-      timeout = setTimeout(() => {
+      timeout = this.adapter.setTimeout(() => {
         this.removeListener('sensorData', handler);
         reject(new Error(`No response from remote system ${clientSystemId}`));
       }, 5000);
@@ -192,11 +198,13 @@ export class RemoteSensorServer extends EventEmitter {
 
       // wait for feedback with a timeout of 5 seconds
       proms.push(new Promise<SearchedSensor[]>((resolve, reject) => {
-        let timeout: NodeJS.Timeout | null = null;
+        let timeout: ioBroker.Timeout | null = null;
 
         const handler = (data: RemoteDataSearch): void => {
           if (typeof data !== 'object' || data.systemId !== client.systemId || data.ts !== requestTs) return;
-          if (timeout) clearTimeout(timeout);
+          if (timeout) {
+            this.adapter.clearTimeout(timeout);
+          }
           this.removeListener('sensorData', handler);
           if (!Array.isArray(data.addresses)) {
             data.addresses = [];
@@ -204,7 +212,7 @@ export class RemoteSensorServer extends EventEmitter {
           resolve(data.addresses.map((a) => ({ address: a, remoteSystemId: client.systemId })));
         };
 
-        timeout = setTimeout(() => {
+        timeout = this.adapter.setTimeout(() => {
           this.removeListener('sensorData', handler);
           reject(new Error(`No response from remote system ${client.systemId}`));
         }, 5000);
@@ -232,7 +240,7 @@ export class RemoteSensorServer extends EventEmitter {
    * Handler for new socket connections.
    * @param socket The connected socket.
    */
-  @autobind
+  @boundMethod
   private handleConnection (socket: Socket): void {
     const socketId = `${socket.remoteAddress}:${socket.remotePort}`;
     this.adapter.log.debug(`socket connect ${socketId}`);
@@ -246,7 +254,7 @@ export class RemoteSensorServer extends EventEmitter {
       }
 
       if (this.socketTimeouts[socketId]) {
-        clearTimeout(this.socketTimeouts[socketId]);
+        this.adapter.clearTimeout(this.socketTimeouts[socketId]);
         delete this.socketTimeouts[socketId];
       }
 
@@ -269,7 +277,7 @@ export class RemoteSensorServer extends EventEmitter {
     });
 
     // set timeout to close unknown sockets after 5 seconds
-    this.socketTimeouts[socketId] = setTimeout(() => {
+    this.socketTimeouts[socketId] = this.adapter.setTimeout(() => {
       this.adapter.log.warn(`Disconnecting remote ${socketId} due to inactivity before identification`);
       socket.destroy();
       delete this.socketTimeouts[socketId];
@@ -313,7 +321,7 @@ export class RemoteSensorServer extends EventEmitter {
         }
 
         // clear the close timeout
-        clearTimeout(this.socketTimeouts[socketId]);
+        this.adapter.clearTimeout(this.socketTimeouts[socketId]);
         delete this.socketTimeouts[socketId];
 
         // save as known socket
@@ -361,6 +369,6 @@ export class RemoteSensorServer extends EventEmitter {
           resolve();
         }
       });
-    })
+    });
   }
 }

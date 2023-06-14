@@ -1,7 +1,7 @@
 {
     "common": {
         "name": "ds18b20",
-        "version": "1.6.1",
+        "version": "2.0.0-alpha.0",
         "news": {
             "1.6.1": {
                 "en": "Remote client setup url displayed in admin UI fixed",
@@ -220,7 +220,8 @@
         "keywords": [
             "ds18b20",
             "ds1820",
-            "1wire"
+            "1wire",
+            "temperature"
         ],
         "license": "MIT",
         "platform": "Javascript/Node.js",
@@ -242,7 +243,12 @@
         "messagebox": true,
         "dependencies": [
             {
-                "js-controller": ">=2.0.0"
+                "js-controller": ">=4.0.0"
+            }
+        ],
+        "globalDependencies": [
+            {
+                "admin": ">=5.3.0"
             }
         ],
         "plugins": {
@@ -270,7 +276,19 @@
             "_id": "info",
             "type": "channel",
             "common": {
-                "name": "Information"
+                "name": {
+                    "en": "Information",
+                    "de": "Informationen",
+                    "ru": "Информация",
+                    "pt": "Em formação",
+                    "nl": "Informatie",
+                    "fr": "Information",
+                    "it": "Informazione",
+                    "es": "Información",
+                    "pl": "Informacja",
+                    "uk": "Інформація",
+                    "zh-cn": "信息"
+                }
             },
             "native": {}
         },
@@ -279,7 +297,19 @@
             "type": "state",
             "common": {
                 "role": "indicator.connected",
-                "name": "All sensors connected",
+                "name": {
+                    "en": "All sensors connected",
+                    "de": "Alle Sensoren verbunden",
+                    "ru": "Все датчики подключены",
+                    "pt": "Todos os sensores conectados",
+                    "nl": "Alle sensoren verbonden",
+                    "fr": "Tous les capteurs connectés",
+                    "it": "Tutti i sensori collegati",
+                    "es": "Todos los sensores conectados",
+                    "pl": "Wszystkie czujniki połączone ze sobą",
+                    "uk": "Всі датчики підключені",
+                    "zh-cn": "所有传感器"
+                },
                 "type": "boolean",
                 "read": true,
                 "write": false,
@@ -291,7 +321,19 @@
             "_id": "actions",
             "type": "channel",
             "common": {
-                "name": "Actions"
+                "name": {
+                    "en": "Actions",
+                    "de": "Maßnahmen",
+                    "ru": "Действия",
+                    "pt": "Acções",
+                    "nl": "Actie",
+                    "fr": "Mesures à prendre",
+                    "it": "Azioni",
+                    "es": "Acciones",
+                    "pl": "Akcja",
+                    "uk": "Акції",
+                    "zh-cn": "行动"
+                }
             },
             "native": {}
         },
@@ -300,7 +342,19 @@
             "type": "state",
             "common": {
                 "role": "text",
-                "name": "Read one or all sensors now",
+                "name": {
+                    "en": "Read one or all sensors now",
+                    "de": "Jetzt einen oder alle Sensoren lesen",
+                    "ru": "Прочитайте один или все датчики сейчас",
+                    "pt": "Leia um ou todos os sensores agora",
+                    "nl": "Lees een of alle sensoren nu",
+                    "fr": "Lisez un ou tous les capteurs maintenant",
+                    "it": "Leggi uno o tutti i sensori ora",
+                    "es": "Lea uno o todos los sensores ahora",
+                    "pl": "Czytaj jedno lub wszystkie czujniki obecnie",
+                    "uk": "Читати один або всі датчики зараз",
+                    "zh-cn": "现在阅读一或所有传感器"
+                },
                 "type": "string",
                 "read": false,
                 "write": true,
@@ -312,7 +366,19 @@
             "_id": "sensors",
             "type": "channel",
             "common": {
-                "name": "The sensors"
+                "name": {
+                    "en": "The sensors",
+                    "de": "Die Sensoren",
+                    "ru": "Датчики",
+                    "pt": "Os sensores",
+                    "nl": "De sensoren",
+                    "fr": "Les capteurs",
+                    "it": "I sensori",
+                    "es": "Los sensores",
+                    "pl": "Czujnik",
+                    "uk": "Датчики",
+                    "zh-cn": "传感器"
+                }
             },
             "native": {}
         }

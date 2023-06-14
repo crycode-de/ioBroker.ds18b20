@@ -11,8 +11,10 @@
  *
  * MIT License
  *
- * Copyright (c) 2021 Peter Müller <peter@crycode.de> (https://crycode.de)
+ * Copyright (c) 2021-2023 Peter Müller <peter@crycode.de> (https://crycode.de)
  */
+
+/* eslint-disable no-restricted-syntax */
 
 import { promisify } from 'util';
 import { Socket } from 'net';
@@ -193,7 +195,7 @@ class Ds18b20Remote {
       return;
     }
 
-    this.log.info(`Connecting to ${this.adapterHost}:${this.adapterPort} ...`)
+    this.log.info(`Connecting to ${this.adapterHost}:${this.adapterPort} ...`);
 
     this.socket.connect({
       host: this.adapterHost,
@@ -313,7 +315,7 @@ class Ds18b20Remote {
             cmd: 'search',
             ts: data.ts,
             systemId: data.systemId,
-            addresses
+            addresses,
           });
 
         } catch (err: any) {
@@ -377,7 +379,7 @@ class Ds18b20Remote {
           resolve();
         }
       });
-    })
+    });
   }
 
   /**

@@ -16,33 +16,22 @@ var __copyProps = (to, from, except, desc) => {
   return to;
 };
 var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: true }), mod);
-var logger_exports = {};
-__export(logger_exports, {
-  Logger: () => Logger
+var utils_exports = {};
+__export(utils_exports, {
+  round: () => round
 });
-module.exports = __toCommonJS(logger_exports);
-class Logger {
-  log(...args) {
-    console.log(...args);
+module.exports = __toCommonJS(utils_exports);
+function round(num, precision) {
+  if (precision == 0)
+    return Math.round(num);
+  let exp = 1;
+  for (let i = 0; i < precision; i++) {
+    exp *= 10;
   }
-  debug(...args) {
-    if (!process.env.DEBUG) {
-      return;
-    }
-    console.log("[Debug]", ...args);
-  }
-  info(...args) {
-    console.log("[Info]", ...args);
-  }
-  warn(...args) {
-    console.warn("[Warn]", ...args);
-  }
-  error(...args) {
-    console.error("[Error]", ...args);
-  }
+  return Math.round(num * exp) / exp;
 }
 // Annotate the CommonJS export names for ESM import in node:
 0 && (module.exports = {
-  Logger
+  round
 });
-//# sourceMappingURL=logger.js.map
+//# sourceMappingURL=utils.js.map

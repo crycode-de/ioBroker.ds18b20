@@ -8,10 +8,10 @@ import { promisify } from 'util';
 import * as fs from 'fs';
 const readFile = promisify(fs.readFile);
 
-import { autobind } from 'core-decorators';
+import { boundMethod } from 'autobind-decorator';
 
-import { round } from './lib/tools';
-import { Ds18b20Adapter } from './main';
+import { round } from './lib/utils';
+import type { Ds18b20Adapter } from './main';
 
 /**
  * Options for a Sensor.
@@ -90,7 +90,7 @@ export class Sensor extends EventEmitter {
   /**
    * Timer for interval sensor readings.
    */
-  private timer: NodeJS.Timer | null = null;
+  private timer: ioBroker.Interval | null = null;
 
   /**
    * System path where the 1-wire devices can be read.
@@ -126,7 +126,7 @@ export class Sensor extends EventEmitter {
       if (opts.interval < 500) {
         opts.interval = 500;
       }
-      this.timer = setInterval(this.read, opts.interval);
+      this.timer = this.adapter.setInterval(this.read, opts.interval);
       this.read();
     }
   }
@@ -137,7 +137,7 @@ export class Sensor extends EventEmitter {
    * Optionally a callback may be used.
    * @param  cb Optional callback function.
    */
-  @autobind
+  @boundMethod
   public async read (cb?: (err: Error | null, val: number | null) => void): Promise<void> {
 
     try {
@@ -242,7 +242,7 @@ export class Sensor extends EventEmitter {
    */
   public stop (): void {
     if (this.timer) {
-      clearInterval(this.timer);
+      this.adapter.clearInterval(this.timer);
       this.timer = null;
     }
   }

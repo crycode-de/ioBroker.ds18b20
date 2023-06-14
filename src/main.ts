@@ -1,8 +1,10 @@
 /**
  * ioBroker DS18B20 1-wire temperature sensor adapter.
  *
- * (C) 2019 Peter Müller <peter@crycode.de> (https://github.com/crycode-de/ioBroker.ds18b20)
+ * (C) 2019-2023 Peter Müller <peter@crycode.de> (https://github.com/crycode-de/ioBroker.ds18b20)
  */
+
+import 'source-map-support/register';
 
 import { promisify } from 'util';
 
@@ -14,29 +16,16 @@ import * as crypto from 'crypto';
 
 import * as utils from '@iobroker/adapter-core';
 
-import { autobind } from 'core-decorators';
+import { boundMethod } from 'autobind-decorator';
 
 import { Sensor } from './sensor';
 
 import { RemoteSensorServer } from './remote-server';
 
-declare global {
-  // eslint-disable-next-line @typescript-eslint/no-namespace
-  namespace ioBroker {
-    interface AdapterConfig {
-      defaultInterval: number;
-      remoteEnabled: boolean;
-      remoteKey: string;
-      remotePort: number;
-      w1DevicesPath: string;
-    }
-  }
-}
-
 /**
  * The ds18b20 adapter.
  */
-export class Ds18b20Adapter extends utils.Adapter {
+class Ds18b20Adapter extends utils.Adapter {
 
   /**
    * Mapping of the ioBroker object IDs to the sensor class instances.
@@ -67,7 +56,7 @@ export class Ds18b20Adapter extends utils.Adapter {
   /**
    * Is called when databases are connected and adapter received configuration.
    */
-  @autobind
+  @boundMethod
   private async onReady(): Promise<void> {
     // Reset the connection indicator during startup
     this.setState('info.connection', false, true);
@@ -161,7 +150,7 @@ export class Ds18b20Adapter extends utils.Adapter {
   /**
    * Is called when adapter shuts down - callback has to be called under any circumstances!
    */
-  @autobind
+  @boundMethod
   private async onUnload(callback: () => void): Promise<void> {
     try {
       // stop all intervals from the sensors
@@ -187,7 +176,7 @@ export class Ds18b20Adapter extends utils.Adapter {
    * @param value The value or null in case of an error.
    * @param id    The ioBroker ID of the sensor.
    */
-  @autobind
+  @boundMethod
   private handleSensorValue (value: number | null, id: string): void {
     if (!this.sensors[id]) return;
 
@@ -212,7 +201,7 @@ export class Ds18b20Adapter extends utils.Adapter {
    * @param err The error.
    * @param id  The ioBroker ID of the sensor.
    */
-  @autobind
+  @boundMethod
   private handleSensorError (err: Error, id: string): void {
     this.log.warn(`Error reading sensor ${this.sensors[id].address}: ${err}`);
   }
@@ -224,7 +213,7 @@ export class Ds18b20Adapter extends utils.Adapter {
    * @param hasError Indicator if the sensor has an error or not.
    * @param id       The ioBroker ID of the sensor.
    */
-  @autobind
+  @boundMethod
   private handleSensorErrorStateChanged (hasError: boolean, id: string): void {
     this.log.debug(`error state of sensor ${this.sensors[id].address} changed to ${hasError}`);
 
@@ -305,7 +294,7 @@ export class Ds18b20Adapter extends utils.Adapter {
    * @param id    The ID of the state.
    * @param state The ioBroker state.
    */
-  @autobind
+  @boundMethod
   private async onStateChange(id: string, state: ioBroker.State | null | undefined): Promise<void> {
     if (state) {
       // The state was changed
@@ -332,7 +321,7 @@ export class Ds18b20Adapter extends utils.Adapter {
    * Some message was sent to this instance over message box (e.g. by a script).
    * @param obj The received ioBroker message.
    */
-  @autobind
+  @boundMethod
   private async onMessage(obj: ioBroker.Message): Promise<void> {
     this.log.debug('got message ' + JSON.stringify(obj));
 
@@ -440,10 +429,13 @@ export class Ds18b20Adapter extends utils.Adapter {
 
 }
 
-if (module.parent) {
+if (require.main !== module) {
   // Export the constructor in compact mode
   module.exports = (options: Partial<utils.AdapterOptions> | undefined) => new Ds18b20Adapter(options);
 } else {
   // otherwise start the instance directly
   (() => new Ds18b20Adapter())();
 }
+
+// export the type of the adapter class to use it in other files
+export type { Ds18b20Adapter };
