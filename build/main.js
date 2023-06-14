@@ -33,13 +33,13 @@ var import_register = require("source-map-support/register");
 var import_util = require("util");
 var fs = __toESM(require("fs"));
 var crypto = __toESM(require("crypto"));
-var utils = __toESM(require("@iobroker/adapter-core"));
+var import_adapter_core = require("@iobroker/adapter-core");
 var import_autobind_decorator = require("autobind-decorator");
 var import_sensor = require("./sensor");
 var import_remote_server = require("./remote-server");
 const readFile = (0, import_util.promisify)(fs.readFile);
 const readDir = (0, import_util.promisify)(fs.readdir);
-class Ds18b20Adapter extends utils.Adapter {
+class Ds18b20Adapter extends import_adapter_core.Adapter {
   constructor(options = {}) {
     super({
       ...options,
@@ -56,6 +56,36 @@ class Ds18b20Adapter extends utils.Adapter {
     this.setState("info.connection", false, true);
     if (!this.config.w1DevicesPath) {
       this.config.w1DevicesPath = "/sys/bus/w1/devices";
+    }
+    if (Object.keys(this.config).includes("_values")) {
+      this.log.info("Migrate config from old version ...");
+      const instanceObj = await this.getForeignObjectAsync(`system.adapter.${this.namespace}`);
+      if (!instanceObj) {
+        this.log.error("Could not read instance object!");
+        this.terminate("Config migration required", import_adapter_core.EXIT_CODES.INVALID_ADAPTER_CONFIG);
+        return;
+      }
+      const oldNative = instanceObj.native;
+      if (oldNative.remoteEnabled) {
+        this.log.warn(`Please make sure to re-install you remote clients, or they won't be able to connect!`);
+      }
+      const newNative = {
+        defaultInterval: oldNative.defaultInterval,
+        remoteEnabled: oldNative.remoteEnabled,
+        remoteKey: oldNative.remoteKey,
+        remotePort: oldNative.remotePort,
+        w1DevicesPath: oldNative.w1DevicesPath,
+        sensors: []
+      };
+      for (const oldSensor of oldNative._values) {
+        const { obj, ...sensor } = oldSensor;
+        newNative.sensors.push(sensor);
+      }
+      instanceObj.native = newNative;
+      this.log.info("Rewriting adapter config");
+      this.setForeignObjectAsync(`system.adapter.${this.namespace}`, instanceObj);
+      this.terminate("Restart adapter to apply config changes", import_adapter_core.EXIT_CODES.START_IMMEDIATELY_AFTER_STOP);
+      return;
     }
     if (this.config.remoteEnabled) {
       if (this.supportsFeature && !this.supportsFeature("ADAPTER_AUTO_DECRYPT_NATIVE")) {

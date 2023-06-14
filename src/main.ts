@@ -14,7 +14,11 @@ const readDir = promisify(fs.readdir);
 
 import * as crypto from 'crypto';
 
-import * as utils from '@iobroker/adapter-core';
+import {
+  Adapter,
+  AdapterOptions,
+  EXIT_CODES,
+} from '@iobroker/adapter-core';
 
 import { boundMethod } from 'autobind-decorator';
 
@@ -25,7 +29,7 @@ import { RemoteSensorServer } from './remote-server';
 /**
  * The ds18b20 adapter.
  */
-class Ds18b20Adapter extends utils.Adapter {
+class Ds18b20Adapter extends Adapter {
 
   /**
    * Mapping of the ioBroker object IDs to the sensor class instances.
@@ -41,7 +45,7 @@ class Ds18b20Adapter extends utils.Adapter {
    * Constructor to create a new instance of the adapter.
    * @param options The adapter options.
    */
-  public constructor(options: Partial<utils.AdapterOptions> = {}) {
+  public constructor(options: Partial<AdapterOptions> = {}) {
     super({
       ...options,
       name: 'ds18b20',
@@ -64,6 +68,52 @@ class Ds18b20Adapter extends utils.Adapter {
     // set default devices path if not defined
     if (!this.config.w1DevicesPath) {
       this.config.w1DevicesPath = '/sys/bus/w1/devices';
+    }
+
+    // need to upgrade config from old version (<2.0.0)?
+    if (Object.keys(this.config).includes('_values')) {
+      this.log.info('Migrate config from old version ...');
+      const instanceObj = await this.getForeignObjectAsync(`system.adapter.${this.namespace}`);
+      if (!instanceObj) {
+        this.log.error('Could not read instance object!');
+        this.terminate('Config migration required', EXIT_CODES.INVALID_ADAPTER_CONFIG);
+        return;
+      }
+
+      const oldNative: ioBroker.AdapterConfigV1 = instanceObj.native as ioBroker.AdapterConfigV1;
+
+      // log a warning to inform the user to re-install the remote clients if remote is enabled
+      if (oldNative.remoteEnabled) {
+        this.log.warn(`Please make sure to re-install you remote clients, or they won't be able to connect!`);
+      }
+
+      const newNative: ioBroker.AdapterConfig = {
+        defaultInterval: oldNative.defaultInterval,
+        remoteEnabled: oldNative.remoteEnabled,
+        remoteKey: oldNative.remoteKey,
+        remotePort: oldNative.remotePort,
+        w1DevicesPath: oldNative.w1DevicesPath,
+        sensors: [],
+      };
+
+      // migrate sensors
+      for (const oldSensor of oldNative._values) {
+        const { obj, ...sensor } = oldSensor;
+        newNative.sensors.push(sensor);
+
+        // TODO: remove native part from the sensor object
+        /*const sensorObj = await this.getForeignObjectAsync(obj._id);
+        if (sensorObj) {
+          sensorObj.native = {};
+          await this.setForeignObjectAsync(obj._id, sensorObj);
+        }*/
+      }
+
+      instanceObj.native = newNative;
+      this.log.info('Rewriting adapter config');
+      this.setForeignObjectAsync(`system.adapter.${this.namespace}`, instanceObj);
+      this.terminate('Restart adapter to apply config changes', EXIT_CODES.START_IMMEDIATELY_AFTER_STOP);
+      return;
     }
 
     // remote sensor server
@@ -431,7 +481,7 @@ class Ds18b20Adapter extends utils.Adapter {
 
 if (require.main !== module) {
   // Export the constructor in compact mode
-  module.exports = (options: Partial<utils.AdapterOptions> | undefined) => new Ds18b20Adapter(options);
+  module.exports = (options: Partial<AdapterOptions> | undefined) => new Ds18b20Adapter(options);
 } else {
   // otherwise start the instance directly
   (() => new Ds18b20Adapter())();
