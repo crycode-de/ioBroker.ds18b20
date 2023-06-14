@@ -6,11 +6,8 @@
 
 import 'source-map-support/register';
 
-import { promisify } from 'util';
+import { readFile, readdir } from 'fs/promises';
 
-import * as fs from 'fs';
-const readFile = promisify(fs.readFile);
-const readDir = promisify(fs.readdir);
 
 import * as crypto from 'crypto';
 
@@ -150,48 +147,58 @@ class Ds18b20Adapter extends Adapter {
     }
 
     // setup sensors
-    this.getForeignObjects(this.namespace + '.sensors.*', 'state', (err, objects) => {
-      if (err) {
-        this.log.error('error loading sensors data objects');
-        return;
+    for (const sensorCfg of this.config.sensors) {
+      if (!/[^0-9a-f-]+/.test(sensorCfg.address)) {
+        this.log.warn(`Invalid sensor address configured: ${sensorCfg.address}`);
+        continue;
       }
 
-      for (const objectId in objects) {
-        const obj: SensorObject = objects[objectId] as SensorObject;
-
-        if (typeof obj.native?.address !== 'string') {
-          this.log.warn(`Object ${obj._id} has no valid address!`);
-          continue;
-        }
-
-        if (obj.native.enabled === false) {
-          this.log.debug(`Sensor ${obj.native.address} is not enabled and will be ignored.`);
-          continue;
-        }
-
-        if (obj.native.remoteSystemId && !this.config.remoteEnabled) {
-          this.log.warn(`Sensor ${obj.native.address} is configured as remote sensor of ${obj.native.remoteSystemId} but remote sensors are not enabled!`);
-          continue;
-        }
-
-        this.sensors[obj._id] = new Sensor({
-          w1DevicesPath: this.config.w1DevicesPath,
-          id: obj._id,
-          address: obj.native.address,
-          interval: typeof obj.native.interval === 'number' ? obj.native.interval : this.config.defaultInterval,
-          nullOnError: !!obj.native.nullOnError,
-          factor: typeof obj.native.factor === 'number' ? obj.native.factor : 1,
-          offset: typeof obj.native.offset === 'number' ? obj.native.offset : 0,
-          decimals: typeof obj.native.decimals === 'number' ? obj.native.decimals : null,
-          remoteSystemId: typeof obj.native.remoteSystemId === 'string' ? obj.native.remoteSystemId : null,
-        }, this);
-        this.sensors[obj._id].on('value', this.handleSensorValue);
-        this.sensors[obj._id].on('error', this.handleSensorError);
-        this.sensors[obj._id].on('errorStateChanged', this.handleSensorErrorStateChanged);
+      if (this.sensors[sensorCfg.address]) {
+        this.log.warn(`Sensor ${sensorCfg.address} is configured twice! Ignoring the all expect the first.`);
+        continue;
       }
 
-      this.log.debug(`loaded ${Object.keys(this.sensors).length} sensors`);
-    });
+      if (!sensorCfg.enabled) {
+        this.log.debug(`Sensor ${sensorCfg.address} is not enabled`);
+        continue;
+      }
+
+      if (sensorCfg.remoteSystemId && !this.config.remoteEnabled) {
+        this.log.warn(`Sensor ${sensorCfg.address} is configured as remote sensor of ${sensorCfg.remoteSystemId} but remote sensors are not enabled!`);
+        continue;
+      }
+
+      // create/update object
+      await this.extendObjectAsync(`sensors.${sensorCfg.address}`, {
+        common: {
+          name: sensorCfg.name || sensorCfg.address,
+          type: 'number',
+          role: 'value.temperature',
+          unit: sensorCfg.unit || '°C',
+          read: true,
+          write: false,
+          def: null,
+        },
+        native: {},
+      });
+
+      // init the sensor
+      this.sensors[sensorCfg.address] = new Sensor({
+        w1DevicesPath: this.config.w1DevicesPath,
+        address: sensorCfg.address,
+        interval: typeof sensorCfg.interval === 'number' ? sensorCfg.interval : this.config.defaultInterval,
+        nullOnError: !!sensorCfg.nullOnError,
+        factor: typeof sensorCfg.factor === 'number' ? sensorCfg.factor : 1,
+        offset: typeof sensorCfg.offset === 'number' ? sensorCfg.offset : 0,
+        decimals: typeof sensorCfg.decimals === 'number' ? sensorCfg.decimals : null,
+        remoteSystemId: typeof sensorCfg.remoteSystemId === 'string' ? sensorCfg.remoteSystemId : null,
+      }, this);
+      this.sensors[sensorCfg.address].on('value', this.handleSensorValue);
+      this.sensors[sensorCfg.address].on('error', this.handleSensorError);
+      this.sensors[sensorCfg.address].on('errorStateChanged', this.handleSensorErrorStateChanged);
+    }
+
+    this.log.debug(`Loaded ${Object.keys(this.sensors).length} sensors`);
 
     // subscribe needed states
     this.subscribeStates('actions.*');
@@ -224,22 +231,22 @@ class Ds18b20Adapter extends Adapter {
   /**
    * Handler for incoming sensor values.
    * @param value The value or null in case of an error.
-   * @param id    The ioBroker ID of the sensor.
+   * @param address The Address of the sensor.
    */
   @boundMethod
-  private handleSensorValue (value: number | null, id: string): void {
-    if (!this.sensors[id]) return;
+  private handleSensorValue (value: number | null, address: string): void {
+    if (!this.sensors[address]) return;
 
-    this.log.debug(`got value ${value} from sensor ${this.sensors[id].address}`);
+    this.log.debug(`Got value ${value} from sensor ${address}`);
 
     if (value === null) {
-      this.setStateAsync(id, {
+      this.setStateAsync(`sensors.${address}`, {
         ack: true,
         val: null,
         q: 0x81, // general problem by sensor
       });
     } else {
-      this.setStateAsync(id, {
+      this.setStateAsync(`sensors.${address}`, {
         ack: true,
         val: value,
       });
@@ -249,11 +256,11 @@ class Ds18b20Adapter extends Adapter {
   /**
    * Handler for sensor errors.
    * @param err The error.
-   * @param id  The ioBroker ID of the sensor.
+   * @param address The address of the sensor.
    */
   @boundMethod
-  private handleSensorError (err: Error, id: string): void {
-    this.log.warn(`Error reading sensor ${this.sensors[id].address}: ${err}`);
+  private handleSensorError (err: Error, address: string): void {
+    this.log.warn(`Error reading sensor ${address}: ${err}`);
   }
 
   /**
@@ -261,11 +268,11 @@ class Ds18b20Adapter extends Adapter {
    * This will change the info.connection state of the adapter to true if all
    * sensors are ok and false if at least one sensor has an error.
    * @param hasError Indicator if the sensor has an error or not.
-   * @param id       The ioBroker ID of the sensor.
+   * @param address  The address of the sensor.
    */
   @boundMethod
-  private handleSensorErrorStateChanged (hasError: boolean, id: string): void {
-    this.log.debug(`error state of sensor ${this.sensors[id].address} changed to ${hasError}`);
+  private handleSensorErrorStateChanged (hasError: boolean, address: string): void {
+    this.log.debug(`Error state of sensor ${address} changed to ${hasError}`);
 
     this.updateInfoConnection();
   }
@@ -283,8 +290,8 @@ class Ds18b20Adapter extends Adapter {
     }
 
     // check all sensors for errors
-    for (const id in this.sensors) {
-      if (this.sensors[id].hasError) {
+    for (const address in this.sensors) {
+      if (this.sensors[address].hasError) {
         // at least one sensor has an error, set connection state to false
         this.setStateAsync('info.connection', false, true);
         return;
@@ -303,11 +310,10 @@ class Ds18b20Adapter extends Adapter {
   public getSensor (idOrAddress: string): Sensor | null {
     if (this.sensors[idOrAddress]) return this.sensors[idOrAddress];
 
-    // check address
-    for (const id in this.sensors) {
-      if (this.sensors[id].address === idOrAddress) {
-        return this.sensors[id];
-      }
+    // check id
+    const m = /^ds18b20\.\d+\.sensors\.(.+)$/.exec(idOrAddress);
+    if (m && this.sensors[m[1]]) {
+      return this.sensors[m[1]];
     }
 
     return null;
@@ -315,15 +321,28 @@ class Ds18b20Adapter extends Adapter {
 
   /**
    * Trigger the reading of a single sensor or all sensors.
+   * If all sensor should be read, errors on single sensors will be represented by `null` values.
    * @param idOrAddress The ioBroker ID or 1-wire address of the sensor. Use `all` or an empty string to read all sensors.
+   * @throws Error if a single sensor should be read and an error occurs.
    */
-  private readNow (idOrAddress?: string): void {
+  private async readNow (): Promise<Record<string, number | null>>;
+  private async readNow (idOrAddress: undefined): Promise<Record<string, number | null>>;
+  private async readNow (idOrAddress: 'all' | ''): Promise<Record<string, number | null>>;
+  private async readNow (idOrAddress: string): Promise<number | null>;
+  private async readNow (idOrAddress?: string): Promise<Record<string, number | null> | number | null> {
     if (typeof idOrAddress !== 'string' || idOrAddress === 'all' || idOrAddress === '') {
       // read all sensors
       this.log.info(`Read data from all sensors now`);
-      for (const addr in this.sensors) {
-        this.sensors[addr].read();
+      const results: Record<string, number | null> = {};
+      for (const address in this.sensors) {
+        try {
+          results[address] = await this.sensors[address].read();
+        } catch (err) {
+          results[address] = null;
+        }
       }
+
+      return results;
 
     } else {
       // read a specific sensor
@@ -331,11 +350,11 @@ class Ds18b20Adapter extends Adapter {
 
       if (!sens) {
         this.log.warn(`No sensor with address or id ${idOrAddress} found!`);
-        return;
+        return null;
       }
 
       this.log.info(`Read data from sensor ${sens.address} now`);
-      sens.read();
+      return await sens.read();
     }
   }
 
@@ -346,24 +365,15 @@ class Ds18b20Adapter extends Adapter {
    */
   @boundMethod
   private async onStateChange(id: string, state: ioBroker.State | null | undefined): Promise<void> {
-    if (state) {
-      // The state was changed
-      this.log.debug(`state ${id} changed: ${state.val} (ack = ${state.ack}) ` + JSON.stringify(state));
+    // don't do anything if state is deleted or ack is set
+    if (!state || state.ack) {
+      return;
+    }
 
-      // don't do anything if ack is set
-      if (state.ack === true) return;
-
-      // handle special states
-      switch (id) {
-        case this.namespace + '.actions.readNow':
-          this.readNow(state.val as string);
-          this.setStateAsync(this.namespace + '.actions.readNow', '', true);
-          break;
-      }
-
-    } else {
-      // The state was deleted
-      this.log.debug(`state ${id} deleted`);
+    // handle special states
+    if (id === `${this.namespace}.actions.readNow`) {
+      await this.readNow(state.val as string).catch(() => { /* noop */});
+      await this.setStateAsync(this.namespace + '.actions.readNow', '', true);
     }
   }
 
@@ -373,38 +383,24 @@ class Ds18b20Adapter extends Adapter {
    */
   @boundMethod
   private async onMessage(obj: ioBroker.Message): Promise<void> {
-    this.log.debug('got message ' + JSON.stringify(obj));
+    this.log.debug('Got message ' + JSON.stringify(obj));
 
     if (typeof obj === 'object' && obj.message) {
       switch (obj.command) {
+        case 'read':
         case 'readNow':
           // we should read sensors now...
-          if (typeof obj.message === 'string') {
-            this.readNow(obj.message);
-          } else {
-            this.readNow();
-          }
-          break;
-
-        case 'read':
-          // read a sensor
-          if (typeof obj.message === 'string') {
-            const sens = this.getSensor(obj.message);
-            if (!sens) {
-              this.log.debug('no such sensor');
-              return this.sendTo(obj.from, obj.command, { err: 'No such sensor' , value: null }, obj.callback);
+          try {
+            const value = (typeof obj.message === 'string') ? await this.readNow(obj.message) : await this.readNow();
+            if (obj.callback) {
+              this.sendTo(obj.from, obj.command, { err: null, value }, obj.callback);
             }
-            sens.read((err, value) => {
-              if (err) {
-                this.log.debug(err.toString());
-                this.sendTo(obj.from, obj.command, { err: err.toString() , value: null }, obj.callback);
-              } else {
-                this.sendTo(obj.from, obj.command, { err: null , value: value }, obj.callback);
-              }
-            });
-          } else {
-            this.log.debug('no address or id given');
-            return this.sendTo(obj.from, obj.command, { err: 'No sensor address or id given' , value: null }, obj.callback);
+            return;
+          } catch (err: any) {
+            this.log.debug(err.toString());
+            if (obj.callback) {
+              this.sendTo(obj.from, obj.command, { err: err.toString(), value: null }, obj.callback);
+            }
           }
           break;
 
@@ -432,15 +428,15 @@ class Ds18b20Adapter extends Adapter {
 
           // local sensors
           try {
-            const files = await readDir(this.config.w1DevicesPath);
+            const files = await readdir(this.config.w1DevicesPath);
 
             const proms: Promise<string>[] = [];
             for (const file of files) {
-              if (file.match(/^w1_bus_master\d+$/)) { // devices path used
-                this.log.debug(`reading ${this.config.w1DevicesPath}/${file}/w1_master_slaves`);
+              if (/^w1_bus_master\d+$/.test(file)) { // devices path used
+                this.log.debug(`Reading ${this.config.w1DevicesPath}/${file}/w1_master_slaves`);
                 proms.push(readFile(`${this.config.w1DevicesPath}/${file}/w1_master_slaves`, 'utf8'));
               } else if (file === 'w1_master_slaves') { // path of one w1_bus_masterX used
-                this.log.debug(`reading ${this.config.w1DevicesPath}/w1_master_slaves`);
+                this.log.debug(`Reading ${this.config.w1DevicesPath}/w1_master_slaves`);
                 proms.push(readFile(`${this.config.w1DevicesPath}/w1_master_slaves`, 'utf8'));
               }
             }
@@ -469,7 +465,7 @@ class Ds18b20Adapter extends Adapter {
             }
           }
 
-          this.log.debug(`sensors found: ${JSON.stringify(sensors)}`);
+          this.log.debug(`Sensors found: ${JSON.stringify(sensors)}`);
           this.sendTo(obj.from, obj.command, { err, sensors }, obj.callback);
 
           break;

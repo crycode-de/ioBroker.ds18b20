@@ -38,7 +38,8 @@ Dies ist ein ioBroker-Adapter zur Integration von DS18B20 1-Wire Temperatursenso
 
 * (crycode-de) 💥 Node.js 16.4+, js-controller 4+ and admin 5.3+ are required
 * (crycode-de) 💥 Changed encryption algorithm for remote clients - remote clients need to be reinstalled to update!
-* (crycode-de) Code upgrades to current standards
+* (crycode-de) `read` and `readNow` actions are now merged
+* (crycode-de) Code optimizations and upgrades to current standards
 * (crycode-de) Updated dependencies
 
 ### 1.6.1 (2022-12-15)

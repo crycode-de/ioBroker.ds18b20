@@ -3,10 +3,8 @@
  */
 
 import { EventEmitter } from 'events';
-import { promisify } from 'util';
 
-import * as fs from 'fs';
-const readFile = promisify(fs.readFile);
+import { readFile } from 'fs/promises';
 
 import { boundMethod } from 'autobind-decorator';
 
@@ -18,7 +16,6 @@ import type { Ds18b20Adapter } from './main';
  */
 interface SensorOptions {
   w1DevicesPath: string;
-  id: string;
   address: string;
   interval: number;
   nullOnError: boolean;
@@ -33,24 +30,19 @@ interface SensorOptions {
  * Interface to declare events for the Sensor class.
  */
 export interface Sensor {
-  on (event: 'value', listener: (value: number | null, id: string) => void): this;
-  on (event: 'error', listener: (err: Error, id: string) => void): this;
-  on (event: 'errorStateChanged', listener: (hasError: boolean, id: string) => void): this;
+  on (event: 'value', listener: (value: number | null, address: string) => void): this;
+  on (event: 'error', listener: (err: Error, address: string) => void): this;
+  on (event: 'errorStateChanged', listener: (hasError: boolean, address: string) => void): this;
 
-  emit (event: 'value', value: number | null, id: string): boolean;
-  emit (event: 'error', err: Error, id: string): boolean;
-  emit (event: 'errorStateChanged', hasError: boolean, id: string): boolean;
+  emit (event: 'value', value: number | null, address: string): boolean;
+  emit (event: 'error', err: Error, address: string): boolean;
+  emit (event: 'errorStateChanged', hasError: boolean, address: string): boolean;
 }
 
 /**
  * This class represents a single sensor.
  */
 export class Sensor extends EventEmitter {
-  /**
-   * The ID of the sensor in ioBroker.
-   */
-  public readonly id: string;
-
   /**
    * The address (1-wire ID) of the sensor.
    */
@@ -110,8 +102,7 @@ export class Sensor extends EventEmitter {
     super();
     this.adapter = adapter;
 
-    this.id = opts.id;
-    this.address = opts.address.replace(/[^0-9a-f-]/g, ''); // remove all bad chars!
+    this.address = opts.address;
     this.nullOnError = opts.nullOnError;
     this.factor = opts.factor;
     this.offset = opts.offset;
@@ -126,20 +117,22 @@ export class Sensor extends EventEmitter {
       if (opts.interval < 500) {
         opts.interval = 500;
       }
-      this.timer = this.adapter.setInterval(this.read, opts.interval);
-      this.read();
+      this.timer = this.adapter.setInterval(() => {
+        this.read().catch(() => { /* noop */ });
+      }, opts.interval);
+      this.read().catch(() => { /* noop */});
     }
   }
 
   /**
    * Read the temperature.
    * The value and possible errors will be emitted as events.
-   * Optionally a callback may be used.
-   * @param  cb Optional callback function.
+   * @returns The read value.
+   * @throws Error when an error occurs.
    */
   @boundMethod
-  public async read (cb?: (err: Error | null, val: number | null) => void): Promise<void> {
-
+  public async read (): Promise<number | null> {
+    let val: number | null = null;
     try {
       let raw: string;
 
@@ -154,87 +147,83 @@ export class Sensor extends EventEmitter {
         raw = await readFile(`${this.w1DevicesPath}/${this.address}/w1_slave`, 'utf8');
       }
 
-      this.processData(raw, cb);
+      val = await this.processData(raw);
+
+      this.emit('value', val, this.address);
+
+      if (this.hasError) {
+        this.hasError = false;
+        this.emit('errorStateChanged', false, this.address);
+      }
 
     } catch (err: any) {
-      this.emit('error', err, this.id);
-      if (typeof cb === 'function') {
-        cb(err, null);
+      this.emit('error', err, this.address);
+
+      if (this.nullOnError) {
+        this.emit('value', null, this.address);
       }
+
+      if (!this.hasError) {
+        this.hasError = true;
+        this.emit('errorStateChanged', true, this.address);
+      }
+      throw err;
     }
+
+    return val;
   }
 
   /**
    * Process the raw data from a sensor file.
    * @param rawData The raw data read from the sensor file.
-   * @param cb Optional callback function.
+   * @returns The read value.
+   * @throws Error when an error occurs.
    */
-  public async processData (rawData: string, cb?: (err: Error | null, val: number | null) => void): Promise<void> {
+  public async processData (rawData: string): Promise<number> {
     const lines = rawData.split('\n');
 
-    let val: number | null = null;
-    let err: Error | null = null;
+    let val: number;
 
-    try {
-      if (lines[0].indexOf('YES') > -1) {
-        // checksum ok
-        const bytes = lines[0].split(' ');
-        if (bytes[0] === bytes[1] && bytes[0] === bytes[2] && bytes[0] === bytes[3] && bytes[0] === bytes[4] && bytes[0] === bytes[5] && bytes[0] === bytes[6] && bytes[0] === bytes[7] && bytes[0] === bytes[8]) {
-          // all bytes are the same
-          throw new Error('Communication error');
-        }
-
-        const m = lines[1].match(/t=(-?\d+)/);
-        if (!m) {
-          throw new Error('Parse error');
-        }
-        val = parseInt(m[1], 10) / 1000;
-
-      } else if (lines[0].indexOf('NO') > -1) {
-        // checksum error
-        throw new Error('Checksum error');
-
-      } else {
-        // read error
-        throw new Error('Read error');
+    if (lines[0].indexOf('YES') > -1) {
+      // checksum ok
+      const bytes = lines[0].split(' ');
+      if (bytes[0] === bytes[1] && bytes[0] === bytes[2] && bytes[0] === bytes[3] && bytes[0] === bytes[4] && bytes[0] === bytes[5] && bytes[0] === bytes[6] && bytes[0] === bytes[7] && bytes[0] === bytes[8]) {
+        // all bytes are the same
+        throw new Error('Communication error');
       }
 
-      // check for specific errors
-      if (val === 85) {
-        throw new Error('No temperature read');
-      } else if (val === -127) {
-        throw new Error('Device disconnected');
-      } else if (val < -80 || val > 150) {
-        // From datasheet: Measures Temperatures from -55°C to +125°C
-        throw new Error('Read temperature is out of possible range');
+      const m = /t=(-?\d+)/.exec(lines[1]);
+      if (!m) {
+        throw new Error('Parse error');
       }
+      val = parseInt(m[1], 10) / 1000;
 
-    } catch (e: any) {
-      this.emit('error', e, this.id);
-      err = e;
-      val = null;
+    } else if (lines[0].indexOf('NO') > -1) {
+      // checksum error
+      throw new Error('Checksum error');
+
+    } else {
+      // read error
+      throw new Error('Read error');
+    }
+
+    // check for specific errors
+    if (val === 85) {
+      throw new Error('No temperature read');
+    } else if (val === -127) {
+      throw new Error('Device disconnected');
+    } else if (val < -80 || val > 150) {
+      // From datasheet: Measures Temperatures from -55°C to +125°C
+      throw new Error('Read temperature is out of possible range');
     }
 
     // evaluate the result
-    if (val !== null) {
-      val = val * this.factor + this.offset;
-      if (this.decimals !== null) {
-        val = round(val, this.decimals);
-      }
+    val = val * this.factor + this.offset;
+    if (this.decimals !== null) {
+      val = round(val, this.decimals);
     }
 
-    if (val !== null || this.nullOnError) {
-      this.emit('value', val, this.id);
-    }
-
-    if (this.hasError !== (val === null)) {
-      this.hasError = (val === null);
-      this.emit('errorStateChanged', this.hasError, this.id);
-    }
-
-    if (typeof cb === 'function') {
-      cb(err, val);
-    }
+    return val;
   }
 
   /**
