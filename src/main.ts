@@ -93,9 +93,17 @@ class Ds18b20Adapter extends Adapter {
         sensors: [],
       };
 
+      // sort the old sensors by given sortOrder
+      oldNative._values.sort((a, b) => {
+        if (typeof a.sortOrder === 'number' && typeof b.sortOrder === 'number') {
+          return a.sortOrder - b.sortOrder;
+        }
+        return 0;
+      });
+
       // migrate sensors
       for (const oldSensor of oldNative._values) {
-        const { obj, ...sensor } = oldSensor;
+        const { obj, sortOrder, ...sensor } = oldSensor;
         newNative.sensors.push(sensor);
 
         // TODO: remove native part from the sensor object

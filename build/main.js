@@ -74,8 +74,14 @@ class Ds18b20Adapter extends import_adapter_core.Adapter {
         w1DevicesPath: oldNative.w1DevicesPath,
         sensors: []
       };
+      oldNative._values.sort((a, b) => {
+        if (typeof a.sortOrder === "number" && typeof b.sortOrder === "number") {
+          return a.sortOrder - b.sortOrder;
+        }
+        return 0;
+      });
       for (const oldSensor of oldNative._values) {
-        const { obj, ...sensor } = oldSensor;
+        const { obj, sortOrder, ...sensor } = oldSensor;
         newNative.sensors.push(sensor);
       }
       instanceObj.native = newNative;

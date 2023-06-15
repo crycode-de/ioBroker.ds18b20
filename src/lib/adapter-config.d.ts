@@ -31,7 +31,6 @@ declare global {
       decimals: number;
       nullOnError: boolean;
       enabled: boolean;
-      sortOrder: number;
     }
 
     /**
@@ -46,6 +45,7 @@ declare global {
      * Single entry for `_values` array in adapter config v1.x.
      */
     interface AdapterConfigV1Values extends AdapterConfigSensor {
+      sortOrder?: number;
       obj: ioBroker.StateObject;
     }
   }
