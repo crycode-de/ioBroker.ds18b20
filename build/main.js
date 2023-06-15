@@ -117,7 +117,7 @@ class Ds18b20Adapter extends import_adapter_core.Adapter {
       this.config.sensors = [];
     }
     for (const sensorCfg of this.config.sensors) {
-      if (!/[^0-9a-f-]+/.test(sensorCfg.address)) {
+      if (!/^[0-9a-f]{2}-[0-9a-f]{12}$/.test(sensorCfg.address)) {
         this.log.warn(`Invalid sensor address configured: ${sensorCfg.address}`);
         continue;
       }
