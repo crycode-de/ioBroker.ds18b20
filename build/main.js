@@ -159,7 +159,11 @@ class Ds18b20Adapter extends import_adapter_core.Adapter {
       this.sensors[sensorCfg.address].on("error", this.handleSensorError);
       this.sensors[sensorCfg.address].on("errorStateChanged", this.handleSensorErrorStateChanged);
     }
-    this.log.debug(`Loaded ${Object.keys(this.sensors).length} sensors`);
+    const count = Object.keys(this.sensors).length;
+    this.log.debug(`Loaded ${count} sensors`);
+    if (count === 0) {
+      this.log.warn("No sensors configured or enabled!");
+    }
     this.subscribeStates("actions.*");
   }
   async onUnload(callback) {
@@ -201,6 +205,10 @@ class Ds18b20Adapter extends import_adapter_core.Adapter {
   }
   updateInfoConnection() {
     if (this.remoteSensorServer && !this.remoteSensorServer.isListening()) {
+      this.setStateAsync("info.connection", false, true);
+      return;
+    }
+    if (Object.keys(this.sensors).length === 0) {
       this.setStateAsync("info.connection", false, true);
       return;
     }

@@ -209,7 +209,12 @@ class Ds18b20Adapter extends Adapter {
       this.sensors[sensorCfg.address].on('errorStateChanged', this.handleSensorErrorStateChanged);
     }
 
-    this.log.debug(`Loaded ${Object.keys(this.sensors).length} sensors`);
+    const count = Object.keys(this.sensors).length;
+    this.log.debug(`Loaded ${count} sensors`);
+
+    if (count === 0) {
+      this.log.warn('No sensors configured or enabled!');
+    }
 
     // subscribe needed states
     this.subscribeStates('actions.*');
@@ -296,6 +301,13 @@ class Ds18b20Adapter extends Adapter {
     // check if remote sensor server is listening if enabled
     if (this.remoteSensorServer && !this.remoteSensorServer.isListening()) {
       // server enabled but not listening
+      this.setStateAsync('info.connection', false, true);
+      return;
+    }
+
+    // are any sensors available?
+    if (Object.keys(this.sensors).length === 0) {
+      // no sensors
       this.setStateAsync('info.connection', false, true);
       return;
     }
