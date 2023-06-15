@@ -262,7 +262,8 @@
         "remoteEnabled": false,
         "remoteKey": "",
         "remotePort": 1820,
-        "w1DevicesPath": "/sys/bus/w1/devices"
+        "w1DevicesPath": "/sys/bus/w1/devices",
+        "sensors": []
     },
     "encryptedNative": [
         "remoteKey"
