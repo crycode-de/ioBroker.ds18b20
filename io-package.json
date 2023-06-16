@@ -236,7 +236,7 @@
         "connectionType": "local",
         "dataSource": "poll",
         "adminUI": {
-            "config": "materialize"
+            "config": "json"
         },
         "compact": true,
         "materialize": true,
@@ -248,7 +248,7 @@
         ],
         "globalDependencies": [
             {
-                "admin": ">=5.3.0"
+                "admin": ">=6.0"
             }
         ],
         "plugins": {

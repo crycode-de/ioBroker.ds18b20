@@ -24,7 +24,7 @@ declare global {
       address: string;
       remoteSystemId: string;
       name: string;
-      interval: number | null;
+      interval: number | string | null;
       unit: string;
       factor: number;
       offset: number;

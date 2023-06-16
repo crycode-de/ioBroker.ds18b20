@@ -36,6 +36,7 @@ var import_adapter_core = require("@iobroker/adapter-core");
 var import_autobind_decorator = require("autobind-decorator");
 var import_sensor = require("./sensor");
 var import_remote_server = require("./remote-server");
+var import_utils = require("./lib/utils");
 class Ds18b20Adapter extends import_adapter_core.Adapter {
   constructor(options = {}) {
     super({
@@ -145,10 +146,22 @@ class Ds18b20Adapter extends import_adapter_core.Adapter {
         },
         native: {}
       });
+      let interval;
+      if (typeof sensorCfg.interval === "number") {
+        interval = sensorCfg.interval;
+      } else if (typeof sensorCfg.interval === "string" && sensorCfg.interval.length > 0) {
+        interval = parseInt(sensorCfg.interval, 10);
+        if (isNaN(interval)) {
+          this.log.warn(`Query interval for sensor ${sensorCfg.address} is invalid! Using default.`);
+          interval = this.config.defaultInterval;
+        }
+      } else {
+        interval = this.config.defaultInterval;
+      }
       this.sensors[sensorCfg.address] = new import_sensor.Sensor({
         w1DevicesPath: this.config.w1DevicesPath,
         address: sensorCfg.address,
-        interval: typeof sensorCfg.interval === "number" ? sensorCfg.interval : this.config.defaultInterval,
+        interval,
         nullOnError: !!sensorCfg.nullOnError,
         factor: typeof sensorCfg.factor === "number" ? sensorCfg.factor : 1,
         offset: typeof sensorCfg.offset === "number" ? sensorCfg.offset : 0,
@@ -251,6 +264,39 @@ class Ds18b20Adapter extends import_adapter_core.Adapter {
       return await sens.read();
     }
   }
+  async searchSensors() {
+    const sensors = [];
+    try {
+      const files = await (0, import_promises.readdir)(this.config.w1DevicesPath);
+      const proms = [];
+      for (const file of files) {
+        if (/^w1_bus_master\d+$/.test(file)) {
+          this.log.debug(`Reading ${this.config.w1DevicesPath}/${file}/w1_master_slaves`);
+          proms.push((0, import_promises.readFile)(`${this.config.w1DevicesPath}/${file}/w1_master_slaves`, "utf8"));
+        } else if (file === "w1_master_slaves") {
+          this.log.debug(`Reading ${this.config.w1DevicesPath}/w1_master_slaves`);
+          proms.push((0, import_promises.readFile)(`${this.config.w1DevicesPath}/w1_master_slaves`, "utf8"));
+        }
+      }
+      const localSensors = (await Promise.all(proms)).reduce((acc, cur) => {
+        acc.push(...cur.trim().split("\n"));
+        return acc;
+      }, []).map((addr) => ({ address: addr, remoteSystemId: "" }));
+      sensors.push(...localSensors);
+    } catch (er) {
+      this.log.warn(`Error while searching for local sensors: ${er.toString()}`);
+    }
+    if (this.config.remoteEnabled && this.remoteSensorServer) {
+      try {
+        const remoteSensors = await this.remoteSensorServer.search();
+        sensors.push(...remoteSensors);
+      } catch (er) {
+        this.log.warn(`Error while searching for remote sensors: ${er.toString()}`);
+      }
+    }
+    this.log.debug(`Sensors found: ${JSON.stringify(sensors)}`);
+    return sensors;
+  }
   async onStateChange(id, state) {
     if (!state || state.ack) {
       return;
@@ -262,8 +308,9 @@ class Ds18b20Adapter extends import_adapter_core.Adapter {
     }
   }
   async onMessage(obj) {
+    var _a;
     this.log.debug("Got message " + JSON.stringify(obj));
-    if (typeof obj === "object" && obj.message) {
+    if (typeof obj === "object") {
       switch (obj.command) {
         case "read":
         case "readNow":
@@ -273,10 +320,10 @@ class Ds18b20Adapter extends import_adapter_core.Adapter {
               this.sendTo(obj.from, obj.command, { err: null, value }, obj.callback);
             }
             return;
-          } catch (err2) {
-            this.log.debug(err2.toString());
+          } catch (err) {
+            this.log.debug(err.toString());
             if (obj.callback) {
-              this.sendTo(obj.from, obj.command, { err: err2.toString(), value: null }, obj.callback);
+              this.sendTo(obj.from, obj.command, { err: err.toString(), value: null }, obj.callback);
             }
           }
           break;
@@ -287,47 +334,53 @@ class Ds18b20Adapter extends import_adapter_core.Adapter {
             this.sendTo(obj.from, obj.command, [], obj.callback);
             return;
           }
-          const systems = this.remoteSensorServer.getConnectedSystems();
-          this.sendTo(obj.from, obj.command, systems, obj.callback);
+          this.sendTo(obj.from, obj.command, this.remoteSensorServer.getConnectedSystems(), obj.callback);
+          break;
+        case "getRemoteSystemsAdminUi":
+          if (!obj.callback)
+            return;
+          let remotes = (_a = this.remoteSensorServer) == null ? void 0 : _a.getConnectedSystems().join(", ");
+          if (!remotes) {
+            remotes = "---";
+          }
+          this.sendTo(obj.from, obj.command, remotes, obj.callback);
           break;
         case "search":
+        case "searchSensors":
+          if (!obj.callback)
+            return;
+          this.sendTo(obj.from, obj.command, { sensors: await this.searchSensors() }, obj.callback);
+          break;
+        case "searchSensorsAdminUi":
           if (!obj.callback)
             return;
           const sensors = [];
-          let err = null;
-          try {
-            const files = await (0, import_promises.readdir)(this.config.w1DevicesPath);
-            const proms = [];
-            for (const file of files) {
-              if (/^w1_bus_master\d+$/.test(file)) {
-                this.log.debug(`Reading ${this.config.w1DevicesPath}/${file}/w1_master_slaves`);
-                proms.push((0, import_promises.readFile)(`${this.config.w1DevicesPath}/${file}/w1_master_slaves`, "utf8"));
-              } else if (file === "w1_master_slaves") {
-                this.log.debug(`Reading ${this.config.w1DevicesPath}/w1_master_slaves`);
-                proms.push((0, import_promises.readFile)(`${this.config.w1DevicesPath}/w1_master_slaves`, "utf8"));
-              }
-            }
-            const localSensors = (await Promise.all(proms)).reduce((acc, cur) => {
-              acc.push(...cur.trim().split("\n"));
-              return acc;
-            }, []).map((addr) => ({ address: addr, remoteSystemId: "" }));
-            sensors.push(...localSensors);
-          } catch (er) {
-            this.log.warn(`Error while searching for local sensors: ${er.toString()}`);
-            if (!this.config.remoteEnabled) {
-              err = er;
+          if (typeof obj.message === "object" && Array.isArray(obj.message.sensors)) {
+            sensors.push(...obj.message.sensors);
+          }
+          const foundSensors = await this.searchSensors();
+          for (const foundSensor of foundSensors) {
+            if (sensors.findIndex((cfgSensor) => cfgSensor.address === foundSensor.address && cfgSensor.remoteSystemId === foundSensor.remoteSystemId) < 0) {
+              sensors.push({
+                address: foundSensor.address,
+                remoteSystemId: foundSensor.remoteSystemId,
+                name: "",
+                interval: null,
+                unit: "\xB0C",
+                factor: 1,
+                offset: 0,
+                decimals: 2,
+                nullOnError: true,
+                enabled: true
+              });
             }
           }
-          if (this.config.remoteEnabled && this.remoteSensorServer) {
-            try {
-              const remoteSensors = await this.remoteSensorServer.search();
-              sensors.push(...remoteSensors);
-            } catch (er) {
-              this.log.warn(`Error while searching for remote sensors: ${er.toString()}`);
-            }
-          }
-          this.log.debug(`Sensors found: ${JSON.stringify(sensors)}`);
-          this.sendTo(obj.from, obj.command, { err, sensors }, obj.callback);
+          this.sendTo(obj.from, obj.command, { native: { sensors } }, obj.callback);
+          break;
+        case "getNewRemoteKey":
+          if (!obj.callback)
+            return;
+          this.sendTo(obj.from, obj.command, { native: { remoteKey: (0, import_utils.genHexString)(64) } }, obj.callback);
           break;
       }
     }

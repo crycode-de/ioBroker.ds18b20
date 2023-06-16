@@ -22,6 +22,7 @@ import { boundMethod } from 'autobind-decorator';
 import { Sensor } from './sensor';
 
 import { RemoteSensorServer } from './remote-server';
+import { genHexString } from './lib/utils';
 
 /**
  * The ds18b20 adapter.
@@ -194,10 +195,22 @@ class Ds18b20Adapter extends Adapter {
       });
 
       // init the sensor
+      let interval: number;
+      if (typeof sensorCfg.interval === 'number') {
+        interval = sensorCfg.interval;
+      } else if (typeof sensorCfg.interval === 'string' && sensorCfg.interval.length > 0) {
+        interval = parseInt(sensorCfg.interval, 10);
+        if (isNaN(interval)) {
+          this.log.warn(`Query interval for sensor ${sensorCfg.address} is invalid! Using default.`);
+          interval = this.config.defaultInterval;
+        }
+      } else {
+        interval = this.config.defaultInterval;
+      }
       this.sensors[sensorCfg.address] = new Sensor({
         w1DevicesPath: this.config.w1DevicesPath,
         address: sensorCfg.address,
-        interval: typeof sensorCfg.interval === 'number' ? sensorCfg.interval : this.config.defaultInterval,
+        interval,
         nullOnError: !!sensorCfg.nullOnError,
         factor: typeof sensorCfg.factor === 'number' ? sensorCfg.factor : 1,
         offset: typeof sensorCfg.offset === 'number' ? sensorCfg.offset : 0,
@@ -382,6 +395,54 @@ class Ds18b20Adapter extends Adapter {
   }
 
   /**
+   * Search for local and remote sensors.
+   * @returns Array of the found sensors
+   */
+  private async searchSensors (): Promise<SearchedSensor[]> {
+    const sensors: SearchedSensor[] = [];
+
+    // local sensors
+    try {
+      const files = await readdir(this.config.w1DevicesPath);
+
+      const proms: Promise<string>[] = [];
+      for (const file of files) {
+        if (/^w1_bus_master\d+$/.test(file)) { // devices path used
+          this.log.debug(`Reading ${this.config.w1DevicesPath}/${file}/w1_master_slaves`);
+          proms.push(readFile(`${this.config.w1DevicesPath}/${file}/w1_master_slaves`, 'utf8'));
+        } else if (file === 'w1_master_slaves') { // path of one w1_bus_masterX used
+          this.log.debug(`Reading ${this.config.w1DevicesPath}/w1_master_slaves`);
+          proms.push(readFile(`${this.config.w1DevicesPath}/w1_master_slaves`, 'utf8'));
+        }
+      }
+
+      const localSensors: SearchedSensor[] = (await Promise.all(proms)).reduce<string[]>((acc, cur) => {
+        acc.push(...cur.trim().split('\n'));
+        return acc;
+      }, []).map((addr) => ({ address: addr, remoteSystemId: '' }));
+
+      sensors.push(...localSensors);
+
+    } catch (er: any) {
+      this.log.warn(`Error while searching for local sensors: ${er.toString()}`);
+    }
+
+    // remote sensors
+    if (this.config.remoteEnabled && this.remoteSensorServer) {
+      try {
+        const remoteSensors = await this.remoteSensorServer.search();
+        sensors.push(...remoteSensors);
+      } catch (er: any) {
+        this.log.warn(`Error while searching for remote sensors: ${er.toString()}`);
+      }
+    }
+
+    this.log.debug(`Sensors found: ${JSON.stringify(sensors)}`);
+
+    return sensors;
+  }
+
+  /**
    * Is called if a subscribed state changes.
    * @param id    The ID of the state.
    * @param state The ioBroker state.
@@ -408,7 +469,7 @@ class Ds18b20Adapter extends Adapter {
   private async onMessage(obj: ioBroker.Message): Promise<void> {
     this.log.debug('Got message ' + JSON.stringify(obj));
 
-    if (typeof obj === 'object' && obj.message) {
+    if (typeof obj === 'object') {
       switch (obj.command) {
         case 'read':
         case 'readNow':
@@ -436,61 +497,75 @@ class Ds18b20Adapter extends Adapter {
             this.sendTo(obj.from, obj.command, [], obj.callback);
             return;
           }
-          const systems = this.remoteSensorServer.getConnectedSystems();
-          this.sendTo(obj.from, obj.command, systems, obj.callback);
+          this.sendTo(obj.from, obj.command, this.remoteSensorServer.getConnectedSystems(), obj.callback);
+
+          break;
+
+        case 'getRemoteSystemsAdminUi':
+          // get connected remote systems
+          // don't do anything if no callback is provided
+          if (!obj.callback) return;
+
+          let remotes = this.remoteSensorServer?.getConnectedSystems().join(', ');
+          if (!remotes) {
+            remotes = '---';
+          }
+          this.sendTo(obj.from, obj.command, remotes, obj.callback);
 
           break;
 
         case 'search':
+        case 'searchSensors':
           // search for sensors
           // don't do anything if no callback is provided
           if (!obj.callback) return;
 
-          const sensors: SearchedSensor[] = [];
-          let err: Error | null = null;
+          this.sendTo(obj.from, obj.command, { sensors: await this.searchSensors() }, obj.callback);
 
-          // local sensors
-          try {
-            const files = await readdir(this.config.w1DevicesPath);
+          break;
 
-            const proms: Promise<string>[] = [];
-            for (const file of files) {
-              if (/^w1_bus_master\d+$/.test(file)) { // devices path used
-                this.log.debug(`Reading ${this.config.w1DevicesPath}/${file}/w1_master_slaves`);
-                proms.push(readFile(`${this.config.w1DevicesPath}/${file}/w1_master_slaves`, 'utf8'));
-              } else if (file === 'w1_master_slaves') { // path of one w1_bus_masterX used
-                this.log.debug(`Reading ${this.config.w1DevicesPath}/w1_master_slaves`);
-                proms.push(readFile(`${this.config.w1DevicesPath}/w1_master_slaves`, 'utf8'));
-              }
-            }
+        case 'searchSensorsAdminUi':
+          // search for sensors from the admin ui
+          // don't do anything if no callback is provided
+          if (!obj.callback) return;
 
-            const localSensors: SearchedSensor[] = (await Promise.all(proms)).reduce<string[]>((acc, cur) => {
-              acc.push(...cur.trim().split('\n'));
-              return acc;
-            }, []).map((addr) => ({ address: addr, remoteSystemId: '' }));
+          const sensors: ioBroker.AdapterConfigSensor[] = [];
 
-            sensors.push(...localSensors);
+          // use sensors currently defined in admin ui
+          if (typeof obj.message === 'object' && Array.isArray(obj.message.sensors)) {
+            sensors.push(...obj.message.sensors);
+          }
 
-          } catch (er: any) {
-            this.log.warn(`Error while searching for local sensors: ${er.toString()}`);
-            if (!this.config.remoteEnabled) {
-              err = er;
+          // search for sensors and add found sensors if not already in
+          const foundSensors = await this.searchSensors();
+          for (const foundSensor of foundSensors) {
+            if (sensors.findIndex((cfgSensor) => (cfgSensor.address === foundSensor.address && cfgSensor.remoteSystemId === foundSensor.remoteSystemId)) < 0) {
+              // not in the list... add it
+              sensors.push({
+                address: foundSensor.address,
+                remoteSystemId: foundSensor.remoteSystemId,
+                name: '',
+                interval: null,
+                unit: '°C',
+                factor: 1,
+                offset: 0,
+                decimals: 2,
+                nullOnError: true,
+                enabled: true,
+              });
             }
           }
 
-          // remote sensors
-          if (this.config.remoteEnabled && this.remoteSensorServer) {
-            try {
-              const remoteSensors = await this.remoteSensorServer.search();
-              sensors.push(...remoteSensors);
-            } catch (er: any) {
-              this.log.warn(`Error while searching for remote sensors: ${er.toString()}`);
-            }
-          }
+          // send back the result
+          this.sendTo(obj.from, obj.command, { native: { sensors } }, obj.callback);
 
-          this.log.debug(`Sensors found: ${JSON.stringify(sensors)}`);
-          this.sendTo(obj.from, obj.command, { err, sensors }, obj.callback);
+          break;
 
+        case 'getNewRemoteKey':
+          // don't do anything if no callback is provided
+          if (!obj.callback) return;
+
+          this.sendTo(obj.from, obj.command, { native: { remoteKey: genHexString(64) } }, obj.callback);
           break;
       }
     }
