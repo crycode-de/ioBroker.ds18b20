@@ -104,9 +104,6 @@ class Ds18b20Adapter extends import_adapter_core.Adapter {
       return;
     }
     if (this.config.remoteEnabled) {
-      if (this.supportsFeature && !this.supportsFeature("ADAPTER_AUTO_DECRYPT_NATIVE")) {
-        this.log.warn("The server for remote sensors is enabled but decrypt native is not supported! The encryption key will be stored unencrypted in the ioBroker database. To get decrypt native support, please upgrade js-controller to v3.0 or greater.");
-      }
       if (!this.config.remotePort || this.config.remotePort <= 0) {
         this.log.warn("Config: Invalid port for the remote sensor server! Using default port 1820.");
         this.config.remotePort = 1820;
