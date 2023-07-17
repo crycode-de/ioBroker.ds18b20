@@ -112,6 +112,19 @@ class Ds18b20Adapter extends import_adapter_core.Adapter {
         this.config.remoteKey = crypto.randomBytes(32).toString("hex");
         this.log.error(`Config: Invalid key for the remote sensor server! Using random key "${this.config.remoteKey}".`);
       }
+      await this.extendObjectAsync("info.remotesConnected", {
+        type: "state",
+        common: {
+          name: import_i18n.i18n.getStringOrTranslated("Connected remote systems"),
+          type: "string",
+          role: "state",
+          read: true,
+          write: false,
+          def: ""
+        },
+        native: {}
+      });
+      this.setState("info.remotesConnected", "", true);
       this.remoteSensorServer = new import_remote_server.RemoteSensorServer(this.config.remotePort, this.config.remoteKey, this);
       this.remoteSensorServer.on("listening", () => {
         this.log.info(`Remote sensor server is listening on port ${this.config.remotePort}`);
@@ -122,6 +135,13 @@ class Ds18b20Adapter extends import_adapter_core.Adapter {
         this.log.debug(`${err.toString()} ${err.stack}`);
         this.updateInfoConnection();
       });
+      this.remoteSensorServer.on("remotesChanged", (remotes) => {
+        this.setState("info.remotesConnected", remotes.join(","), true);
+      });
+    } else {
+      if (await this.getObjectAsync("info.remotesConnected")) {
+        await this.delObjectAsync("info.remotesConnected");
+      }
     }
     if (!Array.isArray(this.config.sensors)) {
       this.config.sensors = [];
@@ -213,6 +233,7 @@ class Ds18b20Adapter extends import_adapter_core.Adapter {
       }
       if (this.remoteSensorServer) {
         await this.remoteSensorServer.stop();
+        await this.setStateAsync("info.remotesConnected", "", true);
       }
       if (!this.doingMigration) {
         await this.setStateAsync("info.connection", false, true);

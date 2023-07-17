@@ -157,6 +157,7 @@ class RemoteSensorServer extends import_events.EventEmitter {
         delete this.socketTimeouts[socketId];
       }
       delete this.sockets[socketId];
+      this.emit("remotesChanged", this.getConnectedSystems());
     });
     let dataStr = "";
     socket.on("data", (data) => {
@@ -205,6 +206,7 @@ class RemoteSensorServer extends import_events.EventEmitter {
         if (data.protocolVersion !== import_common.REMOTE_PROTOCOL_VERSION) {
           this.adapter.log.warn(`Protocol version ${data.protocolVersion} from remote system ${data.systemId} does not match the adapter protocol version ${import_common.REMOTE_PROTOCOL_VERSION}! Please reinstall the remote client.`);
         }
+        this.emit("remotesChanged", this.getConnectedSystems());
         break;
       case "read":
         this.emit("sensorData", data);

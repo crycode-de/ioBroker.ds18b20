@@ -35,11 +35,13 @@ export interface RemoteSensorServer {
   on (event: 'error', listener: (err: Error) => void): this;
   on (event: 'sensorData', listener: (data: RemoteDataRead) => void): this;
   on (event: 'searchData', listener: (data: RemoteDataSearch) => void): this;
+  on (event: 'remotesChanged', listener: (remotes: string[]) => void): this;
 
   emit (event: 'listening'): boolean;
   emit (event: 'error', err: Error): boolean;
   emit (event: 'sensorData', data: RemoteDataRead): boolean;
   emit (event: 'searchData', data: RemoteDataSearch): boolean;
+  emit (event: 'remotesChanged', data: string[]): boolean;
 }
 
 /**
@@ -259,6 +261,8 @@ export class RemoteSensorServer extends EventEmitter {
       }
 
       delete this.sockets[socketId];
+
+      this.emit('remotesChanged', this.getConnectedSystems());
     });
 
     // collect all incoming data and split it by `\n`
@@ -336,6 +340,8 @@ export class RemoteSensorServer extends EventEmitter {
         if (data.protocolVersion !== REMOTE_PROTOCOL_VERSION) {
           this.adapter.log.warn(`Protocol version ${data.protocolVersion} from remote system ${data.systemId} does not match the adapter protocol version ${REMOTE_PROTOCOL_VERSION}! Please reinstall the remote client.`);
         }
+
+        this.emit('remotesChanged', this.getConnectedSystems());
 
         break;
 

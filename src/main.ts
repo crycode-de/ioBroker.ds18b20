@@ -157,6 +157,21 @@ class Ds18b20Adapter extends Adapter {
         this.log.error(`Config: Invalid key for the remote sensor server! Using random key "${this.config.remoteKey}".`);
       }
 
+      // setup info state for connected remote systems
+      await this.extendObjectAsync('info.remotesConnected', {
+        type: 'state',
+        common: {
+          name: i18n.getStringOrTranslated('Connected remote systems'),
+          type: 'string',
+          role: 'state',
+          read: true,
+          write: false,
+          def: '',
+        },
+        native: {},
+      });
+      this.setState('info.remotesConnected', '', true);
+
       this.remoteSensorServer = new RemoteSensorServer(this.config.remotePort, this.config.remoteKey, this);
 
       this.remoteSensorServer.on('listening', () => {
@@ -169,6 +184,16 @@ class Ds18b20Adapter extends Adapter {
         this.log.debug(`${err.toString()} ${err.stack}`);
         this.updateInfoConnection();
       });
+
+      this.remoteSensorServer.on('remotesChanged', (remotes: string[]) => {
+        this.setState('info.remotesConnected', remotes.join(','), true);
+      });
+
+    } else {
+      // remote systems disabled - delete info object if exists
+      if (await this.getObjectAsync('info.remotesConnected')) {
+        await this.delObjectAsync('info.remotesConnected');
+      }
     }
 
     // setup sensors
@@ -285,6 +310,7 @@ class Ds18b20Adapter extends Adapter {
       // stop the remote sensor server
       if (this.remoteSensorServer) {
         await this.remoteSensorServer.stop();
+        await this.setStateAsync('info.remotesConnected', '' , true);
       }
 
       // reset connection state
