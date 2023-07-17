@@ -58,6 +58,7 @@
               "filter": false,
               "sort": false,
               "default": "",
+              "placeholder": "none",
               "hide": "!data.remoteEnabled"
             },
             {
@@ -67,7 +68,8 @@
               "attr": "name",
               "filter": false,
               "sort": false,
-              "default": ""
+              "default": "",
+              "placeholder": "Enter a name"
             },
             {
               "type": "text",
@@ -84,7 +86,7 @@
             {
               "type": "text",
               "title": "Unit",
-              "width": "10%",
+              "width": "5%",
               "attr": "unit",
               "filter": false,
               "sort": false,
@@ -93,7 +95,7 @@
             {
               "type": "number",
               "title": "Factor",
-              "width": "10%",
+              "width": "5%",
               "attr": "factor",
               "filter": false,
               "sort": false,
@@ -102,7 +104,7 @@
             {
               "type": "number",
               "title": "Offset",
-              "width": "10%",
+              "width": "5%",
               "attr": "offset",
               "filter": false,
               "sort": false,
@@ -111,7 +113,7 @@
             {
               "type": "number",
               "title": "Decimals",
-              "width": "10%",
+              "width": "5%",
               "attr": "decimals",
               "filter": false,
               "sort": false,
@@ -120,7 +122,7 @@
             {
               "type": "checkbox",
               "title": "Null on error",
-              "width": "10%",
+              "width": "5%",
               "attr": "nullOnError",
               "filter": false,
               "sort": false,
@@ -129,7 +131,7 @@
             {
               "type": "checkbox",
               "title": "Enabled",
-              "width": "10%",
+              "width": "5%",
               "attr": "enabled",
               "filter": false,
               "sort": false,
@@ -151,6 +153,19 @@
           "useNative": true,
           "tooltip": "Click here to search for sensors and add the found sensors to the list.",
           "showProcess": true
+        },
+
+        "_sensorAddHint": {
+          "type": "staticText",
+          "text": "You may search for sensors or add them manually by providing their address.",
+          "newLine": true,
+          "sm": 12
+        },
+        "_sensorRemoteHint": {
+          "type": "staticText",
+          "text": "If a sensor is connected to a remote system, enter the system ID. Otherwise leave the field empty.",
+          "newLine": true,
+          "sm": 12
         }
       }
     },
@@ -170,7 +185,7 @@
         },
 
         "remotePort": {
-          "type": "number",
+          "type": "port",
           "newLine": true,
           "sm": 12,
           "md": 6,
@@ -186,7 +201,9 @@
           "lg": 6,
           "label": "Encryption key",
           "help": "Key to encrypt the client connections. This key must be set on all clients. Use the button on the right to create a new key.",
-          "hidden": "!data.remoteEnabled"
+          "hidden": "!data.remoteEnabled",
+          "validator": "/^[0-9a-fA-F]{64}$/.test(data.remoteKey)",
+          "validatorNoSaveOnError": true
         },
         "_remoteKeyBtn": {
           "type": "sendTo",
@@ -224,6 +241,12 @@
           "md": 12,
           "lg": 12,
           "hidden": "!data.remoteEnabled"
+        },
+        "_remoteConnectedHint": {
+          "type": "staticText",
+          "text": "Hint: Reopen this page to refresh the list of connected remote systems.",
+          "newLine": true,
+          "sm": 12
         }
       }
     }
