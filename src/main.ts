@@ -194,6 +194,7 @@ class Ds18b20Adapter extends Adapter {
       // create/update object
       const name = sensorCfg.name || sensorCfg.address;
       await this.extendObjectAsync(`sensors.${sensorCfg.address}`, {
+        type: 'state',
         common: {
           name: sensorCfg.enabled ? name : i18n.getStringOrTranslated('%s (disabled)', name),
           type: 'number',
@@ -242,10 +243,28 @@ class Ds18b20Adapter extends Adapter {
     }
 
     const count = Object.keys(this.sensors).length;
-    this.log.debug(`Loaded ${count} sensors`);
+    this.log.debug(`Loaded ${count} enabled sensors`);
 
     if (count === 0) {
       this.log.warn('No sensors configured or enabled!');
+    }
+
+    // check for sensor objects not configured
+    const objListSensors = await this.getObjectListAsync({
+      startkey: `${this.namespace}.sensors.`,
+      endkey: `${this.namespace}.sensors.\u9999`,
+    });
+    const reAddress = new RegExp(`^${this.name}\\.${this.instance}\\.sensors\\.(.+)$`);
+    for (const item of objListSensors.rows) {
+      const m = item.id.match(reAddress);
+      if (m) {
+        const addr = m[1];
+        if (!this.config.sensors.find((s) => s.address === addr)) {
+          // not configured
+          this.log.info(`Delete object ${item.id} since sensor is not configured`);
+          await this.delObjectAsync(item.id);
+        }
+      }
     }
 
     // subscribe needed states
