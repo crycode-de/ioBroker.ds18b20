@@ -14,6 +14,7 @@
     "removeComments": true,
     "module": "commonjs",
     "moduleResolution": "node",
+    "esModuleInterop": true,
     // this is necessary for the automatic typing of the adapter config
     "resolveJsonModule": true,
 

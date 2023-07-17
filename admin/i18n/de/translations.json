@@ -36,5 +36,6 @@
     "Then you may start the remote client manually or as a SystemD service like shown in the setup output.": "Anschließend kann der Client manuell oder als SystemD-Dienst gestartet werden, wie in der Ausgabe des Setups gezeigt.",
     "To setup a remote client please make sure Node.js is installed and run the following commands on the remote system. This will create all necessary files in <code>~/ds18b20-remote/</code> to run the remote client.": "Um einen entfernten Client einzurichten, stelle bitte sicher, dass Node.js installiert ist und führe die folgenden Befehle auf dem entfernten System aus. Dadurch werden alle erforderlichen Dateien zum Ausführen des Clients in <code>~/ds18b20-remote/</code> erstellt.",
     "Unit": "Einheit",
-    "When enabled the adapter starts a server and accepts connections from <em>ioBroker.ds18b20 remote clients</em>. (see below)": "Wenn aktiviert, startet der Adapter einen Server und akzeptiert Verbindungen von <em>ioBroker.ds18b20 Remote Clients</em>. (siehe weiter unten)"
+    "When enabled the adapter starts a server and accepts connections from <em>ioBroker.ds18b20 remote clients</em>. (see below)": "Wenn aktiviert, startet der Adapter einen Server und akzeptiert Verbindungen von <em>ioBroker.ds18b20 Remote Clients</em>. (siehe weiter unten)",
+    "%s (disabled)": "%s (deaktiviert)"
 }

@@ -37,6 +37,7 @@ var import_autobind_decorator = require("autobind-decorator");
 var import_sensor = require("./sensor");
 var import_remote_server = require("./remote-server");
 var import_utils = require("./lib/utils");
+var import_i18n = require("./lib/i18n");
 class Ds18b20Adapter extends import_adapter_core.Adapter {
   constructor(options = {}) {
     super({
@@ -45,6 +46,7 @@ class Ds18b20Adapter extends import_adapter_core.Adapter {
     });
     this.sensors = {};
     this.remoteSensorServer = null;
+    this.doingMigration = false;
     this.on("ready", this.onReady);
     this.on("stateChange", this.onStateChange);
     this.on("message", this.onMessage);
@@ -52,11 +54,14 @@ class Ds18b20Adapter extends import_adapter_core.Adapter {
   }
   async onReady() {
     this.setState("info.connection", false, true);
+    const systemConfig = await this.getForeignObjectAsync("system.config");
+    import_i18n.i18n.language = (systemConfig == null ? void 0 : systemConfig.common.language) || "en";
     if (!this.config.w1DevicesPath) {
       this.config.w1DevicesPath = "/sys/bus/w1/devices";
     }
     if (Object.keys(this.config).includes("_values")) {
       this.log.info("Migrate config from old version ...");
+      this.doingMigration = true;
       const instanceObj = await this.getForeignObjectAsync(`system.adapter.${this.namespace}`);
       if (!instanceObj) {
         this.log.error("Could not read instance object!");
@@ -85,6 +90,13 @@ class Ds18b20Adapter extends import_adapter_core.Adapter {
         const { obj, sortOrder, ...sensor } = oldSensor;
         newNative.sensors.push(sensor);
       }
+      await Promise.all([
+        this.delObjectAsync("actions"),
+        this.delObjectAsync("actions.readNow"),
+        this.delObjectAsync("info"),
+        this.delObjectAsync("info.connection"),
+        this.delObjectAsync("sensors")
+      ]);
       instanceObj.native = newNative;
       this.log.info("Rewriting adapter config");
       this.setForeignObjectAsync(`system.adapter.${this.namespace}`, instanceObj);
@@ -126,26 +138,28 @@ class Ds18b20Adapter extends import_adapter_core.Adapter {
         this.log.warn(`Sensor ${sensorCfg.address} is configured twice! Ignoring the all expect the first.`);
         continue;
       }
-      if (!sensorCfg.enabled) {
-        this.log.debug(`Sensor ${sensorCfg.address} is not enabled`);
-        continue;
-      }
       if (sensorCfg.remoteSystemId && !this.config.remoteEnabled) {
         this.log.warn(`Sensor ${sensorCfg.address} is configured as remote sensor of ${sensorCfg.remoteSystemId} but remote sensors are not enabled!`);
         continue;
       }
+      const name = sensorCfg.name || sensorCfg.address;
       await this.extendObjectAsync(`sensors.${sensorCfg.address}`, {
         common: {
-          name: sensorCfg.name || sensorCfg.address,
+          name: sensorCfg.enabled ? name : import_i18n.i18n.getStringOrTranslated("%s (disabled)", name),
           type: "number",
           role: "value.temperature",
           unit: sensorCfg.unit || "\xB0C",
           read: true,
           write: false,
-          def: null
+          def: null,
+          icon: sensorCfg.enabled ? "ds18b20.png" : "sensor_disabled.png"
         },
         native: {}
       });
+      if (!sensorCfg.enabled) {
+        this.log.debug(`Sensor ${sensorCfg.address} is not enabled`);
+        continue;
+      }
       let interval;
       if (typeof sensorCfg.interval === "number") {
         interval = sensorCfg.interval;
@@ -187,7 +201,9 @@ class Ds18b20Adapter extends import_adapter_core.Adapter {
       if (this.remoteSensorServer) {
         await this.remoteSensorServer.stop();
       }
-      await this.setStateAsync("info.connection", false, true);
+      if (!this.doingMigration) {
+        await this.setStateAsync("info.connection", false, true);
+      }
     } catch (e) {
     }
     callback();
@@ -214,6 +230,11 @@ class Ds18b20Adapter extends import_adapter_core.Adapter {
   }
   handleSensorErrorStateChanged(hasError, address) {
     this.log.debug(`Error state of sensor ${address} changed to ${hasError}`);
+    this.extendObjectAsync(`sensors.${address}`, {
+      common: {
+        icon: hasError ? "sensor_error.png" : "sensor_ok.png"
+      }
+    });
     this.updateInfoConnection();
   }
   updateInfoConnection() {

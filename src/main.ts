@@ -23,6 +23,7 @@ import { Sensor } from './sensor';
 
 import { RemoteSensorServer } from './remote-server';
 import { genHexString } from './lib/utils';
+import { i18n } from './lib/i18n';
 
 /**
  * The ds18b20 adapter.
@@ -38,6 +39,11 @@ class Ds18b20Adapter extends Adapter {
    * The server for remote sensors if enabled.
    */
   public remoteSensorServer: RemoteSensorServer | null = null;
+
+  /**
+   * Internal indicator if we are doing a migration from an old version.
+   */
+  private doingMigration: boolean = false;
 
   /**
    * Constructor to create a new instance of the adapter.
@@ -63,6 +69,10 @@ class Ds18b20Adapter extends Adapter {
     // Reset the connection indicator during startup
     this.setState('info.connection', false, true);
 
+    // try to get the system language
+    const systemConfig = await this.getForeignObjectAsync('system.config');
+    i18n.language = systemConfig?.common.language || 'en';
+
     // set default devices path if not defined
     if (!this.config.w1DevicesPath) {
       this.config.w1DevicesPath = '/sys/bus/w1/devices';
@@ -71,6 +81,8 @@ class Ds18b20Adapter extends Adapter {
     // need to upgrade config from old version (<2.0.0)?
     if (Object.keys(this.config).includes('_values')) {
       this.log.info('Migrate config from old version ...');
+      this.doingMigration = true;
+
       const instanceObj = await this.getForeignObjectAsync(`system.adapter.${this.namespace}`);
       if (!instanceObj) {
         this.log.error('Could not read instance object!');
@@ -114,6 +126,15 @@ class Ds18b20Adapter extends Adapter {
           await this.setForeignObjectAsync(obj._id, sensorObj);
         }*/
       }
+
+      // delete some objects - they will be recreated on adapter restart
+      await Promise.all([
+        this.delObjectAsync('actions'),
+        this.delObjectAsync('actions.readNow'),
+        this.delObjectAsync('info'),
+        this.delObjectAsync('info.connection'),
+        this.delObjectAsync('sensors'),
+      ]);
 
       instanceObj.native = newNative;
       this.log.info('Rewriting adapter config');
@@ -170,29 +191,32 @@ class Ds18b20Adapter extends Adapter {
         continue;
       }
 
-      if (!sensorCfg.enabled) {
-        this.log.debug(`Sensor ${sensorCfg.address} is not enabled`);
-        continue;
-      }
-
       if (sensorCfg.remoteSystemId && !this.config.remoteEnabled) {
         this.log.warn(`Sensor ${sensorCfg.address} is configured as remote sensor of ${sensorCfg.remoteSystemId} but remote sensors are not enabled!`);
         continue;
       }
 
       // create/update object
+      const name = sensorCfg.name || sensorCfg.address;
       await this.extendObjectAsync(`sensors.${sensorCfg.address}`, {
         common: {
-          name: sensorCfg.name || sensorCfg.address,
+          name: sensorCfg.enabled ? name : i18n.getStringOrTranslated('%s (disabled)', name),
           type: 'number',
           role: 'value.temperature',
           unit: sensorCfg.unit || '°C',
           read: true,
           write: false,
           def: null,
+          icon: sensorCfg.enabled ? 'ds18b20.png' : 'sensor_disabled.png',
         },
         native: {},
       });
+
+      // stop here if sensor is not enabled
+      if (!sensorCfg.enabled) {
+        this.log.debug(`Sensor ${sensorCfg.address} is not enabled`);
+        continue;
+      }
 
       // init the sensor
       let interval: number;
@@ -250,7 +274,9 @@ class Ds18b20Adapter extends Adapter {
       }
 
       // reset connection state
-      await this.setStateAsync('info.connection', false, true);
+      if (!this.doingMigration) {
+        await this.setStateAsync('info.connection', false, true);
+      }
 
     } catch(e) { }
 
@@ -302,6 +328,12 @@ class Ds18b20Adapter extends Adapter {
   @boundMethod
   private handleSensorErrorStateChanged (hasError: boolean, address: string): void {
     this.log.debug(`Error state of sensor ${address} changed to ${hasError}`);
+
+    this.extendObjectAsync(`sensors.${address}`, {
+      common: {
+        icon: hasError ? 'sensor_error.png' : 'sensor_ok.png',
+      },
+    });
 
     this.updateInfoConnection();
   }
