@@ -27,34 +27,34 @@ __export(i18n_exports, {
   i18n: () => i18n
 });
 module.exports = __toCommonJS(i18n_exports);
-var import_translations = __toESM(require("../../admin/i18n/de/translations.json"));
-var import_translations2 = __toESM(require("../../admin/i18n/en/translations.json"));
-var import_translations3 = __toESM(require("../../admin/i18n/es/translations.json"));
-var import_translations4 = __toESM(require("../../admin/i18n/fr/translations.json"));
-var import_translations5 = __toESM(require("../../admin/i18n/it/translations.json"));
-var import_translations6 = __toESM(require("../../admin/i18n/nl/translations.json"));
-var import_translations7 = __toESM(require("../../admin/i18n/pl/translations.json"));
-var import_translations8 = __toESM(require("../../admin/i18n/pt/translations.json"));
-var import_translations9 = __toESM(require("../../admin/i18n/ru/translations.json"));
-var import_translations10 = __toESM(require("../../admin/i18n/zh-cn/translations.json"));
+var import_de = __toESM(require("../../admin/i18n/de.json"));
+var import_en = __toESM(require("../../admin/i18n/en.json"));
+var import_es = __toESM(require("../../admin/i18n/es.json"));
+var import_fr = __toESM(require("../../admin/i18n/fr.json"));
+var import_it = __toESM(require("../../admin/i18n/it.json"));
+var import_nl = __toESM(require("../../admin/i18n/nl.json"));
+var import_pl = __toESM(require("../../admin/i18n/pl.json"));
+var import_pt = __toESM(require("../../admin/i18n/pt.json"));
+var import_ru = __toESM(require("../../admin/i18n/ru.json"));
+var import_zh_cn = __toESM(require("../../admin/i18n/zh-cn.json"));
 class I18n {
   constructor() {
     this.language = "en";
   }
   getStringOrTranslated(key, ...args) {
     var _a, _b, _c, _d, _e, _f, _g, _h, _i, _j;
-    if (import_translations2.default[key]) {
+    if (import_en.default[key]) {
       return {
-        de: this.replacePlaceholders((_a = import_translations.default[key]) != null ? _a : key, ...args),
-        en: this.replacePlaceholders((_b = import_translations2.default[key]) != null ? _b : key, ...args),
-        es: this.replacePlaceholders((_c = import_translations3.default[key]) != null ? _c : key, ...args),
-        fr: this.replacePlaceholders((_d = import_translations4.default[key]) != null ? _d : key, ...args),
-        it: this.replacePlaceholders((_e = import_translations5.default[key]) != null ? _e : key, ...args),
-        nl: this.replacePlaceholders((_f = import_translations6.default[key]) != null ? _f : key, ...args),
-        pl: this.replacePlaceholders((_g = import_translations7.default[key]) != null ? _g : key, ...args),
-        pt: this.replacePlaceholders((_h = import_translations8.default[key]) != null ? _h : key, ...args),
-        ru: this.replacePlaceholders((_i = import_translations9.default[key]) != null ? _i : key, ...args),
-        "zh-cn": this.replacePlaceholders((_j = import_translations10.default[key]) != null ? _j : key, ...args)
+        de: this.replacePlaceholders((_a = import_de.default[key]) != null ? _a : key, ...args),
+        en: this.replacePlaceholders((_b = import_en.default[key]) != null ? _b : key, ...args),
+        es: this.replacePlaceholders((_c = import_es.default[key]) != null ? _c : key, ...args),
+        fr: this.replacePlaceholders((_d = import_fr.default[key]) != null ? _d : key, ...args),
+        it: this.replacePlaceholders((_e = import_it.default[key]) != null ? _e : key, ...args),
+        nl: this.replacePlaceholders((_f = import_nl.default[key]) != null ? _f : key, ...args),
+        pl: this.replacePlaceholders((_g = import_pl.default[key]) != null ? _g : key, ...args),
+        pt: this.replacePlaceholders((_h = import_pt.default[key]) != null ? _h : key, ...args),
+        ru: this.replacePlaceholders((_i = import_ru.default[key]) != null ? _i : key, ...args),
+        "zh-cn": this.replacePlaceholders((_j = import_zh_cn.default[key]) != null ? _j : key, ...args)
       };
     } else {
       return key;
@@ -65,34 +65,34 @@ class I18n {
     let str;
     switch (this.language) {
       case "de":
-        str = (_a = import_translations.default[key]) != null ? _a : key;
+        str = (_a = import_de.default[key]) != null ? _a : key;
         break;
       case "en":
-        str = (_b = import_translations2.default[key]) != null ? _b : key;
+        str = (_b = import_en.default[key]) != null ? _b : key;
         break;
       case "es":
-        str = (_c = import_translations3.default[key]) != null ? _c : key;
+        str = (_c = import_es.default[key]) != null ? _c : key;
         break;
       case "fr":
-        str = (_d = import_translations4.default[key]) != null ? _d : key;
+        str = (_d = import_fr.default[key]) != null ? _d : key;
         break;
       case "it":
-        str = (_e = import_translations5.default[key]) != null ? _e : key;
+        str = (_e = import_it.default[key]) != null ? _e : key;
         break;
       case "nl":
-        str = (_f = import_translations6.default[key]) != null ? _f : key;
+        str = (_f = import_nl.default[key]) != null ? _f : key;
         break;
       case "pl":
-        str = (_g = import_translations7.default[key]) != null ? _g : key;
+        str = (_g = import_pl.default[key]) != null ? _g : key;
         break;
       case "pt":
-        str = (_h = import_translations8.default[key]) != null ? _h : key;
+        str = (_h = import_pt.default[key]) != null ? _h : key;
         break;
       case "ru":
-        str = (_i = import_translations9.default[key]) != null ? _i : key;
+        str = (_i = import_ru.default[key]) != null ? _i : key;
         break;
       case "zh-cn":
-        str = (_j = import_translations10.default[key]) != null ? _j : key;
+        str = (_j = import_zh_cn.default[key]) != null ? _j : key;
         break;
       default:
         str = key;

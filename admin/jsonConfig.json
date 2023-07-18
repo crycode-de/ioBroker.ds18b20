@@ -21,9 +21,16 @@
           "newLine": true,
           "sm": 12,
           "md": 8,
-          "lg": 4,
+          "lg": 6,
           "label": "Path of the 1-wire devices",
-          "help": "System path where the 1-wire devices can be accessed.\nDefault is '/sys/bus/w1/devices'."
+          "help": "System path where the 1-wire devices can be accessed. Default is '/sys/bus/w1/devices'."
+        },
+
+        "_w1DevicesPathHint": {
+          "type": "staticText",
+          "newLine": true,
+          "sm": 12,
+          "text": "If you have lots of sensors on different bus masters, you may use one adapter instance per bus master to optimize the query performance. To do so use the direct path to one bus master, e.g. '/sys/bus/w1/devices/w1_bus_master1'."
         }
 
       }
@@ -154,6 +161,17 @@
           "tooltip": "Click here to search for sensors and add the found sensors to the list.",
           "showProcess": true
         },
+        "_searchSensorsInfo": {
+          "type": "staticText",
+          "sm": 12,
+          "md": 6,
+          "lg": 9,
+          "hidden": "_alive",
+          "text": "The adapter instance must be started to search for sensors.",
+          "style": {
+            "color": "red"
+          }
+        },
 
         "_sensorAddHint": {
           "type": "staticText",
@@ -178,10 +196,8 @@
           "type": "checkbox",
           "newLine": true,
           "sm": 12,
-          "md": 6,
-          "lg": 4,
           "label": "Enable remote sensors",
-          "help": "When enabled the adapter starts a server and accepts connections from <em>ioBroker.ds18b20 remote clients</em>. (see below)"
+          "help": "When enabled the adapter starts a server and accepts connections from ioBroker.ds18b20 remote clients."
         },
 
         "remotePort": {
@@ -191,7 +207,7 @@
           "md": 6,
           "lg": 2,
           "label": "Server port",
-          "help": "The port to start the server for remote clients on. Default is <code>1820</code>.",
+          "help": "The port to start the server for remote clients on. Default is '1820'.",
           "hidden": "!data.remoteEnabled"
         },
         "remoteKey": {
@@ -214,7 +230,7 @@
           "icon": "data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgMjQgMjQiPjxwYXRoIHN0eWxlPSJmaWxsOiBjdXJyZW50Q29sb3IiIGQ9Ik0xNy42NSA2LjM1QzE2LjIgNC45IDE0LjIxIDQgMTIgNGMtNC40MiAwLTcuOTkgMy41OC03Ljk5IDhzMy41NyA4IDcuOTkgOGMzLjczIDAgNi44NC0yLjU1IDcuNzMtNmgtMi4wOGMtLjgyIDIuMzMtMy4wNCA0LTUuNjUgNC0zLjMxIDAtNi0yLjY5LTYtNnMyLjY5LTYgNi02YzEuNjYgMCAzLjE0LjY5IDQuMjIgMS43OEwxMyAxMWg3VjRsLTIuMzUgMi4zNXoiPjwvcGF0aD48L3N2Zz4=",
           "variant": "contained",
           "useNative": true,
-          "tooltip": "Create a new random encryption key",
+          "tooltip": "Click here to create a new random encryption key",
           "hidden": "!data.remoteEnabled"
         },
 
@@ -228,9 +244,11 @@
           "text": "Connected remote systems",
           "newLine": true,
           "sm": 12,
-          "md": 12,
-          "lg": 12,
-          "hidden": "!data.remoteEnabled"
+          "hidden": "!data.remoteEnabled",
+          "style": {
+            "fontSize": "1.3em",
+            "fontWeight": "bold"
+          }
         },
         "_remoteConnectedInfo": {
           "type": "textSendTo",
@@ -238,15 +256,114 @@
           "container": "div",
           "newLine": true,
           "sm": 12,
-          "md": 12,
-          "lg": 12,
-          "hidden": "!data.remoteEnabled"
+          "hidden": "!data.remoteEnabled",
+          "style": {
+            "fontFamily": "monospace",
+            "marginLeft": "2em"
+          }
         },
         "_remoteConnectedHint": {
           "type": "staticText",
           "text": "Hint: Reopen this page to refresh the list of connected remote systems.",
           "newLine": true,
-          "sm": 12
+          "sm": 12,
+          "hidden": "!data.remoteEnabled"
+        },
+
+        "_hr2": {
+          "type": "divider",
+          "hidden": "!data.remoteEnabled"
+        },
+
+        "_remoteInstallHint1": {
+          "type": "staticText",
+          "newLine": true,
+          "sm": 12,
+          "hidden": "!data.remoteEnabled",
+          "text": "Remote client setup instructions",
+          "style": {
+            "fontSize": "1.3em",
+            "fontWeight": "bold"
+          }
+        },
+        "_remoteInstallHint2": {
+          "type": "staticText",
+          "newLine": true,
+          "sm": 12,
+          "hidden": "!data.remoteEnabled",
+          "text": "To setup a remote client please make sure Node.js is installed and run the following commands on the remote system. This will create all necessary files in '~/ds18b20-remote/' to run the remote client."
+        },
+        "_remoteInstallHintCmd1": {
+          "type": "staticText",
+          "newLine": true,
+          "sm": 12,
+          "hidden": "!data.remoteEnabled",
+          "noTranslation": true,
+          "text": "mkdir ~/ds18b20-remote",
+          "style": {
+            "fontFamily": "monospace",
+            "marginLeft": "2em",
+            "paddingBottom": 0
+          }
+        },
+        "_remoteInstallHintCmd2": {
+          "type": "staticText",
+          "newLine": true,
+          "sm": 12,
+          "hidden": "!data.remoteEnabled",
+          "noTranslation": true,
+          "text": "cd ~/ds18b20-remote",
+          "style": {
+            "fontFamily": "monospace",
+            "marginLeft": "2em",
+            "paddingTop": 0,
+            "paddingBottom": 0
+          }
+        },
+        "_remoteInstallHintCmd3": {
+          "type": "staticText",
+          "newLine": true,
+          "sm": 12,
+          "hidden": "!data.remoteEnabled",
+          "noTranslation": true,
+          "text": "wget -O remote-client-setup.js https://raw.githubusercontent.com/crycode-de/ioBroker.ds18b20/582dac6b7dc00d892ec8ab429efc7a8be27e102e/build/remote/remote-client-setup.js",
+          "style": {
+            "fontFamily": "monospace",
+            "marginLeft": "2em",
+            "paddingTop": 0,
+            "paddingBottom": 0
+          }
+        },
+        "_remoteInstallHintCmd4": {
+          "type": "staticText",
+          "newLine": true,
+          "sm": 12,
+          "hidden": "!data.remoteEnabled",
+          "noTranslation": true,
+          "text": "node remote-client-setup.js",
+          "style": {
+            "fontFamily": "monospace",
+            "marginLeft": "2em",
+            "paddingTop": 0,
+            "paddingBottom": 0
+          }
+        },
+        "_remoteInstallHint3": {
+          "type": "staticText",
+          "newLine": true,
+          "sm": 12,
+          "hidden": "!data.remoteEnabled",
+          "text": "After that you have to edit the created '.env' file and fill in at least the host and the encryption key.",
+          "style": {
+            "fontWeight": "bold"
+          }
+        },
+        "_remoteInstallHint4": {
+          "type": "staticText",
+          "newLine": true,
+          "sm": 12,
+          "hidden": "!data.remoteEnabled",
+          "text": "Then you may start the remote client manually or as a SystemD service like shown in the setup output."
         }
       }
     }

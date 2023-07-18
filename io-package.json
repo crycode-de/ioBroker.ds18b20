@@ -26,7 +26,8 @@
                 "it": "Aggiunto l'ordinamento dei sensori nell'amministratore e mantieni l'ordinamento. Consenti l'utilizzo di w1_bus_masterX direttamente come w1DevicesPath.",
                 "es": "Se agregó clasificación de sensores en administración y mantener el orden de clasificación. Permitir el uso de w1_bus_masterX directamente como w1DevicesPath.",
                 "pl": "Dodano sortowanie czujników w admin i zachowanie porządku sortowania. Zezwól na użycie w1_bus_masterX bezpośrednio jako w1DevicesPath.",
-                "zh-cn": "在管理员中添加传感器排序并保持排序顺序。允许将 w1_bus_masterX 直接用作 w1DevicesPath。"
+                "zh-cn": "在管理员中添加传感器排序并保持排序顺序。允许将 w1_bus_masterX 直接用作 w1DevicesPath。",
+                "uk": "Додано сортування датчиків в адмінку та збереження порядку сортування. Дозволити використання w1_bus_masterX безпосередньо як w1DevicesPath."
             },
             "1.5.4": {
                 "en": "Catch errors while sending request to remote client",
@@ -38,7 +39,8 @@
                 "it": "Rileva gli errori durante l'invio della richiesta al client remoto",
                 "es": "Detectar errores al enviar una solicitud a un cliente remoto",
                 "pl": "Wyłap błędy podczas wysyłania żądania do zdalnego klienta",
-                "zh-cn": "向远程客户端发送请求时捕获错误"
+                "zh-cn": "向远程客户端发送请求时捕获错误",
+                "uk": "Виявлення помилок під час надсилання запиту віддаленому клієнту"
             },
             "1.5.3": {
                 "en": "Increased remote client protocol version to inform users that they should update their remote clients",
@@ -50,7 +52,8 @@
                 "it": "Versione migliorata del protocollo client remoto per informare gli utenti che devono aggiornare i propri client remoti",
                 "es": "Aumento de la versión del protocolo de cliente remoto para informar a los usuarios que deben actualizar sus clientes remotos",
                 "pl": "Zwiększona wersja protokołu klienta zdalnego, aby poinformować użytkowników, że powinni zaktualizować swoich klientów zdalnych",
-                "zh-cn": "增加远程客户端协议版本以通知用户他们应该更新他们的远程客户端"
+                "zh-cn": "增加远程客户端协议版本以通知用户他们应该更新他们的远程客户端",
+                "uk": "Збільшено версію протоколу віддаленого клієнта, щоб інформувати користувачів про те, що вони повинні оновити своїх віддалених клієнтів"
             },
             "1.5.2": {
                 "en": "Fix remote client reconnect after multiple failed attempts. Reinstall of remote client needed to apply this fix!",
@@ -62,7 +65,8 @@
                 "it": "Risolto il problema con la riconnessione del client remoto dopo più tentativi falliti. Reinstallazione del client remoto necessaria per applicare questa correzione!",
                 "es": "Corrija la reconexión del cliente remoto después de varios intentos fallidos. ¡Reinstale el cliente remoto necesario para aplicar esta solución!",
                 "pl": "Napraw ponowne połączenie klienta zdalnego po wielu nieudanych próbach. Wymagana ponowna instalacja zdalnego klienta, aby zastosować tę poprawkę!",
-                "zh-cn": "多次尝试失败后修复远程客户端重新连接。应用此修复程序需要重新安装远程客户端！"
+                "zh-cn": "多次尝试失败后修复远程客户端重新连接。应用此修复程序需要重新安装远程客户端！",
+                "uk": "Виправлення повторного підключення віддаленого клієнта після кількох невдалих спроб. Для застосування цього виправлення потрібно перевстановити віддалений клієнт!"
             },
             "1.5.1": {
                 "en": "Fix crash on undefined obj.native, Updated remote-client-setup info in admin if https is used",
@@ -74,7 +78,8 @@
                 "it": "Risolto il problema con l'arresto anomalo su obj.native non definito, informazioni aggiornate sulla configurazione del client remoto nell'amministratore se viene utilizzato https",
                 "es": "Se corrigió el bloqueo en el obj.native indefinido, se actualizó la información de configuración del cliente remoto en el administrador si se usa https",
                 "pl": "Napraw awarię na undefined obj.native, Zaktualizowano informacje o zdalnej konfiguracji klienta w admin, jeśli używany jest https",
-                "zh-cn": "修复未定义的 obj.native 崩溃，如果使用 https，则更新管理员中的远程客户端设置信息"
+                "zh-cn": "修复未定义的 obj.native 崩溃，如果使用 https，则更新管理员中的远程客户端设置信息",
+                "uk": "Виправлено збій у undefined obj.native, оновлено інформацію про налаштування віддаленого клієнта в адміністраторі, якщо використовується https"
             },
             "1.5.0": {
                 "en": "Add setting to disable specific sensors",
@@ -86,7 +91,8 @@
                 "it": "Aggiungi impostazione per disabilitare sensori specifici",
                 "es": "Agregar configuración para deshabilitar sensores específicos",
                 "pl": "Dodaj ustawienie, aby wyłączyć określone czujniki",
-                "zh-cn": "添加设置以禁用特定传感器"
+                "zh-cn": "添加设置以禁用特定传感器",
+                "uk": "Додайте налаштування для вимкнення певних датчиків"
             },
             "1.4.2": {
                 "en": "Added some remote-client information, Updated dependencies",
@@ -98,7 +104,8 @@
                 "it": "Aggiunte alcune informazioni sul client remoto, dipendenze aggiornate",
                 "es": "Se agregó información de cliente remoto, dependencias actualizadas",
                 "pl": "Dodano informacje o zdalnym kliencie, Zaktualizowano zależności",
-                "zh-cn": "添加了一些远程客户端信息，更新了依赖项"
+                "zh-cn": "添加了一些远程客户端信息，更新了依赖项",
+                "uk": "Додано деяку інформацію про віддаленого клієнта, оновлено залежності"
             },
             "1.4.1": {
                 "en": "Fixed bug if multiple remote sensors are used",
@@ -110,7 +117,8 @@
                 "it": "Risolto bug se vengono utilizzati più sensori remoti",
                 "es": "Error solucionado si se utilizan varios sensores remotos",
                 "pl": "Naprawiono błąd, jeśli używanych jest wiele czujników zdalnych",
-                "zh-cn": "修复了使用多个远程传感器时的错误"
+                "zh-cn": "修复了使用多个远程传感器时的错误",
+                "uk": "Виправлена ​​помилка, якщо використовується кілька дистанційних датчиків"
             },
             "1.4.0": {
                 "en": "Support for remote sensors using an own tiny daemon and encrypted TCP sockets",
@@ -122,7 +130,8 @@
                 "it": "Supporto per sensori remoti che utilizzano un proprio minuscolo demone e socket TCP crittografati",
                 "es": "Soporte para sensores remotos usando un pequeño demonio propio y sockets TCP encriptados",
                 "pl": "Obsługa zdalnych czujników przy użyciu własnego małego demona i zaszyfrowanych gniazd TCP",
-                "zh-cn": "使用自己的微型守护程序和加密的TCP套接字支持远程传感器"
+                "zh-cn": "使用自己的微型守护程序和加密的TCP套接字支持远程传感器",
+                "uk": "Підтримка віддалених датчиків за допомогою власного крихітного демона та зашифрованих сокетів TCP"
             },
             "1.3.0": {
                 "en": "Searching for sensors now works for multiple 1-wire masters",
@@ -134,7 +143,8 @@
                 "it": "La ricerca di sensori ora funziona per più master a 1 filo",
                 "es": "La búsqueda de sensores ahora funciona para varios maestros de 1 cable",
                 "pl": "Wyszukiwanie czujników działa teraz w przypadku wielu modułów głównych 1-wire",
-                "zh-cn": "搜索传感器现在可用于多个1-wire主站"
+                "zh-cn": "搜索传感器现在可用于多个1-wire主站",
+                "uk": "Пошук датчиків тепер працює для кількох головних пристроїв 1-wire"
             },
             "1.2.3": {
                 "en": "Added check of temperatures higher/lower than possible sensor values",
@@ -146,7 +156,8 @@
                 "it": "Aggiunto controllo di temperature superiori / inferiori ai possibili valori del sensore",
                 "es": "Comprobación añadida de temperaturas superiores / inferiores a los posibles valores del sensor",
                 "pl": "Dodano kontrolę temperatur wyższych / niższych niż możliwe wartości czujnika",
-                "zh-cn": "增加了对温度高于/低于传感器可能值的检查"
+                "zh-cn": "增加了对温度高于/低于传感器可能值的检查",
+                "uk": "Додана перевірка температур вище/нижче можливих значень датчика"
             },
             "1.2.2": {
                 "en": "Fixed crash if settings are malformed",
@@ -158,7 +169,8 @@
                 "it": "Risolto il crash se le impostazioni sono malformate",
                 "es": "Se corrigió el bloqueo si la configuración está mal formada",
                 "pl": "Naprawiono awarię, jeśli ustawienia są źle sformułowane",
-                "zh-cn": "修复了如果设置格式错误导致的崩溃"
+                "zh-cn": "修复了如果设置格式错误导致的崩溃",
+                "uk": "Виправлено збій, якщо налаштування неправильні"
             },
             "1.2.1": {
                 "en": "Small fixes",
@@ -170,7 +182,8 @@
                 "it": "Piccole correzioni",
                 "es": "Pequeñas correcciones",
                 "pl": "Małe poprawki",
-                "zh-cn": "小修正"
+                "zh-cn": "小修正",
+                "uk": "Невеликі виправлення"
             },
             "1.2.0": {
                 "en": "Added Sentry, Updated dependencies",
@@ -182,7 +195,8 @@
                 "it": "Sentinella aggiunta, dipendenze aggiornate",
                 "es": "Centinela agregado, dependencias actualizadas",
                 "pl": "Dodano Działko, Zaktualizowano zależności",
-                "zh-cn": "添加了哨兵，更新了依赖项"
+                "zh-cn": "添加了哨兵，更新了依赖项",
+                "uk": "Додано Sentry, оновлено залежності"
             }
         },
         "title": "DS18B20",
@@ -196,7 +210,8 @@
             "it": "DS18B20",
             "es": "DS18B20",
             "pl": "DS18B20",
-            "zh-cn": "DS18B20"
+            "zh-cn": "DS18B20",
+            "uk": "DS18B20"
         },
         "desc": {
             "en": "This is an ioBroker-Adapter to integrate DS18B20 1-wire temperature sensors.",
@@ -208,7 +223,8 @@
             "it": "Questo è un adattatore ioBroker per integrare i sensori di temperatura a 1 filo DS18B20.",
             "es": "Este es un adaptador ioBroker para integrar sensores de temperatura DS18B20 de 1 cable.",
             "pl": "Jest to adapter ioBroker do integracji 1-przewodowych czujników temperatury DS18B20.",
-            "zh-cn": "这是一款集成DS18B20单线温度传感器的ioBroker-Adapter。"
+            "zh-cn": "这是一款集成DS18B20单线温度传感器的ioBroker-Adapter。",
+            "uk": "Це ioBroker-адаптер для інтеграції 1-провідних датчиків температури DS18B20."
         },
         "docs": {
             "en": "docs/en/ds18b20.md",

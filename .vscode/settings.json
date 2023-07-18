@@ -15,7 +15,7 @@
                 "jsonConfig.json",
                 "jsonCustom.json"
             ],
-            "url": "https://raw.githubusercontent.com/ioBroker/adapter-react-v5/master/schemas/jsonConfig.json"
+            "url": "https://raw.githubusercontent.com/ioBroker/adapter-react/master/schemas/jsonConfig.json"
         }
     ],
     "cSpell.words": [
