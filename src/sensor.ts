@@ -29,6 +29,7 @@ interface SensorOptions {
 /**
  * Interface to declare events for the Sensor class.
  */
+// eslint-disable-next-line @typescript-eslint/no-unsafe-declaration-merging
 export interface Sensor {
   on (event: 'value', listener: (value: number | null, address: string) => void): this;
   on (event: 'error', listener: (err: Error, address: string) => void): this;
@@ -42,6 +43,7 @@ export interface Sensor {
 /**
  * This class represents a single sensor.
  */
+// eslint-disable-next-line @typescript-eslint/no-unsafe-declaration-merging
 export class Sensor extends EventEmitter {
   /**
    * The address (1-wire ID) of the sensor.

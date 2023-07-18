@@ -30,6 +30,7 @@ interface RemoteClient {
 /**
  * Interface to declare events for the RemoteSensorServer class.
  */
+// eslint-disable-next-line @typescript-eslint/no-unsafe-declaration-merging
 export interface RemoteSensorServer {
   on (event: 'listening', listener: () => void): this;
   on (event: 'error', listener: (err: Error) => void): this;
@@ -47,6 +48,7 @@ export interface RemoteSensorServer {
 /**
  * Server for remote connections.
  */
+// eslint-disable-next-line @typescript-eslint/no-unsafe-declaration-merging
 export class RemoteSensorServer extends EventEmitter {
 
   /**
