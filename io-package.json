@@ -214,17 +214,17 @@
             "uk": "DS18B20"
         },
         "desc": {
-            "en": "This is an ioBroker-Adapter to integrate DS18B20 1-wire temperature sensors.",
-            "de": "Dies ist ein ioBroker-Adapter zur Integration von DS18B20 1-Wire Temperatursensoren.",
-            "ru": "Это адаптер ioBroker для интеграции однопроводных датчиков температуры DS18B20.",
-            "pt": "Este é um adaptador ioBroker para integrar os sensores de temperatura DS18B20 de 1 fio.",
-            "nl": "Dit is een ioBroker-adapter om DS18B20 1-draads temperatuursensoren te integreren.",
-            "fr": "C'est un adaptateur ioBroker pour intégrer les capteurs de température DS18B20 à 1 fil.",
-            "it": "Questo è un adattatore ioBroker per integrare i sensori di temperatura a 1 filo DS18B20.",
-            "es": "Este es un adaptador ioBroker para integrar sensores de temperatura DS18B20 de 1 cable.",
-            "pl": "Jest to adapter ioBroker do integracji 1-przewodowych czujników temperatury DS18B20.",
-            "zh-cn": "这是一款集成DS18B20单线温度传感器的ioBroker-Adapter。",
-            "uk": "Це ioBroker-адаптер для інтеграції 1-провідних датчиків температури DS18B20."
+            "en": "Integration of DS18B20 1-wire temperature sensors",
+            "de": "Integration von DS18B20 1-Wire-Temperatursensoren",
+            "ru": "Интеграция датчиков температуры DS18B20 1-wire",
+            "pt": "Integração de sensores de temperatura de 1 fio DS18B20",
+            "nl": "Integratie van DS18B20 1-draads temperatuursensoren",
+            "fr": "Intégration des capteurs de température 1 fil DS18B20",
+            "it": "Integrazione di sensori di temperatura a 1 filo DS18B20",
+            "es": "Integración de sensores de temperatura de 1 hilo DS18B20",
+            "pl": "Integracja czujników temperatury DS18B20 1-wire",
+            "uk": "Інтеграція 1-провідних датчиків температури DS18B20",
+            "zh-cn": "集成 DS18B20 1 线温度传感器"
         },
         "docs": {
             "en": "docs/en/ds18b20.md",

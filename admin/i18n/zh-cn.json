@@ -1,5 +1,4 @@
 {
-     "Enable remote sensors": "启用远程传感器",
     "%s (disabled)": "%s（已禁用）",
     "Address": "地址",
     "After that you have to edit the created '.env' file and fill in at least the host and the encryption key.": "之后，您必须编辑创建的'.env'文件，并至少填写主机和加密密钥。",
@@ -8,6 +7,7 @@
     "Connected remote systems": "连接的远程系统",
     "Decimals": "小数点",
     "Default query interval": "默认查询间隔",
+    "Enable remote sensors": "启用远程传感器",
     "Enabled": "启用",
     "Encryption key": "加密金钥",
     "Enter a name": "输入姓名",
