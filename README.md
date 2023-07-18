@@ -5,6 +5,7 @@
 [![Downloads](https://img.shields.io/npm/dm/iobroker.ds18b20.svg)](https://www.npmjs.com/package/iobroker.ds18b20)
 ![Number of Installations (latest)](https://iobroker.live/badges/ds18b20-installed.svg)
 ![Number of Installations (stable)](https://iobroker.live/badges/ds18b20-stable.svg)
+[![Translation status](https://weblate.iobroker.net/widgets/adapters/-/ds18b20/svg-badge.svg)](https://weblate.iobroker.net/engage/adapters/?utm_source=widget)
 
 [![NPM](https://nodei.co/npm/iobroker.ds18b20.png?downloads=true)](https://nodei.co/npm/iobroker.ds18b20/)
 
@@ -38,7 +39,12 @@ Dies ist ein ioBroker-Adapter zur Integration von DS18B20 1-Wire Temperatursenso
 
 * (crycode-de) 💥 Node.js 16.4+, js-controller 4+ and admin 6+ are required
 * (crycode-de) New Admin UI using JsonConfig
-* (crycode-de) `read` and `readNow` actions are now merged
+* (crycode-de) 💥 `read` and `readNow` actions are now merged
+* (crycode-de) New state `info.remotesConnected` with a list of connected remote systems (if enabled)
+* (crycode-de) Added icons for the sensor status to the sensor objects
+* (crycode-de) Label objects of disabled sensors
+* (crycode-de) Delete objects of unconfigured/deleted sensors
+* (crycode-de) Updated translations
 * (crycode-de) Code optimizations and upgrades to current standards
 * (crycode-de) Updated dependencies
 
