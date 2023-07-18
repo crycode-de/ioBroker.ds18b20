@@ -35,5 +35,5 @@
     "To setup a remote client please make sure Node.js is installed and run the following commands on the remote system. This will create all necessary files in '~/ds18b20-remote/' to run the remote client.": "Um einen Remote-Client einzurichten, bitte sicherstellen, dass Node.js installiert ist und dann die folgenden Befehle auf dem Remote-System ausführen. Dadurch werden alle erforderlichen Dateien zum Ausführen des Clients in '~/ds18b20-remote/' erstellt.",
     "Unit": "Einheit",
     "When enabled the adapter starts a server and accepts connections from ioBroker.ds18b20 remote clients.": "Wenn aktiviert, startet der Adapter einen Server und akzeptiert Verbindungen von ioBroker.ds18b20 Remote Clients.",
-    "You may search for sensors or add them manually by providing their address.": "Sensoren können automatische gesucht, oder manuell durch Eingabe der Adresse hinzugefügt werden"
+    "You may search for sensors or add them manually by providing their address.": "Sensoren können automatische gesucht, oder manuell durch Eingabe der Adresse hinzugefügt werden."
 }
