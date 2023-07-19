@@ -1,8 +1,21 @@
 {
     "common": {
         "name": "ds18b20",
-        "version": "2.0.0",
+        "version": "2.0.1",
         "news": {
+            "2.0.1": {
+                "en": "Fixed config migration",
+                "de": "Fehler bei Migration der Konfiguration behoben",
+                "ru": "Фиксированная миграция конфигурации",
+                "pt": "Migração de configuração fixa",
+                "nl": "Vaste configuratiemigratie",
+                "fr": "Migration de configuration fixe",
+                "it": "Corretta la migrazione della configurazione",
+                "es": "Migración de configuración fija",
+                "pl": "Naprawiono migrację konfiguracji",
+                "uk": "Виправлена ​​міграція конфігурації",
+                "zh-cn": "固定配置迁移"
+            },
             "2.0.0": {
                 "en": "💥 Node.js 16.4+, js-controller 4+ and admin 6+ are required\nNew Admin UI using JsonConfig\n💥 `read` and `readNow` actions are now merged\nNew state `info.remotesConnected` with a list of connected remote systems (if enabled)\nAdded icons for the sensor status to the sensor objects\nLabel objects of disabled sensors\nDelete objects of unconfigured/deleted sensors\nUpdated translations\nCode optimizations and upgrades to current standards\nUpdated dependencies",
                 "de": "💥 Node.js 16.4+, js-controller 4+ und admin 6+ sind erforderlich\nNeue Admin UI mit JsonConfig\n💥 `read` und `readNow` Aktionen zusammengefasst\nNeuer State `info.remotesConnected` mit einer Liste der verbundenen Remote-Systeme (wenn aktiviert)\nIcons für den Sensorstatus zu den Sensorobjekten hinzugefügt\nMarkierung von Objekten von deaktivierten Sensoren\nLöschen von Objekten von unkonfigurierten/gelöschten Sensoren\nAktualisierte Übersetzungen\nCodeoptimierungen und Upgrades auf aktuelle Standards\nAktualisierte Abhängigkeiten",
@@ -80,19 +93,6 @@
                 "pl": "Napraw ponowne połączenie klienta zdalnego po wielu nieudanych próbach. Wymagana ponowna instalacja zdalnego klienta, aby zastosować tę poprawkę!",
                 "zh-cn": "多次尝试失败后修复远程客户端重新连接。应用此修复程序需要重新安装远程客户端！",
                 "uk": "Виправлення повторного підключення віддаленого клієнта після кількох невдалих спроб. Для застосування цього виправлення потрібно перевстановити віддалений клієнт!"
-            },
-            "1.5.1": {
-                "en": "Fix crash on undefined obj.native, Updated remote-client-setup info in admin if https is used",
-                "de": "Absturz bei undefiniertem obj.native behoben, Remote-Client-Setup-Informationen im Admin aktualisiert, wenn https verwendet wird",
-                "ru": "Исправить сбой на undefined obj.native, обновлена информация о настройке удаленного клиента в админке, если используется https",
-                "pt": "Corrigir falha em obj.nativo indefinido, informações de configuração do cliente remoto atualizadas no administrador se https for usado",
-                "nl": "Fix crash op ongedefinieerde obj.native, Bijgewerkte remote-client-setup info in admin als https wordt gebruikt",
-                "fr": "Correction d'un plantage sur obj.native non défini, mise à jour des informations de configuration du client distant dans l'administrateur si https est utilisé",
-                "it": "Risolto il problema con l'arresto anomalo su obj.native non definito, informazioni aggiornate sulla configurazione del client remoto nell'amministratore se viene utilizzato https",
-                "es": "Se corrigió el bloqueo en el obj.native indefinido, se actualizó la información de configuración del cliente remoto en el administrador si se usa https",
-                "pl": "Napraw awarię na undefined obj.native, Zaktualizowano informacje o zdalnej konfiguracji klienta w admin, jeśli używany jest https",
-                "zh-cn": "修复未定义的 obj.native 崩溃，如果使用 https，则更新管理员中的远程客户端设置信息",
-                "uk": "Виправлено збій у undefined obj.native, оновлено інформацію про налаштування віддаленого клієнта в адміністраторі, якщо використовується https"
             }
         },
         "title": "DS18B20",
