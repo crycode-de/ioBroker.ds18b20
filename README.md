@@ -1,4 +1,5 @@
 ![Logo](admin/ds18b20.png)
+
 # ioBroker.ds18b20
 
 [![NPM version](https://img.shields.io/npm/v/iobroker.ds18b20.svg)](https://www.npmjs.com/package/iobroker.ds18b20)

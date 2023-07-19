@@ -42,57 +42,55 @@ class I18n {
     this.language = "en";
   }
   getStringOrTranslated(key, ...args) {
-    var _a, _b, _c, _d, _e, _f, _g, _h, _i, _j;
     if (import_en.default[key]) {
       return {
-        de: this.replacePlaceholders((_a = import_de.default[key]) != null ? _a : key, ...args),
-        en: this.replacePlaceholders((_b = import_en.default[key]) != null ? _b : key, ...args),
-        es: this.replacePlaceholders((_c = import_es.default[key]) != null ? _c : key, ...args),
-        fr: this.replacePlaceholders((_d = import_fr.default[key]) != null ? _d : key, ...args),
-        it: this.replacePlaceholders((_e = import_it.default[key]) != null ? _e : key, ...args),
-        nl: this.replacePlaceholders((_f = import_nl.default[key]) != null ? _f : key, ...args),
-        pl: this.replacePlaceholders((_g = import_pl.default[key]) != null ? _g : key, ...args),
-        pt: this.replacePlaceholders((_h = import_pt.default[key]) != null ? _h : key, ...args),
-        ru: this.replacePlaceholders((_i = import_ru.default[key]) != null ? _i : key, ...args),
-        "zh-cn": this.replacePlaceholders((_j = import_zh_cn.default[key]) != null ? _j : key, ...args)
+        de: this.replacePlaceholders(import_de.default[key] ?? key, ...args),
+        en: this.replacePlaceholders(import_en.default[key] ?? key, ...args),
+        es: this.replacePlaceholders(import_es.default[key] ?? key, ...args),
+        fr: this.replacePlaceholders(import_fr.default[key] ?? key, ...args),
+        it: this.replacePlaceholders(import_it.default[key] ?? key, ...args),
+        nl: this.replacePlaceholders(import_nl.default[key] ?? key, ...args),
+        pl: this.replacePlaceholders(import_pl.default[key] ?? key, ...args),
+        pt: this.replacePlaceholders(import_pt.default[key] ?? key, ...args),
+        ru: this.replacePlaceholders(import_ru.default[key] ?? key, ...args),
+        "zh-cn": this.replacePlaceholders(import_zh_cn.default[key] ?? key, ...args)
       };
     } else {
       return key;
     }
   }
   getString(key, ...args) {
-    var _a, _b, _c, _d, _e, _f, _g, _h, _i, _j;
     let str;
     switch (this.language) {
       case "de":
-        str = (_a = import_de.default[key]) != null ? _a : key;
+        str = import_de.default[key] ?? key;
         break;
       case "en":
-        str = (_b = import_en.default[key]) != null ? _b : key;
+        str = import_en.default[key] ?? key;
         break;
       case "es":
-        str = (_c = import_es.default[key]) != null ? _c : key;
+        str = import_es.default[key] ?? key;
         break;
       case "fr":
-        str = (_d = import_fr.default[key]) != null ? _d : key;
+        str = import_fr.default[key] ?? key;
         break;
       case "it":
-        str = (_e = import_it.default[key]) != null ? _e : key;
+        str = import_it.default[key] ?? key;
         break;
       case "nl":
-        str = (_f = import_nl.default[key]) != null ? _f : key;
+        str = import_nl.default[key] ?? key;
         break;
       case "pl":
-        str = (_g = import_pl.default[key]) != null ? _g : key;
+        str = import_pl.default[key] ?? key;
         break;
       case "pt":
-        str = (_h = import_pt.default[key]) != null ? _h : key;
+        str = import_pt.default[key] ?? key;
         break;
       case "ru":
-        str = (_i = import_ru.default[key]) != null ? _i : key;
+        str = import_ru.default[key] ?? key;
         break;
       case "zh-cn":
-        str = (_j = import_zh_cn.default[key]) != null ? _j : key;
+        str = import_zh_cn.default[key] ?? key;
         break;
       default:
         str = key;
