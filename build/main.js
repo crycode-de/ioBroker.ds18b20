@@ -69,9 +69,6 @@ class Ds18b20Adapter extends import_adapter_core.Adapter {
         return;
       }
       const oldNative = instanceObj.native;
-      if (oldNative.remoteEnabled) {
-        this.log.warn(`Please make sure to re-install you remote clients, or they won't be able to connect!`);
-      }
       const newNative = {
         defaultInterval: oldNative.defaultInterval,
         remoteEnabled: oldNative.remoteEnabled,
@@ -89,6 +86,11 @@ class Ds18b20Adapter extends import_adapter_core.Adapter {
       for (const oldSensor of oldNative._values) {
         const { obj, sortOrder, ...sensor } = oldSensor;
         newNative.sensors.push(sensor);
+        const sensorObj = await this.getForeignObjectAsync(obj._id);
+        if (sensorObj) {
+          sensorObj.native = {};
+          await this.setForeignObjectAsync(obj._id, sensorObj);
+        }
       }
       await Promise.all([
         this.delObjectAsync("actions"),

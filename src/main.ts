@@ -92,11 +92,6 @@ class Ds18b20Adapter extends Adapter {
 
       const oldNative: ioBroker.AdapterConfigV1 = instanceObj.native as ioBroker.AdapterConfigV1;
 
-      // log a warning to inform the user to re-install the remote clients if remote is enabled
-      if (oldNative.remoteEnabled) {
-        this.log.warn(`Please make sure to re-install you remote clients, or they won't be able to connect!`);
-      }
-
       const newNative: ioBroker.AdapterConfig = {
         defaultInterval: oldNative.defaultInterval,
         remoteEnabled: oldNative.remoteEnabled,
@@ -119,12 +114,12 @@ class Ds18b20Adapter extends Adapter {
         const { obj, sortOrder, ...sensor } = oldSensor;
         newNative.sensors.push(sensor);
 
-        // TODO: remove native part from the sensor object
-        /*const sensorObj = await this.getForeignObjectAsync(obj._id);
+        // remove native part from the sensor object
+        const sensorObj = await this.getForeignObjectAsync(obj._id);
         if (sensorObj) {
           sensorObj.native = {};
           await this.setForeignObjectAsync(obj._id, sensorObj);
-        }*/
+        }
       }
 
       // delete some objects - they will be recreated on adapter restart

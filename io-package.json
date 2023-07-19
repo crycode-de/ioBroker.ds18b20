@@ -1,299 +1,355 @@
 {
-  "common": {
-    "name": "ds18b20",
-    "version": "2.0.0",
-    "news": {
-      "2.0.0": {
-        "en": "💥 Node.js 16.4+, js-controller 4+ and admin 6+ are required\nNew Admin UI using JsonConfig\n💥 `read` and `readNow` actions are now merged\nNew state `info.remotesConnected` with a list of connected remote systems (if enabled)\nAdded icons for the sensor status to the sensor objects\nLabel objects of disabled sensors\nDelete objects of unconfigured/deleted sensors\nUpdated translations\nCode optimizations and upgrades to current standards\nUpdated dependencies",
-        "de": "💥 Node.js 16.4+, js-controller 4+ und admin 6+ sind erforderlich\nNeue Admin UI mit JsonConfig\n💥 `read` und `readNow` Aktionen zusammengefasst\nNeuer State `info.remotesConnected` mit einer Liste der verbundenen Remote-Systeme (wenn aktiviert)\nIcons für den Sensorstatus zu den Sensorobjekten hinzugefügt\nMarkierung von Objekten von deaktivierten Sensoren\nLöschen von Objekten von unkonfigurierten/gelöschten Sensoren\nAktualisierte Übersetzungen\nCodeoptimierungen und Upgrades auf aktuelle Standards\nAktualisierte Abhängigkeiten",
-        "ru": "💥 Node.js 16.4+, js-controller 4+ и admin 6+ требуются\nНовый Admin UI с помощью JsonConfig\n💥 читать и читать Теперь сливаются действия\nНовое государство info.remotesConnected со списком подключенных удаленных систем (если включено)\nДобавлены иконки для статуса датчика в объекты датчика\nЭтикетки объектов датчиков для инвалидов\nУдалить объекты неконфигурированных / удаленных датчиков\nОбновленные переводы\nОптимизация кода и модернизация на текущие стандарты\nОбновленные зависимости",
-        "pt": ", Node.js 16.4+, js-controller 4+ e admin 6+ são necessários\nNova interface de usuário com JsonConfig\n and ler e ler Agora as ações são fundidas\nNovo estado info.remotesConectado com uma lista de sistemas remotos conectados (se habilitado)\nÍcones adicionados para o estado do sensor aos objetos do sensor\nObjetos de etiqueta de sensores desativados\nExcluir objetos de sensores não configurados / excluídos\nTraduções atualizadas\nOtimizações de código e atualizações para os padrões atuais\nDependências atualizadas",
-        "nl": "_\nNew Admin UI gebruikt JsonConf\nLees en lees Nu zijn de acties gezamenlijk\nNieuwe staatsinformatie. RemotesConnecteerd met een lijst met verbonden systemen\nVoegde icoon toe voor de sensorstatus naar de sensor objecten\nLabel voorwerpen van gehandicapte sensoren\nVerwijder objecten van ongeconfigureerde sensoren\nVertaling:\nCode optimisaties en upgrades naar huidige normen\nVerouderde afhankelijkheid",
-        "fr": "➔ Node.js 16.4+, js-controller 4+ et admin 6+ sont nécessaires\nNouvelle interface utilisateur Admin utilisant JsonConfig\nlire et lire Maintenant les actions sont fusionnées\nNouvelle info état.remotesSe connecter avec une liste de systèmes distants connectés (si activé)\nAjout d'icônes pour l'état du capteur aux objets du capteur\nÉtiquette des objets de capteurs handicapés\nSupprimer les objets de capteurs non configurés ou supprimés\nTraductions actualisées\nOptimisation des codes et amélioration des normes actuelles\nMise à jour des dépendances",
-        "it": "💥 Node.js 16.4+, js-controller 4+ e admin 6+ sono necessari\nNuova interfaccia utente con JsonConfig\n💥 leggere e leggere Ora le azioni sono unite\nNuovo stato info.remotesConnesso con un elenco di sistemi remoti collegati (se abilitati)\nAggiunte icone per lo stato del sensore agli oggetti del sensore\nOggetti di etichette dei sensori disabilitati\nEliminare gli oggetti di sensori non configurati / cancellati\nTraduzioni aggiornate\nOttimizzazione del codice e aggiornamenti agli standard attuali\nDipendenze aggiornate",
-        "es": "💥 Node.js 16.4+, js-controller 4+ y admin 6+ son necesarios\nNuevo Admin UI usando JsonConfig\n💥 leer y leer Ahora las acciones se fusionan\nNuevo estado info.remotesConnected with a list of connected remote systems (if enabled)\nSe agregaron iconos para el estado del sensor a los objetos del sensor\nEtiquetas objetos de sensores discapacitados\nEliminar objetos de sensores no configurados o eliminados\nTraducciones actualizadas\nOptimizaciones y actualizaciones de código a las normas actuales\nDependencias actualizadas",
-        "pl": "Znajduje się numer 16.4+, js-kontroler 4+ i admin 6+\nNowy interfejs użytkownika używający JsonConfig\nczytać i czytać Obecnie akcje są połączone\nNowe info.remotesConnected with a lista połączonych systemów odległych (jeśli możliwa)\nAdded ikony dla statusu czujnika dla obiektów czujnych\nObiekty czujników niepełnosprawnych\nObiekty niekonfigurowane/delete sensory\nTłumaczenia poprawione\nOptymalizacja kodu oraz aktualne standardy\nZależność od upoważnienia",
-        "uk": "浜у 涓 蹇\nНовий адміністратор UI за допомогою JsonConfig\n浜у 灞 绀 Зараз дії зараз об'єднані\nНова державна інформація.remotesConnected з переліком підключених систем дистанційного керування (якщо це можливо)\nДодано іконки для статусу датчика на об'єкти датчика\nЕтикетка об'єктів відключених датчиків\nВидалити об'єкти неконфігурованих / видалених датчиків\nОновлені переклади\nОптимізація коду та оновлення до діючих стандартів\nОновлені залежності",
-        "zh-cn": "第16.4+、控制容忍4+和注6+\n新代明·乌伊使用Json Config\n改为: 现在的行动正在合并。\n新建国F.remotned with a list of relevant的偏远系统(如果能够)\n添加传感器地位的理由\n残疾传感器的标签目标\n删除未配制/被动传感器的物体\n最新翻译\n守则和现行标准的优化\nA. 最新依赖情况"
-      },
-      "1.6.1": {
-        "en": "Remote client setup url displayed in admin UI fixed",
-        "de": "Remote-Client-Setup URL, die im im Admin-UI angezeigt wird, korrigiert",
-        "ru": "Удаленный URL-адрес клиента отображается в админ UI фиксированный",
-        "pt": "URL de configuração do cliente remoto exibido na UI de admin fixo",
-        "nl": "Verwijderingscriminaliteit vertoond in administratie UI",
-        "fr": "Configuration client à distance url affiché dans l'interface utilisateur fixe",
-        "it": "Impostazione client remoto url visualizzato in interfaccia utente",
-        "es": "Remoto url de configuración del cliente mostrado en admin UI fijo",
-        "pl": "Kliencki zestaw selekcji url wyświetlany w adminowej wersji stałej UI",
-        "uk": "Віддалена установка клієнта ви URL-адреса відображається в адмін UI фіксована",
-        "zh-cn": "在UI固定地点展示的遥感客户"
-      },
-      "1.6.0": {
-        "en": "Added sorting of sensors in admin and keep the sort order. Allow usage of w1_bus_masterX directly as w1DevicesPath.",
-        "de": "Sortierung der Sensoren im Admin hinzugefügt, Sortierreihenfolge wird nun beibehalten. Verwendung von w1_bus_masterX direkt als w1DevicesPath möglich.",
-        "ru": "Добавлена сортировка датчиков в админке и сохранение порядка сортировки. Разрешить использование w1_bus_masterX напрямую как w1DevicesPath.",
-        "pt": "Adicionado classificação de sensores no admin e manter a ordem de classificação. Permitir o uso de w1_bus_masterX diretamente como w1DevicesPath.",
-        "nl": "Sortering van sensoren toegevoegd in admin en sorteervolgorde behouden. Sta gebruik van w1_bus_masterX rechtstreeks toe als w1DevicesPath.",
-        "fr": "Ajout du tri des capteurs dans l'admin et maintien de l'ordre de tri. Autoriser l'utilisation de w1_bus_masterX directement en tant que w1DevicesPath.",
-        "it": "Aggiunto l'ordinamento dei sensori nell'amministratore e mantieni l'ordinamento. Consenti l'utilizzo di w1_bus_masterX direttamente come w1DevicesPath.",
-        "es": "Se agregó clasificación de sensores en administración y mantener el orden de clasificación. Permitir el uso de w1_bus_masterX directamente como w1DevicesPath.",
-        "pl": "Dodano sortowanie czujników w admin i zachowanie porządku sortowania. Zezwól na użycie w1_bus_masterX bezpośrednio jako w1DevicesPath.",
-        "zh-cn": "在管理员中添加传感器排序并保持排序顺序。允许将 w1_bus_masterX 直接用作 w1DevicesPath。",
-        "uk": "Додано сортування датчиків в адмінку та збереження порядку сортування. Дозволити використання w1_bus_masterX безпосередньо як w1DevicesPath."
-      },
-      "1.5.4": {
-        "en": "Catch errors while sending request to remote client",
-        "de": "Fehler beim Senden einer Anfrage an einen Remote-Client werden nun abfangen",
-        "ru": "Выявление ошибок при отправке запроса удаленному клиенту",
-        "pt": "Capture erros ao enviar solicitação ao cliente remoto",
-        "nl": "Vang fouten op tijdens het verzenden van een verzoek naar een externe client",
-        "fr": "Détecter les erreurs lors de l'envoi de la demande au client distant",
-        "it": "Rileva gli errori durante l'invio della richiesta al client remoto",
-        "es": "Detectar errores al enviar una solicitud a un cliente remoto",
-        "pl": "Wyłap błędy podczas wysyłania żądania do zdalnego klienta",
-        "zh-cn": "向远程客户端发送请求时捕获错误",
-        "uk": "Виявлення помилок під час надсилання запиту віддаленому клієнту"
-      },
-      "1.5.3": {
-        "en": "Increased remote client protocol version to inform users that they should update their remote clients",
-        "de": "Versionsnummer des Remote-Client-Protokolls erhöht, um Benutzer zu informieren, dass sie ihre Remote-Clients aktualisieren sollten",
-        "ru": "Увеличенная версия протокола удаленного клиента, чтобы информировать пользователей о том, что они должны обновить свои удаленные клиенты.",
-        "pt": "Maior versão do protocolo do cliente remoto para informar aos usuários que eles devem atualizar seus clientes remotos",
-        "nl": "Verhoogde versie van het externe clientprotocol om gebruikers te informeren dat ze hun externe clients moeten bijwerken",
-        "fr": "Augmentation de la version du protocole client distant pour informer les utilisateurs qu'ils doivent mettre à jour leurs clients distants",
-        "it": "Versione migliorata del protocollo client remoto per informare gli utenti che devono aggiornare i propri client remoti",
-        "es": "Aumento de la versión del protocolo de cliente remoto para informar a los usuarios que deben actualizar sus clientes remotos",
-        "pl": "Zwiększona wersja protokołu klienta zdalnego, aby poinformować użytkowników, że powinni zaktualizować swoich klientów zdalnych",
-        "zh-cn": "增加远程客户端协议版本以通知用户他们应该更新他们的远程客户端",
-        "uk": "Збільшено версію протоколу віддаленого клієнта, щоб інформувати користувачів про те, що вони повинні оновити своїх віддалених клієнтів"
-      },
-      "1.5.2": {
-        "en": "Fix remote client reconnect after multiple failed attempts. Reinstall of remote client needed to apply this fix!",
-        "de": "Fehler bei Wiederherstellung der Remote-Client-Verbindung nach mehreren fehlgeschlagenen Versuchen behoben. Neuinstallation des Remote-Clients erforderlich, um diesen Fix anzuwenden!",
-        "ru": "Исправьте повторное подключение удаленного клиента после нескольких неудачных попыток. Чтобы применить это исправление, необходимо переустановить удаленный клиент!",
-        "pt": "Corrigir a reconexão do cliente remoto após várias tentativas malsucedidas. É necessário reinstalar o cliente remoto para aplicar esta correção!",
-        "nl": "Herstel externe client opnieuw verbinding na meerdere mislukte pogingen. Herinstallatie van externe client nodig om deze oplossing toe te passen!",
-        "fr": "Correction de la reconnexion du client distant après plusieurs tentatives infructueuses. Réinstallation du client distant nécessaire pour appliquer ce correctif !",
-        "it": "Risolto il problema con la riconnessione del client remoto dopo più tentativi falliti. Reinstallazione del client remoto necessaria per applicare questa correzione!",
-        "es": "Corrija la reconexión del cliente remoto después de varios intentos fallidos. ¡Reinstale el cliente remoto necesario para aplicar esta solución!",
-        "pl": "Napraw ponowne połączenie klienta zdalnego po wielu nieudanych próbach. Wymagana ponowna instalacja zdalnego klienta, aby zastosować tę poprawkę!",
-        "zh-cn": "多次尝试失败后修复远程客户端重新连接。应用此修复程序需要重新安装远程客户端！",
-        "uk": "Виправлення повторного підключення віддаленого клієнта після кількох невдалих спроб. Для застосування цього виправлення потрібно перевстановити віддалений клієнт!"
-      },
-      "1.5.1": {
-        "en": "Fix crash on undefined obj.native, Updated remote-client-setup info in admin if https is used",
-        "de": "Absturz bei undefiniertem obj.native behoben, Remote-Client-Setup-Informationen im Admin aktualisiert, wenn https verwendet wird",
-        "ru": "Исправить сбой на undefined obj.native, обновлена информация о настройке удаленного клиента в админке, если используется https",
-        "pt": "Corrigir falha em obj.nativo indefinido, informações de configuração do cliente remoto atualizadas no administrador se https for usado",
-        "nl": "Fix crash op ongedefinieerde obj.native, Bijgewerkte remote-client-setup info in admin als https wordt gebruikt",
-        "fr": "Correction d'un plantage sur obj.native non défini, mise à jour des informations de configuration du client distant dans l'administrateur si https est utilisé",
-        "it": "Risolto il problema con l'arresto anomalo su obj.native non definito, informazioni aggiornate sulla configurazione del client remoto nell'amministratore se viene utilizzato https",
-        "es": "Se corrigió el bloqueo en el obj.native indefinido, se actualizó la información de configuración del cliente remoto en el administrador si se usa https",
-        "pl": "Napraw awarię na undefined obj.native, Zaktualizowano informacje o zdalnej konfiguracji klienta w admin, jeśli używany jest https",
-        "zh-cn": "修复未定义的 obj.native 崩溃，如果使用 https，则更新管理员中的远程客户端设置信息",
-        "uk": "Виправлено збій у undefined obj.native, оновлено інформацію про налаштування віддаленого клієнта в адміністраторі, якщо використовується https"
-      }
-    },
-    "title": "DS18B20",
-    "titleLang": {
-      "en": "DS18B20",
-      "de": "DS18B20",
-      "ru": "DS18B20",
-      "pt": "DS18B20",
-      "nl": "DS18B20",
-      "fr": "DS18B20",
-      "it": "DS18B20",
-      "es": "DS18B20",
-      "pl": "DS18B20",
-      "zh-cn": "DS18B20",
-      "uk": "DS18B20"
-    },
-    "desc": {
-      "en": "Integration of DS18B20 1-wire temperature sensors",
-      "de": "Integration von DS18B20 1-Wire-Temperatursensoren",
-      "ru": "Интеграция датчиков температуры DS18B20 1-wire",
-      "pt": "Integração de sensores de temperatura de 1 fio DS18B20",
-      "nl": "Integratie van DS18B20 1-draads temperatuursensoren",
-      "fr": "Intégration des capteurs de température 1 fil DS18B20",
-      "it": "Integrazione di sensori di temperatura a 1 filo DS18B20",
-      "es": "Integración de sensores de temperatura de 1 hilo DS18B20",
-      "pl": "Integracja czujników temperatury DS18B20 1-wire",
-      "uk": "Інтеграція 1-провідних датчиків температури DS18B20",
-      "zh-cn": "集成 DS18B20 1 线温度传感器"
-    },
-    "docs": {
-      "en": "docs/en/ds18b20.md",
-      "de": "docs/de/ds18b20.md"
-    },
-    "authors": [
-      "Peter Müller <peter@crycode.de>"
-    ],
-    "keywords": [
-      "ds18b20",
-      "ds1820",
-      "1wire",
-      "temperature"
-    ],
-    "license": "MIT",
-    "platform": "Javascript/Node.js",
-    "main": "build/main.js",
-    "icon": "ds18b20.png",
-    "enabled": true,
-    "extIcon": "https://raw.githubusercontent.com/crycode-de/ioBroker.ds18b20/master/admin/ds18b20.png",
-    "readme": "https://github.com/crycode-de/ioBroker.ds18b20/blob/master/README.md",
-    "loglevel": "info",
-    "mode": "daemon",
-    "type": "hardware",
-    "connectionType": "local",
-    "dataSource": "poll",
-    "adminUI": {
-      "config": "json"
-    },
-    "compact": true,
-    "materialize": true,
-    "messagebox": true,
-    "dependencies": [
-      {
-        "js-controller": ">=4.0.0"
-      }
-    ],
-    "globalDependencies": [
-      {
-        "admin": ">=6.0"
-      }
-    ],
-    "plugins": {
-      "sentry": {
-        "dsn": "https://4e2fc6b87e4a4016874cb8d91f5cbd97@sentry.cryhost.de/5"
-      }
-    }
-  },
-  "native": {
-    "defaultInterval": 60000,
-    "remoteEnabled": false,
-    "remoteKey": "",
-    "remotePort": 1820,
-    "w1DevicesPath": "/sys/bus/w1/devices",
-    "sensors": []
-  },
-  "encryptedNative": [
-    "remoteKey"
-  ],
-  "protectedNative": [
-    "remoteKey"
-  ],
-  "objects": [],
-  "instanceObjects": [
-    {
-      "_id": "info",
-      "type": "channel",
-      "common": {
-        "name": {
-          "en": "Information",
-          "de": "Informationen",
-          "ru": "Информация",
-          "pt": "Em formação",
-          "nl": "Informatie",
-          "fr": "Information",
-          "it": "Informazione",
-          "es": "Información",
-          "pl": "Informacja",
-          "uk": "Інформація",
-          "zh-cn": "信息"
-        }
-      },
-      "native": {}
-    },
-    {
-      "_id": "info.connection",
-      "type": "state",
-      "common": {
-        "role": "indicator.connected",
-        "name": {
-          "en": "All sensors connected",
-          "de": "Alle Sensoren verbunden",
-          "ru": "Все датчики подключены",
-          "pt": "Todos os sensores conectados",
-          "nl": "Alle sensoren verbonden",
-          "fr": "Tous les capteurs connectés",
-          "it": "Tutti i sensori collegati",
-          "es": "Todos los sensores conectados",
-          "pl": "Wszystkie czujniki połączone ze sobą",
-          "uk": "Всі датчики підключені",
-          "zh-cn": "所有传感器"
+    "common": {
+        "name": "ds18b20",
+        "version": "2.0.0",
+        "news": {
+            "2.0.0": {
+                "en": "💥 Node.js 16.4+, js-controller 4+ and admin 6+ are required\nNew Admin UI using JsonConfig\n💥 `read` and `readNow` actions are now merged\nNew state `info.remotesConnected` with a list of connected remote systems (if enabled)\nAdded icons for the sensor status to the sensor objects\nLabel objects of disabled sensors\nDelete objects of unconfigured/deleted sensors\nUpdated translations\nCode optimizations and upgrades to current standards\nUpdated dependencies",
+                "de": "💥 Node.js 16.4+, js-controller 4+ und admin 6+ sind erforderlich\nNeue Admin UI mit JsonConfig\n💥 `read` und `readNow` Aktionen zusammengefasst\nNeuer State `info.remotesConnected` mit einer Liste der verbundenen Remote-Systeme (wenn aktiviert)\nIcons für den Sensorstatus zu den Sensorobjekten hinzugefügt\nMarkierung von Objekten von deaktivierten Sensoren\nLöschen von Objekten von unkonfigurierten/gelöschten Sensoren\nAktualisierte Übersetzungen\nCodeoptimierungen und Upgrades auf aktuelle Standards\nAktualisierte Abhängigkeiten",
+                "ru": "💥 Node.js 16.4+, js-controller 4+ и admin 6+ требуются\nНовый Admin UI с помощью JsonConfig\n💥 читать и читать Теперь сливаются действия\nНовое государство info.remotesConnected со списком подключенных удаленных систем (если включено)\nДобавлены иконки для статуса датчика в объекты датчика\nЭтикетки объектов датчиков для инвалидов\nУдалить объекты неконфигурированных / удаленных датчиков\nОбновленные переводы\nОптимизация кода и модернизация на текущие стандарты\nОбновленные зависимости",
+                "pt": ", Node.js 16.4+, js-controller 4+ e admin 6+ são necessários\nNova interface de usuário com JsonConfig\n and ler e ler Agora as ações são fundidas\nNovo estado info.remotesConectado com uma lista de sistemas remotos conectados (se habilitado)\nÍcones adicionados para o estado do sensor aos objetos do sensor\nObjetos de etiqueta de sensores desativados\nExcluir objetos de sensores não configurados / excluídos\nTraduções atualizadas\nOtimizações de código e atualizações para os padrões atuais\nDependências atualizadas",
+                "nl": "_\nNew Admin UI gebruikt JsonConf\nLees en lees Nu zijn de acties gezamenlijk\nNieuwe staatsinformatie. RemotesConnecteerd met een lijst met verbonden systemen\nVoegde icoon toe voor de sensorstatus naar de sensor objecten\nLabel voorwerpen van gehandicapte sensoren\nVerwijder objecten van ongeconfigureerde sensoren\nVertaling:\nCode optimisaties en upgrades naar huidige normen\nVerouderde afhankelijkheid",
+                "fr": "➔ Node.js 16.4+, js-controller 4+ et admin 6+ sont nécessaires\nNouvelle interface utilisateur Admin utilisant JsonConfig\nlire et lire Maintenant les actions sont fusionnées\nNouvelle info état.remotesSe connecter avec une liste de systèmes distants connectés (si activé)\nAjout d'icônes pour l'état du capteur aux objets du capteur\nÉtiquette des objets de capteurs handicapés\nSupprimer les objets de capteurs non configurés ou supprimés\nTraductions actualisées\nOptimisation des codes et amélioration des normes actuelles\nMise à jour des dépendances",
+                "it": "💥 Node.js 16.4+, js-controller 4+ e admin 6+ sono necessari\nNuova interfaccia utente con JsonConfig\n💥 leggere e leggere Ora le azioni sono unite\nNuovo stato info.remotesConnesso con un elenco di sistemi remoti collegati (se abilitati)\nAggiunte icone per lo stato del sensore agli oggetti del sensore\nOggetti di etichette dei sensori disabilitati\nEliminare gli oggetti di sensori non configurati / cancellati\nTraduzioni aggiornate\nOttimizzazione del codice e aggiornamenti agli standard attuali\nDipendenze aggiornate",
+                "es": "💥 Node.js 16.4+, js-controller 4+ y admin 6+ son necesarios\nNuevo Admin UI usando JsonConfig\n💥 leer y leer Ahora las acciones se fusionan\nNuevo estado info.remotesConnected with a list of connected remote systems (if enabled)\nSe agregaron iconos para el estado del sensor a los objetos del sensor\nEtiquetas objetos de sensores discapacitados\nEliminar objetos de sensores no configurados o eliminados\nTraducciones actualizadas\nOptimizaciones y actualizaciones de código a las normas actuales\nDependencias actualizadas",
+                "pl": "Znajduje się numer 16.4+, js-kontroler 4+ i admin 6+\nNowy interfejs użytkownika używający JsonConfig\nczytać i czytać Obecnie akcje są połączone\nNowe info.remotesConnected with a lista połączonych systemów odległych (jeśli możliwa)\nAdded ikony dla statusu czujnika dla obiektów czujnych\nObiekty czujników niepełnosprawnych\nObiekty niekonfigurowane/delete sensory\nTłumaczenia poprawione\nOptymalizacja kodu oraz aktualne standardy\nZależność od upoważnienia",
+                "uk": "浜у 涓 蹇\nНовий адміністратор UI за допомогою JsonConfig\n浜у 灞 绀 Зараз дії зараз об'єднані\nНова державна інформація.remotesConnected з переліком підключених систем дистанційного керування (якщо це можливо)\nДодано іконки для статусу датчика на об'єкти датчика\nЕтикетка об'єктів відключених датчиків\nВидалити об'єкти неконфігурованих / видалених датчиків\nОновлені переклади\nОптимізація коду та оновлення до діючих стандартів\nОновлені залежності",
+                "zh-cn": "第16.4+、控制容忍4+和注6+\n新代明·乌伊使用Json Config\n改为: 现在的行动正在合并。\n新建国F.remotned with a list of relevant的偏远系统(如果能够)\n添加传感器地位的理由\n残疾传感器的标签目标\n删除未配制/被动传感器的物体\n最新翻译\n守则和现行标准的优化\nA. 最新依赖情况"
+            },
+            "1.6.1": {
+                "en": "Remote client setup url displayed in admin UI fixed",
+                "de": "Remote-Client-Setup URL, die im im Admin-UI angezeigt wird, korrigiert",
+                "ru": "Удаленный URL-адрес клиента отображается в админ UI фиксированный",
+                "pt": "URL de configuração do cliente remoto exibido na UI de admin fixo",
+                "nl": "Verwijderingscriminaliteit vertoond in administratie UI",
+                "fr": "Configuration client à distance url affiché dans l'interface utilisateur fixe",
+                "it": "Impostazione client remoto url visualizzato in interfaccia utente",
+                "es": "Remoto url de configuración del cliente mostrado en admin UI fijo",
+                "pl": "Kliencki zestaw selekcji url wyświetlany w adminowej wersji stałej UI",
+                "uk": "Віддалена установка клієнта ви URL-адреса відображається в адмін UI фіксована",
+                "zh-cn": "在UI固定地点展示的遥感客户"
+            },
+            "1.6.0": {
+                "en": "Added sorting of sensors in admin and keep the sort order. Allow usage of w1_bus_masterX directly as w1DevicesPath.",
+                "de": "Sortierung der Sensoren im Admin hinzugefügt, Sortierreihenfolge wird nun beibehalten. Verwendung von w1_bus_masterX direkt als w1DevicesPath möglich.",
+                "ru": "Добавлена сортировка датчиков в админке и сохранение порядка сортировки. Разрешить использование w1_bus_masterX напрямую как w1DevicesPath.",
+                "pt": "Adicionado classificação de sensores no admin e manter a ordem de classificação. Permitir o uso de w1_bus_masterX diretamente como w1DevicesPath.",
+                "nl": "Sortering van sensoren toegevoegd in admin en sorteervolgorde behouden. Sta gebruik van w1_bus_masterX rechtstreeks toe als w1DevicesPath.",
+                "fr": "Ajout du tri des capteurs dans l'admin et maintien de l'ordre de tri. Autoriser l'utilisation de w1_bus_masterX directement en tant que w1DevicesPath.",
+                "it": "Aggiunto l'ordinamento dei sensori nell'amministratore e mantieni l'ordinamento. Consenti l'utilizzo di w1_bus_masterX direttamente come w1DevicesPath.",
+                "es": "Se agregó clasificación de sensores en administración y mantener el orden de clasificación. Permitir el uso de w1_bus_masterX directamente como w1DevicesPath.",
+                "pl": "Dodano sortowanie czujników w admin i zachowanie porządku sortowania. Zezwól na użycie w1_bus_masterX bezpośrednio jako w1DevicesPath.",
+                "zh-cn": "在管理员中添加传感器排序并保持排序顺序。允许将 w1_bus_masterX 直接用作 w1DevicesPath。",
+                "uk": "Додано сортування датчиків в адмінку та збереження порядку сортування. Дозволити використання w1_bus_masterX безпосередньо як w1DevicesPath."
+            },
+            "1.5.4": {
+                "en": "Catch errors while sending request to remote client",
+                "de": "Fehler beim Senden einer Anfrage an einen Remote-Client werden nun abfangen",
+                "ru": "Выявление ошибок при отправке запроса удаленному клиенту",
+                "pt": "Capture erros ao enviar solicitação ao cliente remoto",
+                "nl": "Vang fouten op tijdens het verzenden van een verzoek naar een externe client",
+                "fr": "Détecter les erreurs lors de l'envoi de la demande au client distant",
+                "it": "Rileva gli errori durante l'invio della richiesta al client remoto",
+                "es": "Detectar errores al enviar una solicitud a un cliente remoto",
+                "pl": "Wyłap błędy podczas wysyłania żądania do zdalnego klienta",
+                "zh-cn": "向远程客户端发送请求时捕获错误",
+                "uk": "Виявлення помилок під час надсилання запиту віддаленому клієнту"
+            },
+            "1.5.3": {
+                "en": "Increased remote client protocol version to inform users that they should update their remote clients",
+                "de": "Versionsnummer des Remote-Client-Protokolls erhöht, um Benutzer zu informieren, dass sie ihre Remote-Clients aktualisieren sollten",
+                "ru": "Увеличенная версия протокола удаленного клиента, чтобы информировать пользователей о том, что они должны обновить свои удаленные клиенты.",
+                "pt": "Maior versão do protocolo do cliente remoto para informar aos usuários que eles devem atualizar seus clientes remotos",
+                "nl": "Verhoogde versie van het externe clientprotocol om gebruikers te informeren dat ze hun externe clients moeten bijwerken",
+                "fr": "Augmentation de la version du protocole client distant pour informer les utilisateurs qu'ils doivent mettre à jour leurs clients distants",
+                "it": "Versione migliorata del protocollo client remoto per informare gli utenti che devono aggiornare i propri client remoti",
+                "es": "Aumento de la versión del protocolo de cliente remoto para informar a los usuarios que deben actualizar sus clientes remotos",
+                "pl": "Zwiększona wersja protokołu klienta zdalnego, aby poinformować użytkowników, że powinni zaktualizować swoich klientów zdalnych",
+                "zh-cn": "增加远程客户端协议版本以通知用户他们应该更新他们的远程客户端",
+                "uk": "Збільшено версію протоколу віддаленого клієнта, щоб інформувати користувачів про те, що вони повинні оновити своїх віддалених клієнтів"
+            },
+            "1.5.2": {
+                "en": "Fix remote client reconnect after multiple failed attempts. Reinstall of remote client needed to apply this fix!",
+                "de": "Fehler bei Wiederherstellung der Remote-Client-Verbindung nach mehreren fehlgeschlagenen Versuchen behoben. Neuinstallation des Remote-Clients erforderlich, um diesen Fix anzuwenden!",
+                "ru": "Исправьте повторное подключение удаленного клиента после нескольких неудачных попыток. Чтобы применить это исправление, необходимо переустановить удаленный клиент!",
+                "pt": "Corrigir a reconexão do cliente remoto após várias tentativas malsucedidas. É necessário reinstalar o cliente remoto para aplicar esta correção!",
+                "nl": "Herstel externe client opnieuw verbinding na meerdere mislukte pogingen. Herinstallatie van externe client nodig om deze oplossing toe te passen!",
+                "fr": "Correction de la reconnexion du client distant après plusieurs tentatives infructueuses. Réinstallation du client distant nécessaire pour appliquer ce correctif !",
+                "it": "Risolto il problema con la riconnessione del client remoto dopo più tentativi falliti. Reinstallazione del client remoto necessaria per applicare questa correzione!",
+                "es": "Corrija la reconexión del cliente remoto después de varios intentos fallidos. ¡Reinstale el cliente remoto necesario para aplicar esta solución!",
+                "pl": "Napraw ponowne połączenie klienta zdalnego po wielu nieudanych próbach. Wymagana ponowna instalacja zdalnego klienta, aby zastosować tę poprawkę!",
+                "zh-cn": "多次尝试失败后修复远程客户端重新连接。应用此修复程序需要重新安装远程客户端！",
+                "uk": "Виправлення повторного підключення віддаленого клієнта після кількох невдалих спроб. Для застосування цього виправлення потрібно перевстановити віддалений клієнт!"
+            },
+            "1.5.1": {
+                "en": "Fix crash on undefined obj.native, Updated remote-client-setup info in admin if https is used",
+                "de": "Absturz bei undefiniertem obj.native behoben, Remote-Client-Setup-Informationen im Admin aktualisiert, wenn https verwendet wird",
+                "ru": "Исправить сбой на undefined obj.native, обновлена информация о настройке удаленного клиента в админке, если используется https",
+                "pt": "Corrigir falha em obj.nativo indefinido, informações de configuração do cliente remoto atualizadas no administrador se https for usado",
+                "nl": "Fix crash op ongedefinieerde obj.native, Bijgewerkte remote-client-setup info in admin als https wordt gebruikt",
+                "fr": "Correction d'un plantage sur obj.native non défini, mise à jour des informations de configuration du client distant dans l'administrateur si https est utilisé",
+                "it": "Risolto il problema con l'arresto anomalo su obj.native non definito, informazioni aggiornate sulla configurazione del client remoto nell'amministratore se viene utilizzato https",
+                "es": "Se corrigió el bloqueo en el obj.native indefinido, se actualizó la información de configuración del cliente remoto en el administrador si se usa https",
+                "pl": "Napraw awarię na undefined obj.native, Zaktualizowano informacje o zdalnej konfiguracji klienta w admin, jeśli używany jest https",
+                "zh-cn": "修复未定义的 obj.native 崩溃，如果使用 https，则更新管理员中的远程客户端设置信息",
+                "uk": "Виправлено збій у undefined obj.native, оновлено інформацію про налаштування віддаленого клієнта в адміністраторі, якщо використовується https"
+            }
         },
-        "type": "boolean",
-        "read": true,
-        "write": false,
-        "def": false
-      },
-      "native": {}
-    },
-    {
-      "_id": "actions",
-      "type": "channel",
-      "common": {
-        "name": {
-          "en": "Actions",
-          "de": "Aktionen",
-          "ru": "Действия",
-          "pt": "Acções",
-          "nl": "Actie",
-          "fr": "Mesures à prendre",
-          "it": "Azioni",
-          "es": "Acciones",
-          "pl": "Akcja",
-          "uk": "Акції",
-          "zh-cn": "行动"
-        }
-      },
-      "native": {}
-    },
-    {
-      "_id": "actions.readNow",
-      "type": "state",
-      "common": {
-        "role": "text",
-        "name": {
-          "en": "Read one or all sensors now",
-          "de": "Jetzt einen oder alle Sensoren lesen",
-          "ru": "Прочитайте один или все датчики сейчас",
-          "pt": "Leia um ou todos os sensores agora",
-          "nl": "Lees een of alle sensoren nu",
-          "fr": "Lisez un ou tous les capteurs maintenant",
-          "it": "Leggi uno o tutti i sensori ora",
-          "es": "Lea uno o todos los sensores ahora",
-          "pl": "Czytaj jedno lub wszystkie czujniki obecnie",
-          "uk": "Читати один або всі датчики зараз",
-          "zh-cn": "现在阅读一或所有传感器"
+        "title": "DS18B20",
+        "titleLang": {
+            "en": "DS18B20",
+            "de": "DS18B20",
+            "ru": "DS18B20",
+            "pt": "DS18B20",
+            "nl": "DS18B20",
+            "fr": "DS18B20",
+            "it": "DS18B20",
+            "es": "DS18B20",
+            "pl": "DS18B20",
+            "zh-cn": "DS18B20",
+            "uk": "DS18B20"
         },
-        "type": "string",
-        "read": false,
-        "write": true,
-        "def": ""
-      },
-      "native": {}
+        "desc": {
+            "en": "Integration of DS18B20 1-wire temperature sensors",
+            "de": "Integration von DS18B20 1-Wire-Temperatursensoren",
+            "ru": "Интеграция датчиков температуры DS18B20 1-wire",
+            "pt": "Integração de sensores de temperatura de 1 fio DS18B20",
+            "nl": "Integratie van DS18B20 1-draads temperatuursensoren",
+            "fr": "Intégration des capteurs de température 1 fil DS18B20",
+            "it": "Integrazione di sensori di temperatura a 1 filo DS18B20",
+            "es": "Integración de sensores de temperatura de 1 hilo DS18B20",
+            "pl": "Integracja czujników temperatury DS18B20 1-wire",
+            "uk": "Інтеграція 1-провідних датчиків температури DS18B20",
+            "zh-cn": "集成 DS18B20 1 线温度传感器"
+        },
+        "docs": {
+            "en": "docs/en/ds18b20.md",
+            "de": "docs/de/ds18b20.md"
+        },
+        "authors": [
+            "Peter Müller <peter@crycode.de>"
+        ],
+        "keywords": [
+            "ds18b20",
+            "ds1820",
+            "1wire",
+            "temperature"
+        ],
+        "license": "MIT",
+        "platform": "Javascript/Node.js",
+        "main": "build/main.js",
+        "icon": "ds18b20.png",
+        "enabled": true,
+        "extIcon": "https://raw.githubusercontent.com/crycode-de/ioBroker.ds18b20/master/admin/ds18b20.png",
+        "readme": "https://github.com/crycode-de/ioBroker.ds18b20/blob/master/README.md",
+        "loglevel": "info",
+        "mode": "daemon",
+        "type": "hardware",
+        "connectionType": "local",
+        "dataSource": "poll",
+        "adminUI": {
+            "config": "json"
+        },
+        "compact": true,
+        "materialize": true,
+        "messagebox": true,
+        "dependencies": [
+            {
+                "js-controller": ">=4.0.0"
+            }
+        ],
+        "globalDependencies": [
+            {
+                "admin": ">=6.0"
+            }
+        ],
+        "plugins": {
+            "sentry": {
+                "dsn": "https://4e2fc6b87e4a4016874cb8d91f5cbd97@sentry.cryhost.de/5"
+            }
+        },
+        "messages": [
+            {
+                "condition": {
+                    "operand": "and",
+                    "rules": [
+                        "oldVersion<2.0.0",
+                        "newVersion>=2.0.0"
+                    ]
+                },
+                "title": {
+                    "en": "Important notice!",
+                    "de": "Wichtiger Hinweis!",
+                    "ru": "Важное замечание!",
+                    "pt": "Notícia importante!",
+                    "nl": "Belangrijke mededeling!",
+                    "fr": "Avis important!",
+                    "it": "Avviso IMPORTANTE!",
+                    "es": "Noticia importante!",
+                    "pl": "Ważna uwaga!",
+                    "zh-cn": "重要通知!",
+                    "uk": "Важливе повідомлення!"
+                },
+                "text": {
+                    "en": "Since version 2.0.0 the sensor configuration is stored differently. On first start, the old config will be automatically migrated to the new schema. For downgrades to a version before 2.0.0 you will need a backup of your old adapter configuration or you will loose you sensor configurations!",
+                    "de": "Ab Version 2.0.0 wird die Sensorkonfiguration anders gespeichert. Beim ersten Start wird die alte Konfiguration automatisch auf das neue Schema migriert. Für Downgrades auf eine Version vor 2.0.0 wird ein Backup der alten Adapterkonfiguration benötigt, sonst gehen die Sensorkonfigurationen verloren!",
+                    "ru": "Начиная с версии 2.0.0 конфигурация датчика хранится по-другому. При первом запуске старая конфигурация будет автоматически перенесена в новую схему. Для перехода на версию до 2.0.0 вам потребуется резервная копия вашей старой конфигурации адаптера, иначе вы потеряете настройки датчиков!",
+                    "pt": "Desde a versão 2.0.0, a configuração do sensor é armazenada de forma diferente. Na primeira inicialização, a configuração antiga será migrada automaticamente para o novo esquema. Para fazer downgrades para uma versão anterior a 2.0.0, você precisará de um backup da configuração do adaptador antigo ou perderá as configurações do sensor!",
+                    "nl": "Sinds versie 2.0.0 wordt de sensorconfiguratie anders opgeslagen. Bij de eerste start wordt de oude configuratie automatisch gemigreerd naar het nieuwe schema. Voor downgrades naar een versie vóór 2.0.0 heeft u een back-up van uw oude adapterconfiguratie nodig, anders raakt u uw sensorconfiguraties kwijt!",
+                    "fr": "Depuis la version 2.0.0, la configuration du capteur est stockée différemment. Au premier démarrage, l'ancienne configuration sera automatiquement migrée vers le nouveau schéma. Pour les rétrogradations vers une version antérieure à 2.0.0, vous aurez besoin d'une sauvegarde de votre ancienne configuration d'adaptateur ou vous perdrez vos configurations de capteur !",
+                    "it": "Dalla versione 2.0.0 la configurazione del sensore viene memorizzata in modo diverso. Al primo avvio, la vecchia configurazione verrà automaticamente migrata al nuovo schema. Per i downgrade a una versione precedente alla 2.0.0 avrai bisogno di un backup della tua vecchia configurazione dell'adattatore o perderai le configurazioni del sensore!",
+                    "es": "Desde la versión 2.0.0, la configuración del sensor se almacena de forma diferente. En el primer inicio, la configuración anterior se migrará automáticamente al nuevo esquema. Para cambiar a una versión anterior a la 2.0.0, necesitará una copia de seguridad de la configuración anterior de su adaptador o perderá las configuraciones de su sensor.",
+                    "pl": "Od wersji 2.0.0 konfiguracja czujnika jest przechowywana w inny sposób. Przy pierwszym uruchomieniu stara konfiguracja zostanie automatycznie przeniesiona do nowego schematu. W przypadku obniżenia wersji do wersji wcześniejszej niż 2.0.0 będziesz potrzebować kopii zapasowej starej konfiguracji adaptera, w przeciwnym razie utracisz konfiguracje czujników!",
+                    "uk": "З версії 2.0.0 конфігурація датчика зберігається інакше. Під час першого запуску стару конфігурацію буде автоматично переміщено до нової схеми. Для повернення до версії до 2.0.0 вам знадобиться резервна копія вашої старої конфігурації адаптера, інакше ви втратите конфігурації датчика!",
+                    "zh-cn": "自 2.0.0 版本起，传感器配置的存储方式有所不同。首次启动时，旧配置将自动迁移到新架构。要降级到 2.0.0 之前的版本，您将需要备份旧适配器配置，否则您将丢失传感器配置！"
+                },
+                "link": "https://github.com/crycode-de/ioBroker.ds18b20#changelog",
+                "level": "warn",
+                "linkText": {
+                    "en": "Changelog",
+                    "de": "Änderungsprotokoll",
+                    "ru": "Список изменений",
+                    "pt": "Registro de alterações",
+                    "nl": "Wijzigingslog",
+                    "fr": "Journal des modifications",
+                    "it": "Registro delle modifiche",
+                    "es": "registro de cambios",
+                    "pl": "Dziennik zmian",
+                    "zh-cn": "变更日志",
+                    "uk": "Журнал змін"
+                },
+                "buttons": [
+                    "agree",
+                    "cancel"
+                ]
+            }
+        ]
     },
-    {
-      "_id": "sensors",
-      "type": "channel",
-      "common": {
-        "name": {
-          "en": "The sensors",
-          "de": "Die Sensoren",
-          "ru": "Датчики",
-          "pt": "Os sensores",
-          "nl": "De sensoren",
-          "fr": "Les capteurs",
-          "it": "I sensori",
-          "es": "Los sensores",
-          "pl": "Czujnik",
-          "uk": "Датчики",
-          "zh-cn": "传感器"
+    "native": {
+        "defaultInterval": 60000,
+        "remoteEnabled": false,
+        "remoteKey": "",
+        "remotePort": 1820,
+        "w1DevicesPath": "/sys/bus/w1/devices",
+        "sensors": []
+    },
+    "encryptedNative": [
+        "remoteKey"
+    ],
+    "protectedNative": [
+        "remoteKey"
+    ],
+    "objects": [],
+    "instanceObjects": [
+        {
+            "_id": "info",
+            "type": "channel",
+            "common": {
+                "name": {
+                    "en": "Information",
+                    "de": "Informationen",
+                    "ru": "Информация",
+                    "pt": "Em formação",
+                    "nl": "Informatie",
+                    "fr": "Information",
+                    "it": "Informazione",
+                    "es": "Información",
+                    "pl": "Informacja",
+                    "uk": "Інформація",
+                    "zh-cn": "信息"
+                }
+            },
+            "native": {}
+        },
+        {
+            "_id": "info.connection",
+            "type": "state",
+            "common": {
+                "role": "indicator.connected",
+                "name": {
+                    "en": "All sensors connected",
+                    "de": "Alle Sensoren verbunden",
+                    "ru": "Все датчики подключены",
+                    "pt": "Todos os sensores conectados",
+                    "nl": "Alle sensoren verbonden",
+                    "fr": "Tous les capteurs connectés",
+                    "it": "Tutti i sensori collegati",
+                    "es": "Todos los sensores conectados",
+                    "pl": "Wszystkie czujniki połączone ze sobą",
+                    "uk": "Всі датчики підключені",
+                    "zh-cn": "所有传感器"
+                },
+                "type": "boolean",
+                "read": true,
+                "write": false,
+                "def": false
+            },
+            "native": {}
+        },
+        {
+            "_id": "actions",
+            "type": "channel",
+            "common": {
+                "name": {
+                    "en": "Actions",
+                    "de": "Aktionen",
+                    "ru": "Действия",
+                    "pt": "Acções",
+                    "nl": "Actie",
+                    "fr": "Mesures à prendre",
+                    "it": "Azioni",
+                    "es": "Acciones",
+                    "pl": "Akcja",
+                    "uk": "Акції",
+                    "zh-cn": "行动"
+                }
+            },
+            "native": {}
+        },
+        {
+            "_id": "actions.readNow",
+            "type": "state",
+            "common": {
+                "role": "text",
+                "name": {
+                    "en": "Read one or all sensors now",
+                    "de": "Jetzt einen oder alle Sensoren lesen",
+                    "ru": "Прочитайте один или все датчики сейчас",
+                    "pt": "Leia um ou todos os sensores agora",
+                    "nl": "Lees een of alle sensoren nu",
+                    "fr": "Lisez un ou tous les capteurs maintenant",
+                    "it": "Leggi uno o tutti i sensori ora",
+                    "es": "Lea uno o todos los sensores ahora",
+                    "pl": "Czytaj jedno lub wszystkie czujniki obecnie",
+                    "uk": "Читати один або всі датчики зараз",
+                    "zh-cn": "现在阅读一或所有传感器"
+                },
+                "type": "string",
+                "read": false,
+                "write": true,
+                "def": ""
+            },
+            "native": {}
+        },
+        {
+            "_id": "sensors",
+            "type": "channel",
+            "common": {
+                "name": {
+                    "en": "The sensors",
+                    "de": "Die Sensoren",
+                    "ru": "Датчики",
+                    "pt": "Os sensores",
+                    "nl": "De sensoren",
+                    "fr": "Les capteurs",
+                    "it": "I sensori",
+                    "es": "Los sensores",
+                    "pl": "Czujnik",
+                    "uk": "Датчики",
+                    "zh-cn": "传感器"
+                }
+            },
+            "native": {}
         }
-      },
-      "native": {}
-    }
-  ]
+    ]
 }
