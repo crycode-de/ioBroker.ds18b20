@@ -84,12 +84,22 @@ class Ds18b20Adapter extends import_adapter_core.Adapter {
         return 0;
       });
       for (const oldSensor of oldNative._values) {
-        const { obj, sortOrder, ...sensor } = oldSensor;
-        newNative.sensors.push(sensor);
-        const sensorObj = await this.getForeignObjectAsync(obj._id);
-        if (sensorObj) {
-          sensorObj.native = {};
-          await this.setForeignObjectAsync(obj._id, sensorObj);
+        const oldSensorObj = await this.getObjectAsync(`sensors.${oldSensor.address}`);
+        newNative.sensors.push({
+          address: oldSensor.address,
+          remoteSystemId: oldSensor.remoteSystemId ?? "",
+          name: import_i18n.i18n.getTranslated((oldSensorObj == null ? void 0 : oldSensorObj.common.name) ?? oldSensor.address),
+          interval: oldSensor.interval ?? null,
+          unit: (oldSensorObj == null ? void 0 : oldSensorObj.common.unit) ?? "\xB0C",
+          factor: oldSensor.factor ?? 1,
+          offset: oldSensor.offset ?? 0,
+          decimals: oldSensor.decimals ?? 2,
+          nullOnError: !!oldSensor.nullOnError,
+          enabled: !!oldSensor.enabled
+        });
+        if (oldSensorObj) {
+          oldSensorObj.native = {};
+          await this.setForeignObjectAsync(`sensors.${oldSensor.address}`, oldSensorObj);
         }
       }
       await Promise.all([

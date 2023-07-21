@@ -97,6 +97,12 @@ class I18n {
     }
     return this.replacePlaceholders(str, ...args);
   }
+  getTranslated(data) {
+    if (typeof data === "string") {
+      return data;
+    }
+    return data[this.language] ?? data.en;
+  }
   replacePlaceholders(text, ...args) {
     for (const s of args) {
       text = text.replace("%s", s);

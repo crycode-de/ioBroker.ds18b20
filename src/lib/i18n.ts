@@ -73,6 +73,19 @@ class I18n {
   }
 
   /**
+   * Get the translated string from a StringOrTranslated data.
+   * @param data String or translated object data.
+   * @returns The translated string.
+   */
+  public getTranslated (data: ioBroker.StringOrTranslated): string {
+    if (typeof data === 'string') {
+      return data;
+    }
+
+    return data[this.language] ?? data.en;
+  }
+
+  /**
    * Replace `%s` placeholders in the given text.
    * @param text The text.
    * @param args Array of strings to be inserted at `%s` in the text.

@@ -111,14 +111,26 @@ class Ds18b20Adapter extends Adapter {
 
       // migrate sensors
       for (const oldSensor of oldNative._values) {
-        const { obj, sortOrder, ...sensor } = oldSensor;
-        newNative.sensors.push(sensor);
+        // get the old sensor object to extract some information from the common part
+        const oldSensorObj = await this.getObjectAsync(`sensors.${oldSensor.address}`);
+
+        newNative.sensors.push({
+          address: oldSensor.address,
+          remoteSystemId: oldSensor.remoteSystemId ?? '',
+          name: i18n.getTranslated(oldSensorObj?.common.name ?? oldSensor.address),
+          interval: oldSensor.interval ?? null,
+          unit: oldSensorObj?.common.unit ?? '°C',
+          factor: oldSensor.factor ?? 1,
+          offset: oldSensor.offset ?? 0,
+          decimals: oldSensor.decimals ?? 2,
+          nullOnError: !!oldSensor.nullOnError,
+          enabled: !!oldSensor.enabled,
+        });
 
         // remove native part from the sensor object
-        const sensorObj = await this.getForeignObjectAsync(obj._id);
-        if (sensorObj) {
-          sensorObj.native = {};
-          await this.setForeignObjectAsync(obj._id, sensorObj);
+        if (oldSensorObj) {
+          oldSensorObj.native = {};
+          await this.setForeignObjectAsync(`sensors.${oldSensor.address}`, oldSensorObj);
         }
       }
 
