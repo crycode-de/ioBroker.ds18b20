@@ -95,11 +95,16 @@ class Ds18b20Adapter extends Adapter {
       const newNative: ioBroker.AdapterConfig = {
         defaultInterval: oldNative.defaultInterval,
         remoteEnabled: oldNative.remoteEnabled,
-        remoteKey: oldNative.remoteKey,
+        remoteKey: '', // a new remote key must be created in admin!
         remotePort: oldNative.remotePort,
         w1DevicesPath: oldNative.w1DevicesPath,
         sensors: [],
       };
+
+      // log warning if remote is enabled
+      if (newNative.remoteEnabled) {
+        this.log.warn('You have remote sensor enabled. It is required to set a new remote key in admin and update the remote configs!');
+      }
 
       // sort the old sensors by given sortOrder
       oldNative._values.sort((a, b) => {

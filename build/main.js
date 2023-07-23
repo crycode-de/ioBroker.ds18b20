@@ -72,11 +72,14 @@ class Ds18b20Adapter extends import_adapter_core.Adapter {
       const newNative = {
         defaultInterval: oldNative.defaultInterval,
         remoteEnabled: oldNative.remoteEnabled,
-        remoteKey: oldNative.remoteKey,
+        remoteKey: "",
         remotePort: oldNative.remotePort,
         w1DevicesPath: oldNative.w1DevicesPath,
         sensors: []
       };
+      if (newNative.remoteEnabled) {
+        this.log.warn("You have remote sensor enabled. It is required to set a new remote key in admin and update the remote configs!");
+      }
       oldNative._values.sort((a, b) => {
         if (typeof a.sortOrder === "number" && typeof b.sortOrder === "number") {
           return a.sortOrder - b.sortOrder;
