@@ -111,26 +111,28 @@ class Ds18b20Adapter extends Adapter {
 
       // migrate sensors
       for (const oldSensor of oldNative._values) {
-        // get the old sensor object to extract some information from the common part
-        const oldSensorObj = await this.getObjectAsync(`sensors.${oldSensor.address}`);
 
-        newNative.sensors.push({
+        const sensor: ioBroker.AdapterConfigSensor = {
           address: oldSensor.address,
           remoteSystemId: oldSensor.remoteSystemId ?? '',
-          name: i18n.getTranslated(oldSensorObj?.common.name ?? oldSensor.address),
+          name: oldSensor.name || oldSensor.address,
           interval: oldSensor.interval ?? null,
-          unit: oldSensorObj?.common.unit ?? '°C',
+          unit: oldSensor.unit ?? '°C',
           factor: oldSensor.factor ?? 1,
           offset: oldSensor.offset ?? 0,
           decimals: oldSensor.decimals ?? 2,
           nullOnError: !!oldSensor.nullOnError,
           enabled: !!oldSensor.enabled,
-        });
+        };
+
+        this.log.info(`Migrate sensor ${JSON.stringify(sensor)}`);
+        newNative.sensors.push(sensor);
 
         // remove native part from the sensor object
-        if (oldSensorObj) {
-          oldSensorObj.native = {};
-          await this.setForeignObjectAsync(`sensors.${oldSensor.address}`, oldSensorObj);
+        const sensorObj = await this.getObjectAsync(`sensors.${sensor.address}`);
+        if (sensorObj) {
+          sensorObj.native = {};
+          await this.setObjectAsync(`sensors.${sensor.address}`, sensorObj);
         }
       }
 
@@ -145,7 +147,7 @@ class Ds18b20Adapter extends Adapter {
 
       instanceObj.native = newNative;
       this.log.info('Rewriting adapter config');
-      this.setForeignObjectAsync(`system.adapter.${this.namespace}`, instanceObj);
+      await this.setForeignObjectAsync(`system.adapter.${this.namespace}`, instanceObj);
       this.terminate('Restart adapter to apply config changes', EXIT_CODES.START_IMMEDIATELY_AFTER_STOP);
       return;
     }
