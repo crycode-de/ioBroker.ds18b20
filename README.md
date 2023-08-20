@@ -34,7 +34,7 @@ Dies ist ein ioBroker-Adapter zur Integration von DS18B20 1-Wire Temperatursenso
     Placeholder for the next version (at the beginning of the line):
     ### **WORK IN PROGRESS**
 -->
-### **WORK IN PROGRESS**
+### 2.0.3 (2023-08-20)
 
 * (crycode-de) Dependency updates
 
@@ -64,12 +64,6 @@ Dies ist ein ioBroker-Adapter zur Integration von DS18B20 1-Wire Temperatursenso
 ### 1.6.1 (2022-12-15)
 
 * (crycode-de) Remote client setup url displayed in admin UI fixed
-
-### 1.6.0 (2022-01-29)
-
-* (crycode-de) Added sorting of sensors in admin and keep the sort order
-* (crycode-de) Allow usage of w1_bus_masterX directly as w1DevicesPath
-* (crycode-de) Fixed display of errors in admin
 
 ## License
 
