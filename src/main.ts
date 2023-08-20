@@ -8,7 +8,6 @@ import 'source-map-support/register';
 
 import { readFile, readdir } from 'fs/promises';
 
-
 import * as crypto from 'crypto';
 
 import {

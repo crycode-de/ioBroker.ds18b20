@@ -84,7 +84,7 @@ export class Sensor extends EventEmitter {
   /**
    * Timer for interval sensor readings.
    */
-  private timer: ioBroker.Interval | null = null;
+  private timer: ioBroker.Interval | undefined = undefined;
 
   /**
    * System path where the 1-wire devices can be read.
@@ -234,7 +234,7 @@ export class Sensor extends EventEmitter {
   public stop (): void {
     if (this.timer) {
       this.adapter.clearInterval(this.timer);
-      this.timer = null;
+      this.timer = undefined;
     }
   }
 }

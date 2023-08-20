@@ -140,7 +140,7 @@ export class RemoteSensorServer extends EventEmitter {
 
     // prepare promise to wait for feedback with a timeout of 5 seconds
     const prom = new Promise<string>((resolve, reject) => {
-      let timeout: ioBroker.Timeout | null = null;
+      let timeout: ioBroker.Timeout | undefined = undefined;
 
       const handler = (data: RemoteDataRead): void => {
         if (typeof data !== 'object' || data.address !== sensorAddress || data.ts !== requestTs) return;
@@ -202,7 +202,7 @@ export class RemoteSensorServer extends EventEmitter {
 
       // wait for feedback with a timeout of 5 seconds
       proms.push(new Promise<SearchedSensor[]>((resolve, reject) => {
-        let timeout: ioBroker.Timeout | null = null;
+        let timeout: ioBroker.Timeout | undefined = undefined;
 
         const handler = (data: RemoteDataSearch): void => {
           if (typeof data !== 'object' || data.systemId !== client.systemId || data.ts !== requestTs) return;
@@ -287,7 +287,7 @@ export class RemoteSensorServer extends EventEmitter {
       this.adapter.log.warn(`Disconnecting remote ${socketId} due to inactivity before identification`);
       socket.destroy();
       delete this.socketTimeouts[socketId];
-    }, 5000);
+    }, 5000) as ioBroker.Timeout;
 
     // request client information
     this.send(socket, { cmd: 'clientInfo', protocolVersion: REMOTE_PROTOCOL_VERSION })

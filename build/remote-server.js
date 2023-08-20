@@ -73,7 +73,7 @@ class RemoteSensorServer extends import_events.EventEmitter {
     }
     const requestTs = Date.now();
     const prom = new Promise((resolve, reject) => {
-      let timeout = null;
+      let timeout = void 0;
       const handler = (data) => {
         if (typeof data !== "object" || data.address !== sensorAddress || data.ts !== requestTs)
           return;
@@ -113,7 +113,7 @@ class RemoteSensorServer extends import_events.EventEmitter {
         this.adapter.log.error(`Error while sending request to remote system ${client.systemId}: ${err}`);
       });
       proms.push(new Promise((resolve, reject) => {
-        let timeout = null;
+        let timeout = void 0;
         const handler = (data) => {
           if (typeof data !== "object" || data.systemId !== client.systemId || data.ts !== requestTs)
             return;

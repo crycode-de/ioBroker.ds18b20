@@ -37,7 +37,7 @@ var import_utils = require("./lib/utils");
 class Sensor extends import_events.EventEmitter {
   constructor(opts, adapter) {
     super();
-    this.timer = null;
+    this.timer = void 0;
     this.adapter = adapter;
     this.address = opts.address;
     this.nullOnError = opts.nullOnError;
@@ -124,7 +124,7 @@ class Sensor extends import_events.EventEmitter {
   stop() {
     if (this.timer) {
       this.adapter.clearInterval(this.timer);
-      this.timer = null;
+      this.timer = void 0;
     }
   }
 }
