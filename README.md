@@ -34,7 +34,7 @@ Dies ist ein ioBroker-Adapter zur Integration von DS18B20 1-Wire Temperatursenso
     Placeholder for the next version (at the beginning of the line):
     ### **WORK IN PROGRESS**
 -->
-### **WORK IN PROGRESS**
+### 2.0.4 (2023-08-20)
 
 * (crycode-de) Fix js-controller 5 compatibility
 
@@ -64,10 +64,6 @@ Dies ist ein ioBroker-Adapter zur Integration von DS18B20 1-Wire Temperatursenso
 * (crycode-de) Updated translations
 * (crycode-de) Code optimizations and upgrades to current standards
 * (crycode-de) Updated dependencies
-
-### 1.6.1 (2022-12-15)
-
-* (crycode-de) Remote client setup url displayed in admin UI fixed
 
 ## License
 

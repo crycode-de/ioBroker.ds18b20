@@ -1,6 +1,9 @@
 # ioBroker.ds18b20
 
 ## Older changelog
+## 1.6.1 (2022-12-15)
+
+* (crycode-de) Remote client setup url displayed in admin UI fixed
 
 ## 1.6.0 (2022-01-29)
 
