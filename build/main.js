@@ -202,10 +202,10 @@ class Ds18b20Adapter extends import_adapter_core.Adapter {
         interval = parseInt(sensorCfg.interval, 10);
         if (isNaN(interval)) {
           this.log.warn(`Query interval for sensor ${sensorCfg.address} is invalid! Using default.`);
-          interval = this.config.defaultInterval;
+          interval = typeof this.config.defaultInterval === "number" ? this.config.defaultInterval : parseInt(this.config.defaultInterval, 10);
         }
       } else {
-        interval = this.config.defaultInterval;
+        interval = typeof this.config.defaultInterval === "number" ? this.config.defaultInterval : parseInt(this.config.defaultInterval, 10);
       }
       this.sensors[sensorCfg.address] = new import_sensor.Sensor({
         w1DevicesPath: this.config.w1DevicesPath,

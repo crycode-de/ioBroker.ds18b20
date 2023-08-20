@@ -8,7 +8,7 @@ declare global {
      * The adapter configuration.
      */
     interface AdapterConfig {
-      defaultInterval: number;
+      defaultInterval: number | string;
       remoteEnabled: boolean;
       remoteKey: string;
       remotePort: number;
