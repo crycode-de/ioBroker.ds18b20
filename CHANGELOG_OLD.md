@@ -1,6 +1,19 @@
 # ioBroker.ds18b20
 
 ## Older changelog
+## 2.0.0 (2023-07-19)
+
+* (crycode-de) 💥 Node.js 16.4+, js-controller 4+ and admin 6+ are required
+* (crycode-de) New Admin UI using JsonConfig
+* (crycode-de) 💥 `read` and `readNow` actions are now merged
+* (crycode-de) New state `info.remotesConnected` with a list of connected remote systems (if enabled)
+* (crycode-de) Added icons for the sensor status to the sensor objects
+* (crycode-de) Label objects of disabled sensors
+* (crycode-de) Delete objects of unconfigured/deleted sensors
+* (crycode-de) Updated translations
+* (crycode-de) Code optimizations and upgrades to current standards
+* (crycode-de) Updated dependencies
+
 ## 1.6.1 (2022-12-15)
 
 * (crycode-de) Remote client setup url displayed in admin UI fixed
