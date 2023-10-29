@@ -45,6 +45,7 @@
           "newLine": true,
           "sm": 12,
           "label": "Sensors",
+          "uniqueColumns": ["address"],
           "items": [
             {
               "type": "text",
@@ -66,7 +67,7 @@
               "sort": false,
               "default": "",
               "placeholder": "none",
-              "hide": "!data.remoteEnabled"
+              "hidden": "!globalData.remoteEnabled"
             },
             {
               "type": "text",
