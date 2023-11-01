@@ -22,7 +22,7 @@
     "linux"
   ],
   "dependencies": {
-    "@iobroker/adapter-core": "^3.0.3",
+    "@iobroker/adapter-core": "^3.0.4",
     "autobind-decorator": "^2.4.0"
   },
   "devDependencies": {
