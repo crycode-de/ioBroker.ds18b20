@@ -1,5 +1,8 @@
 {
   "type": "tabs",
+  "tabsStyle": {
+    "width": "calc(100% - 100px)"
+  },
   "i18n": true,
   "items": {
     "mainTab": {
@@ -9,6 +12,7 @@
         "defaultInterval": {
           "type": "number",
           "newLine": true,
+          "xs": 12,
           "sm": 12,
           "md": 4,
           "lg": 3,
@@ -19,6 +23,7 @@
         "w1DevicesPath": {
           "type": "text",
           "newLine": true,
+          "xs": 12,
           "sm": 12,
           "md": 8,
           "lg": 6,
@@ -29,6 +34,7 @@
         "_w1DevicesPathHint": {
           "type": "staticText",
           "newLine": true,
+          "xs": 12,
           "sm": 12,
           "text": "If you have lots of sensors on different bus masters, you may use one adapter instance per bus master to optimize the query performance. To do so use the direct path to one bus master, e.g. '/sys/bus/w1/devices/w1_bus_master1'."
         }
@@ -43,6 +49,7 @@
         "sensors": {
           "type": "table",
           "newLine": true,
+          "xs": 12,
           "sm": 12,
           "label": "Sensors",
           "uniqueColumns": ["address"],
@@ -152,6 +159,7 @@
           "type": "sendTo",
           "command": "searchSensorsAdminUi",
           "jsonData": "{\"sensors\": ${JSON.stringify(data.sensors)}}",
+          "xs": 12,
           "sm": 12,
           "md": 6,
           "lg": 3,
@@ -164,6 +172,7 @@
         },
         "_searchSensorsInfo": {
           "type": "staticText",
+          "xs": 12,
           "sm": 12,
           "md": 6,
           "lg": 9,
@@ -178,12 +187,14 @@
           "type": "staticText",
           "text": "You may search for sensors or add them manually by providing their address.",
           "newLine": true,
+          "xs": 12,
           "sm": 12
         },
         "_sensorRemoteHint": {
           "type": "staticText",
           "text": "If a sensor is connected to a remote system, enter the system ID. Otherwise leave the field empty.",
           "newLine": true,
+          "xs": 12,
           "sm": 12
         }
       }
@@ -196,6 +207,7 @@
         "remoteEnabled": {
           "type": "checkbox",
           "newLine": true,
+          "xs": 12,
           "sm": 12,
           "label": "Enable remote sensors",
           "help": "When enabled the adapter starts a server and accepts connections from ioBroker.ds18b20 remote clients."
@@ -204,6 +216,7 @@
         "remotePort": {
           "type": "port",
           "newLine": true,
+          "xs": 12,
           "sm": 12,
           "md": 6,
           "lg": 2,
@@ -213,6 +226,7 @@
         },
         "remoteKey": {
           "type": "text",
+          "xs": 12,
           "sm": 11,
           "md": 11,
           "lg": 6,
@@ -225,6 +239,7 @@
         "_remoteKeyBtn": {
           "type": "sendTo",
           "command": "getNewRemoteKey",
+          "xs": 12,
           "sm": 1,
           "md": 1,
           "lg": 1,
@@ -244,6 +259,7 @@
           "type": "staticText",
           "text": "Connected remote systems",
           "newLine": true,
+          "xs": 12,
           "sm": 12,
           "hidden": "!data.remoteEnabled",
           "style": {
@@ -256,6 +272,7 @@
           "command": "getRemoteSystemsAdminUi",
           "container": "div",
           "newLine": true,
+          "xs": 12,
           "sm": 12,
           "hidden": "!data.remoteEnabled",
           "style": {
@@ -267,6 +284,7 @@
           "type": "staticText",
           "text": "Hint: Reopen this page to refresh the list of connected remote systems.",
           "newLine": true,
+          "xs": 12,
           "sm": 12,
           "hidden": "!data.remoteEnabled"
         },
@@ -279,6 +297,7 @@
         "_remoteInstallHint1": {
           "type": "staticText",
           "newLine": true,
+          "xs": 12,
           "sm": 12,
           "hidden": "!data.remoteEnabled",
           "text": "Remote client setup instructions",
@@ -290,6 +309,7 @@
         "_remoteInstallHint2": {
           "type": "staticText",
           "newLine": true,
+          "xs": 12,
           "sm": 12,
           "hidden": "!data.remoteEnabled",
           "text": "To setup a remote client please make sure Node.js is installed and run the following commands on the remote system. This will create all necessary files in '~/ds18b20-remote/' to run the remote client."
@@ -297,6 +317,7 @@
         "_remoteInstallHintCmd1": {
           "type": "staticText",
           "newLine": true,
+          "xs": 12,
           "sm": 12,
           "hidden": "!data.remoteEnabled",
           "noTranslation": true,
@@ -310,6 +331,7 @@
         "_remoteInstallHintCmd2": {
           "type": "staticText",
           "newLine": true,
+          "xs": 12,
           "sm": 12,
           "hidden": "!data.remoteEnabled",
           "noTranslation": true,
@@ -324,6 +346,7 @@
         "_remoteInstallHintCmd3": {
           "type": "staticText",
           "newLine": true,
+          "xs": 12,
           "sm": 12,
           "hidden": "!data.remoteEnabled",
           "noTranslation": true,
@@ -338,6 +361,7 @@
         "_remoteInstallHintCmd4": {
           "type": "staticText",
           "newLine": true,
+          "xs": 12,
           "sm": 12,
           "hidden": "!data.remoteEnabled",
           "noTranslation": true,
@@ -352,6 +376,7 @@
         "_remoteInstallHint3": {
           "type": "staticText",
           "newLine": true,
+          "xs": 12,
           "sm": 12,
           "hidden": "!data.remoteEnabled",
           "text": "After that you have to edit the created '.env' file and fill in at least the host and the encryption key.",
@@ -362,6 +387,7 @@
         "_remoteInstallHint4": {
           "type": "staticText",
           "newLine": true,
+          "xs": 12,
           "sm": 12,
           "hidden": "!data.remoteEnabled",
           "text": "Then you may start the remote client manually or as a SystemD service like shown in the setup output."
