@@ -1,12 +1,12 @@
 /**
  * ioBroker DS18B20 1-wire temperature sensor adapter.
  *
- * (C) 2019-2023 Peter Müller <peter@crycode.de> (https://github.com/crycode-de/ioBroker.ds18b20)
+ * (C) 2019-2024 Peter Müller <peter@crycode.de> (https://github.com/crycode-de/ioBroker.ds18b20)
  */
 
 import 'source-map-support/register';
 
-import { readFile, readdir } from 'fs/promises';
+import { readdir, readFile } from 'fs/promises';
 
 import * as crypto from 'crypto';
 
@@ -30,14 +30,14 @@ import { i18n } from './lib/i18n';
 class Ds18b20Adapter extends Adapter {
 
   /**
-   * Mapping of the ioBroker object IDs to the sensor class instances.
-   */
-  private sensors: Record<string, Sensor> = {};
-
-  /**
    * The server for remote sensors if enabled.
    */
   public remoteSensorServer: RemoteSensorServer | null = null;
+
+  /**
+   * Mapping of the ioBroker object IDs to the sensor class instances.
+   */
+  private sensors: Record<string, Sensor> = {};
 
   /**
    * Internal indicator if we are doing a migration from an old version.
@@ -48,7 +48,7 @@ class Ds18b20Adapter extends Adapter {
    * Constructor to create a new instance of the adapter.
    * @param options The adapter options.
    */
-  public constructor(options: Partial<AdapterOptions> = {}) {
+  public constructor (options: Partial<AdapterOptions> = {}) {
     super({
       ...options,
       name: 'ds18b20',
@@ -61,16 +61,33 @@ class Ds18b20Adapter extends Adapter {
   }
 
   /**
+   * Get a defined sensor from it's ioBroker ID or 1-wire address.
+   * @param  idOrAddress The ID or address of the sensor.
+   * @return             The sensor or null.
+   */
+  public getSensor (idOrAddress: string): Sensor | null {
+    if (this.sensors[idOrAddress]) return this.sensors[idOrAddress];
+
+    // check id
+    const m = /^ds18b20\.\d+\.sensors\.(.+)$/.exec(idOrAddress);
+    if (m && this.sensors[m[1]]) {
+      return this.sensors[m[1]];
+    }
+
+    return null;
+  }
+
+  /**
    * Is called when databases are connected and adapter received configuration.
    */
   @boundMethod
-  private async onReady(): Promise<void> {
+  private async onReady (): Promise<void> {
     // Reset the connection indicator during startup
-    this.setState('info.connection', false, true);
+    void this.setState('info.connection', false, true);
 
     // try to get the system language
     const systemConfig = await this.getForeignObjectAsync('system.config');
-    i18n.language = systemConfig?.common.language || 'en';
+    i18n.language = systemConfig?.common.language ?? 'en';
 
     // set default devices path if not defined
     if (!this.config.w1DevicesPath) {
@@ -171,7 +188,7 @@ class Ds18b20Adapter extends Adapter {
       }
 
       // setup info state for connected remote systems
-      await this.extendObjectAsync('info.remotesConnected', {
+      await this.extendObject('info.remotesConnected', {
         type: 'state',
         common: {
           name: i18n.getStringOrTranslated('Connected remote systems'),
@@ -183,7 +200,7 @@ class Ds18b20Adapter extends Adapter {
         },
         native: {},
       });
-      this.setState('info.remotesConnected', '', true);
+      await this.setState('info.remotesConnected', '', true);
 
       this.remoteSensorServer = new RemoteSensorServer(this.config.remotePort, this.config.remoteKey, this);
 
@@ -199,7 +216,7 @@ class Ds18b20Adapter extends Adapter {
       });
 
       this.remoteSensorServer.on('remotesChanged', (remotes: string[]) => {
-        this.setState('info.remotesConnected', remotes.join(','), true);
+        void this.setState('info.remotesConnected', remotes.join(','), true);
       });
 
     } else {
@@ -231,7 +248,7 @@ class Ds18b20Adapter extends Adapter {
 
       // create/update object
       const name = sensorCfg.name || sensorCfg.address;
-      await this.extendObjectAsync(`sensors.${sensorCfg.address}`, {
+      await this.extendObject(`sensors.${sensorCfg.address}`, {
         type: 'state',
         common: {
           name: sensorCfg.enabled ? name : i18n.getStringOrTranslated('%s (disabled)', name),
@@ -313,7 +330,7 @@ class Ds18b20Adapter extends Adapter {
    * Is called when adapter shuts down - callback has to be called under any circumstances!
    */
   @boundMethod
-  private async onUnload(callback: () => void): Promise<void> {
+  private async onUnload (callback: () => void): Promise<void> {
     try {
       // stop all intervals from the sensors
       for (const address in this.sensors) {
@@ -323,15 +340,15 @@ class Ds18b20Adapter extends Adapter {
       // stop the remote sensor server
       if (this.remoteSensorServer) {
         await this.remoteSensorServer.stop();
-        await this.setStateAsync('info.remotesConnected', '' , true);
+        await this.setState('info.remotesConnected', '', true);
       }
 
       // reset connection state
       if (!this.doingMigration) {
-        await this.setStateAsync('info.connection', false, true);
+        await this.setState('info.connection', false, true);
       }
 
-    } catch(e) { }
+    } catch (_err) { /* noop */ }
 
     callback();
   }
@@ -348,13 +365,13 @@ class Ds18b20Adapter extends Adapter {
     this.log.debug(`Got value ${value} from sensor ${address}`);
 
     if (value === null) {
-      this.setStateAsync(`sensors.${address}`, {
+      void this.setState(`sensors.${address}`, {
         ack: true,
         val: null,
         q: 0x81, // general problem by sensor
       });
     } else {
-      this.setStateAsync(`sensors.${address}`, {
+      void this.setState(`sensors.${address}`, {
         ack: true,
         val: value,
       });
@@ -382,7 +399,7 @@ class Ds18b20Adapter extends Adapter {
   private handleSensorErrorStateChanged (hasError: boolean, address: string): void {
     this.log.debug(`Error state of sensor ${address} changed to ${hasError}`);
 
-    this.extendObjectAsync(`sensors.${address}`, {
+    void this.extendObject(`sensors.${address}`, {
       common: {
         icon: hasError ? 'sensor_error.png' : 'sensor_ok.png',
       },
@@ -399,14 +416,14 @@ class Ds18b20Adapter extends Adapter {
     // check if remote sensor server is listening if enabled
     if (this.remoteSensorServer && !this.remoteSensorServer.isListening()) {
       // server enabled but not listening
-      this.setStateAsync('info.connection', false, true);
+      void this.setState('info.connection', false, true);
       return;
     }
 
     // are any sensors available?
     if (Object.keys(this.sensors).length === 0) {
       // no sensors
-      this.setStateAsync('info.connection', false, true);
+      void this.setState('info.connection', false, true);
       return;
     }
 
@@ -414,30 +431,13 @@ class Ds18b20Adapter extends Adapter {
     for (const address in this.sensors) {
       if (this.sensors[address].hasError) {
         // at least one sensor has an error, set connection state to false
-        this.setStateAsync('info.connection', false, true);
+        void this.setState('info.connection', false, true);
         return;
       }
     }
 
     // all sensors are ok, set connection state to true
-    this.setStateAsync('info.connection', true, true);
-  }
-
-  /**
-   * Get a defined sensor from it's ioBroker ID or 1-wire address.
-   * @param  idOrAddress The ID or address of the sensor.
-   * @return             The sensor or null.
-   */
-  public getSensor (idOrAddress: string): Sensor | null {
-    if (this.sensors[idOrAddress]) return this.sensors[idOrAddress];
-
-    // check id
-    const m = /^ds18b20\.\d+\.sensors\.(.+)$/.exec(idOrAddress);
-    if (m && this.sensors[m[1]]) {
-      return this.sensors[m[1]];
-    }
-
-    return null;
+    void this.setState('info.connection', true, true);
   }
 
   /**
@@ -458,7 +458,7 @@ class Ds18b20Adapter extends Adapter {
       for (const address in this.sensors) {
         try {
           results[address] = await this.sensors[address].read();
-        } catch (err) {
+        } catch (_err) {
           results[address] = null;
         }
       }
@@ -508,8 +508,8 @@ class Ds18b20Adapter extends Adapter {
 
       sensors.push(...localSensors);
 
-    } catch (er: any) {
-      this.log.warn(`Error while searching for local sensors: ${er.toString()}`);
+    } catch (err) {
+      this.log.warn(`Error while searching for local sensors: ${err}`);
     }
 
     // remote sensors
@@ -517,8 +517,8 @@ class Ds18b20Adapter extends Adapter {
       try {
         const remoteSensors = await this.remoteSensorServer.search();
         sensors.push(...remoteSensors);
-      } catch (er: any) {
-        this.log.warn(`Error while searching for remote sensors: ${er.toString()}`);
+      } catch (err) {
+        this.log.warn(`Error while searching for remote sensors: ${err}`);
       }
     }
 
@@ -533,7 +533,7 @@ class Ds18b20Adapter extends Adapter {
    * @param state The ioBroker state.
    */
   @boundMethod
-  private async onStateChange(id: string, state: ioBroker.State | null | undefined): Promise<void> {
+  private async onStateChange (id: string, state: ioBroker.State | null | undefined): Promise<void> {
     // don't do anything if state is deleted or ack is set
     if (!state || state.ack) {
       return;
@@ -541,8 +541,8 @@ class Ds18b20Adapter extends Adapter {
 
     // handle special states
     if (id === `${this.namespace}.actions.readNow`) {
-      await this.readNow(state.val as string).catch(() => { /* noop */});
-      await this.setStateAsync(this.namespace + '.actions.readNow', '', true);
+      await this.readNow(state.val as string).catch(() => { /* noop */ });
+      await this.setState(this.namespace + '.actions.readNow', '', true);
     }
   }
 
@@ -551,7 +551,7 @@ class Ds18b20Adapter extends Adapter {
    * @param obj The received ioBroker message.
    */
   @boundMethod
-  private async onMessage(obj: ioBroker.Message): Promise<void> {
+  private async onMessage (obj: ioBroker.Message): Promise<void> {
     this.log.debug('Got message ' + JSON.stringify(obj));
 
     if (typeof obj === 'object') {
@@ -565,10 +565,10 @@ class Ds18b20Adapter extends Adapter {
               this.sendTo(obj.from, obj.command, { err: null, value }, obj.callback);
             }
             return;
-          } catch (err: any) {
-            this.log.debug(err.toString());
+          } catch (err) {
+            this.log.debug(`${err}`);
             if (obj.callback) {
-              this.sendTo(obj.from, obj.command, { err: err.toString(), value: null }, obj.callback);
+              this.sendTo(obj.from, obj.command, { err: `${err}`, value: null }, obj.callback);
             }
           }
           break;
@@ -586,7 +586,7 @@ class Ds18b20Adapter extends Adapter {
 
           break;
 
-        case 'getRemoteSystemsAdminUi':
+        case 'getRemoteSystemsAdminUi': {
           // get connected remote systems
           // don't do anything if no callback is provided
           if (!obj.callback) return;
@@ -598,6 +598,7 @@ class Ds18b20Adapter extends Adapter {
           this.sendTo(obj.from, obj.command, remotes, obj.callback);
 
           break;
+        }
 
         case 'search':
         case 'searchSensors':
@@ -609,7 +610,7 @@ class Ds18b20Adapter extends Adapter {
 
           break;
 
-        case 'searchSensorsAdminUi':
+        case 'searchSensorsAdminUi': {
           // search for sensors from the admin ui
           // don't do anything if no callback is provided
           if (!obj.callback) return;
@@ -617,7 +618,9 @@ class Ds18b20Adapter extends Adapter {
           const sensors: ioBroker.AdapterConfigSensor[] = [];
 
           // use sensors currently defined in admin ui
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
           if (typeof obj.message === 'object' && Array.isArray(obj.message.sensors)) {
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-unsafe-member-access
             sensors.push(...obj.message.sensors);
           }
 
@@ -645,6 +648,7 @@ class Ds18b20Adapter extends Adapter {
           this.sendTo(obj.from, obj.command, { native: { sensors } }, obj.callback);
 
           break;
+        }
 
         case 'getNewRemoteKey':
           // don't do anything if no callback is provided

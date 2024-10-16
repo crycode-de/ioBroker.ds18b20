@@ -56,6 +56,7 @@ class I18n {
   public getString (key: I18nKey, ...args: string[]): string {
     let str: string;
     switch (this.language) {
+      /* eslint-disable @stylistic/max-statements-per-line */
       case 'de': str = (de as I18nObj)[key] ?? key; break;
       case 'en': str = (en as I18nObj)[key] ?? key; break;
       case 'es': str = (es as I18nObj)[key] ?? key; break;
@@ -67,6 +68,7 @@ class I18n {
       case 'ru': str = (ru as I18nObj)[key] ?? key; break;
       case 'zh-cn': str = (zhCn as I18nObj)[key] ?? key; break;
       default: str = key;
+      /* eslint-enable @stylistic/max-statements-per-line */
     }
 
     return this.replacePlaceholders(str, ...args);
@@ -90,7 +92,7 @@ class I18n {
    * @param text The text.
    * @param args Array of strings to be inserted at `%s` in the text.
    */
-  private replacePlaceholders (text: string, ...args: string[]) : string {
+  private replacePlaceholders (text: string, ...args: string[]): string {
     for (const s of args) {
       text = text.replace('%s', s);
     }

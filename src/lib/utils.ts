@@ -7,10 +7,10 @@ import * as crypto from 'crypto';
  * @return          The rounded number.
  */
 export function round (num: number, precision: number): number {
-  if(precision == 0) return Math.round(num);
+  if (precision === 0) return Math.round(num);
 
   let exp = 1;
-  for(let i=0; i < precision; i++) {
+  for (let i = 0; i < precision; i++) {
     exp *= 10;
   }
 
@@ -23,7 +23,7 @@ export function round (num: number, precision: number): number {
  */
 export function genHexString (len: number): string {
   const bytes = crypto.randomBytes(len / 2);
-  return [...bytes]
+  return [ ...bytes ]
     .map((x) => x.toString(16).padStart(2, '0'))
     .join('');
 }

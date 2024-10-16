@@ -38,12 +38,15 @@
     "lib": ["es2021"],
 
     "experimentalDecorators": true,
+    "skipLibCheck": true,
 
     "sourceMap": true,
     "inlineSourceMap": false
   },
   "include": [
-    "src/**/*.ts"
+    "src/**/*.ts",
+    "eslint.config.mjs",
+    "build-remote-client-setup.mjs"
   ],
   "exclude": [
     "build/**",

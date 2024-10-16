@@ -2,7 +2,8 @@
  * Setup script for the remote client.
  * This will be updated with some file contents by `build-remote-client-setup.js`
  * and saved in `admin/remote-client-setup.js`.
- */
+*/
+/* eslint-disable no-console */
 
 import * as fs from 'fs';
 import * as os from 'os';

@@ -14,6 +14,10 @@ var __copyProps = (to, from, except, desc) => {
   return to;
 };
 var __toESM = (mod, isNodeMode, target) => (target = mod != null ? __create(__getProtoOf(mod)) : {}, __copyProps(
+  // If the importer is in node compatibility mode or this is not an ESM
+  // file that has been converted to a CommonJS file using a Babel-
+  // compatible transform (i.e. "__esModule" has not been set), then set
+  // "default" to the CommonJS "module.exports" for node compatibility.
   isNodeMode || !mod || !mod.__esModule ? __defProp(target, "default", { value: mod, enumerable: true }) : target,
   mod
 ));
@@ -39,23 +43,50 @@ var import_remote_server = require("./remote-server");
 var import_utils = require("./lib/utils");
 var import_i18n = require("./lib/i18n");
 class Ds18b20Adapter extends import_adapter_core.Adapter {
+  /**
+   * Constructor to create a new instance of the adapter.
+   * @param options The adapter options.
+   */
   constructor(options = {}) {
     super({
       ...options,
       name: "ds18b20"
     });
-    this.sensors = {};
+    /**
+     * The server for remote sensors if enabled.
+     */
     this.remoteSensorServer = null;
+    /**
+     * Mapping of the ioBroker object IDs to the sensor class instances.
+     */
+    this.sensors = {};
+    /**
+     * Internal indicator if we are doing a migration from an old version.
+     */
     this.doingMigration = false;
     this.on("ready", this.onReady);
     this.on("stateChange", this.onStateChange);
     this.on("message", this.onMessage);
     this.on("unload", this.onUnload);
   }
+  /**
+   * Get a defined sensor from it's ioBroker ID or 1-wire address.
+   * @param  idOrAddress The ID or address of the sensor.
+   * @return             The sensor or null.
+   */
+  getSensor(idOrAddress) {
+    if (this.sensors[idOrAddress])
+      return this.sensors[idOrAddress];
+    const m = /^ds18b20\.\d+\.sensors\.(.+)$/.exec(idOrAddress);
+    if (m && this.sensors[m[1]]) {
+      return this.sensors[m[1]];
+    }
+    return null;
+  }
   async onReady() {
-    this.setState("info.connection", false, true);
+    void this.setState("info.connection", false, true);
     const systemConfig = await this.getForeignObjectAsync("system.config");
-    import_i18n.i18n.language = (systemConfig == null ? void 0 : systemConfig.common.language) || "en";
+    import_i18n.i18n.language = (systemConfig == null ? void 0 : systemConfig.common.language) ?? "en";
     if (!this.config.w1DevicesPath) {
       this.config.w1DevicesPath = "/sys/bus/w1/devices";
     }
@@ -73,6 +104,7 @@ class Ds18b20Adapter extends import_adapter_core.Adapter {
         defaultInterval: oldNative.defaultInterval,
         remoteEnabled: oldNative.remoteEnabled,
         remoteKey: "",
+        // a new remote key must be created in admin!
         remotePort: oldNative.remotePort,
         w1DevicesPath: oldNative.w1DevicesPath,
         sensors: []
@@ -129,7 +161,7 @@ class Ds18b20Adapter extends import_adapter_core.Adapter {
         this.config.remoteKey = crypto.randomBytes(32).toString("hex");
         this.log.error(`Config: Invalid key for the remote sensor server! Using random key "${this.config.remoteKey}".`);
       }
-      await this.extendObjectAsync("info.remotesConnected", {
+      await this.extendObject("info.remotesConnected", {
         type: "state",
         common: {
           name: import_i18n.i18n.getStringOrTranslated("Connected remote systems"),
@@ -141,7 +173,7 @@ class Ds18b20Adapter extends import_adapter_core.Adapter {
         },
         native: {}
       });
-      this.setState("info.remotesConnected", "", true);
+      await this.setState("info.remotesConnected", "", true);
       this.remoteSensorServer = new import_remote_server.RemoteSensorServer(this.config.remotePort, this.config.remoteKey, this);
       this.remoteSensorServer.on("listening", () => {
         this.log.info(`Remote sensor server is listening on port ${this.config.remotePort}`);
@@ -153,7 +185,7 @@ class Ds18b20Adapter extends import_adapter_core.Adapter {
         this.updateInfoConnection();
       });
       this.remoteSensorServer.on("remotesChanged", (remotes) => {
-        this.setState("info.remotesConnected", remotes.join(","), true);
+        void this.setState("info.remotesConnected", remotes.join(","), true);
       });
     } else {
       if (await this.getObjectAsync("info.remotesConnected")) {
@@ -177,7 +209,7 @@ class Ds18b20Adapter extends import_adapter_core.Adapter {
         continue;
       }
       const name = sensorCfg.name || sensorCfg.address;
-      await this.extendObjectAsync(`sensors.${sensorCfg.address}`, {
+      await this.extendObject(`sensors.${sensorCfg.address}`, {
         type: "state",
         common: {
           name: sensorCfg.enabled ? name : import_i18n.i18n.getStringOrTranslated("%s (disabled)", name),
@@ -250,12 +282,12 @@ class Ds18b20Adapter extends import_adapter_core.Adapter {
       }
       if (this.remoteSensorServer) {
         await this.remoteSensorServer.stop();
-        await this.setStateAsync("info.remotesConnected", "", true);
+        await this.setState("info.remotesConnected", "", true);
       }
       if (!this.doingMigration) {
-        await this.setStateAsync("info.connection", false, true);
+        await this.setState("info.connection", false, true);
       }
-    } catch (e) {
+    } catch (_err) {
     }
     callback();
   }
@@ -264,13 +296,14 @@ class Ds18b20Adapter extends import_adapter_core.Adapter {
       return;
     this.log.debug(`Got value ${value} from sensor ${address}`);
     if (value === null) {
-      this.setStateAsync(`sensors.${address}`, {
+      void this.setState(`sensors.${address}`, {
         ack: true,
         val: null,
         q: 129
+        // general problem by sensor
       });
     } else {
-      this.setStateAsync(`sensors.${address}`, {
+      void this.setState(`sensors.${address}`, {
         ack: true,
         val: value
       });
@@ -281,38 +314,33 @@ class Ds18b20Adapter extends import_adapter_core.Adapter {
   }
   handleSensorErrorStateChanged(hasError, address) {
     this.log.debug(`Error state of sensor ${address} changed to ${hasError}`);
-    this.extendObjectAsync(`sensors.${address}`, {
+    void this.extendObject(`sensors.${address}`, {
       common: {
         icon: hasError ? "sensor_error.png" : "sensor_ok.png"
       }
     });
     this.updateInfoConnection();
   }
+  /**
+   * Update the info.connection state depending on the error state of all
+   * sensors and the listening state of the remote sensor server.
+   */
   updateInfoConnection() {
     if (this.remoteSensorServer && !this.remoteSensorServer.isListening()) {
-      this.setStateAsync("info.connection", false, true);
+      void this.setState("info.connection", false, true);
       return;
     }
     if (Object.keys(this.sensors).length === 0) {
-      this.setStateAsync("info.connection", false, true);
+      void this.setState("info.connection", false, true);
       return;
     }
     for (const address in this.sensors) {
       if (this.sensors[address].hasError) {
-        this.setStateAsync("info.connection", false, true);
+        void this.setState("info.connection", false, true);
         return;
       }
     }
-    this.setStateAsync("info.connection", true, true);
-  }
-  getSensor(idOrAddress) {
-    if (this.sensors[idOrAddress])
-      return this.sensors[idOrAddress];
-    const m = /^ds18b20\.\d+\.sensors\.(.+)$/.exec(idOrAddress);
-    if (m && this.sensors[m[1]]) {
-      return this.sensors[m[1]];
-    }
-    return null;
+    void this.setState("info.connection", true, true);
   }
   async readNow(idOrAddress) {
     if (typeof idOrAddress !== "string" || idOrAddress === "all" || idOrAddress === "") {
@@ -321,7 +349,7 @@ class Ds18b20Adapter extends import_adapter_core.Adapter {
       for (const address in this.sensors) {
         try {
           results[address] = await this.sensors[address].read();
-        } catch (err) {
+        } catch (_err) {
           results[address] = null;
         }
       }
@@ -336,6 +364,10 @@ class Ds18b20Adapter extends import_adapter_core.Adapter {
       return await sens.read();
     }
   }
+  /**
+   * Search for local and remote sensors.
+   * @returns Array of the found sensors
+   */
   async searchSensors() {
     const sensors = [];
     try {
@@ -355,15 +387,15 @@ class Ds18b20Adapter extends import_adapter_core.Adapter {
         return acc;
       }, []).map((addr) => ({ address: addr, remoteSystemId: "" }));
       sensors.push(...localSensors);
-    } catch (er) {
-      this.log.warn(`Error while searching for local sensors: ${er.toString()}`);
+    } catch (err) {
+      this.log.warn(`Error while searching for local sensors: ${err}`);
     }
     if (this.config.remoteEnabled && this.remoteSensorServer) {
       try {
         const remoteSensors = await this.remoteSensorServer.search();
         sensors.push(...remoteSensors);
-      } catch (er) {
-        this.log.warn(`Error while searching for remote sensors: ${er.toString()}`);
+      } catch (err) {
+        this.log.warn(`Error while searching for remote sensors: ${err}`);
       }
     }
     this.log.debug(`Sensors found: ${JSON.stringify(sensors)}`);
@@ -376,7 +408,7 @@ class Ds18b20Adapter extends import_adapter_core.Adapter {
     if (id === `${this.namespace}.actions.readNow`) {
       await this.readNow(state.val).catch(() => {
       });
-      await this.setStateAsync(this.namespace + ".actions.readNow", "", true);
+      await this.setState(this.namespace + ".actions.readNow", "", true);
     }
   }
   async onMessage(obj) {
@@ -393,9 +425,9 @@ class Ds18b20Adapter extends import_adapter_core.Adapter {
             }
             return;
           } catch (err) {
-            this.log.debug(err.toString());
+            this.log.debug(`${err}`);
             if (obj.callback) {
-              this.sendTo(obj.from, obj.command, { err: err.toString(), value: null }, obj.callback);
+              this.sendTo(obj.from, obj.command, { err: `${err}`, value: null }, obj.callback);
             }
           }
           break;
@@ -408,7 +440,7 @@ class Ds18b20Adapter extends import_adapter_core.Adapter {
           }
           this.sendTo(obj.from, obj.command, this.remoteSensorServer.getConnectedSystems(), obj.callback);
           break;
-        case "getRemoteSystemsAdminUi":
+        case "getRemoteSystemsAdminUi": {
           if (!obj.callback)
             return;
           let remotes = (_a = this.remoteSensorServer) == null ? void 0 : _a.getConnectedSystems().join(", ");
@@ -417,13 +449,14 @@ class Ds18b20Adapter extends import_adapter_core.Adapter {
           }
           this.sendTo(obj.from, obj.command, remotes, obj.callback);
           break;
+        }
         case "search":
         case "searchSensors":
           if (!obj.callback)
             return;
           this.sendTo(obj.from, obj.command, { sensors: await this.searchSensors() }, obj.callback);
           break;
-        case "searchSensorsAdminUi":
+        case "searchSensorsAdminUi": {
           if (!obj.callback)
             return;
           const sensors = [];
@@ -449,6 +482,7 @@ class Ds18b20Adapter extends import_adapter_core.Adapter {
           }
           this.sendTo(obj.from, obj.command, { native: { sensors } }, obj.callback);
           break;
+        }
         case "getNewRemoteKey":
           if (!obj.callback)
             return;

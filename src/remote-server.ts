@@ -30,26 +30,18 @@ interface RemoteClient {
 /**
  * Interface to declare events for the RemoteSensorServer class.
  */
-// eslint-disable-next-line @typescript-eslint/no-unsafe-declaration-merging
-export interface RemoteSensorServer {
-  on (event: 'listening', listener: () => void): this;
-  on (event: 'error', listener: (err: Error) => void): this;
-  on (event: 'sensorData', listener: (data: RemoteDataRead) => void): this;
-  on (event: 'searchData', listener: (data: RemoteDataSearch) => void): this;
-  on (event: 'remotesChanged', listener: (remotes: string[]) => void): this;
-
-  emit (event: 'listening'): boolean;
-  emit (event: 'error', err: Error): boolean;
-  emit (event: 'sensorData', data: RemoteDataRead): boolean;
-  emit (event: 'searchData', data: RemoteDataSearch): boolean;
-  emit (event: 'remotesChanged', data: string[]): boolean;
+interface RemoteSensorServerEvents {
+  listening: [];
+  error: [ error: Error ];
+  sensorData: [ data: RemoteDataRead ];
+  searchData: [ data: RemoteDataSearch ];
+  remotesChanged: [ remotes: string[] ];
 }
 
 /**
  * Server for remote connections.
  */
-// eslint-disable-next-line @typescript-eslint/no-unsafe-declaration-merging
-export class RemoteSensorServer extends EventEmitter {
+export class RemoteSensorServer extends EventEmitter<RemoteSensorServerEvents> {
 
   /**
    * Instance of the adapter.
@@ -140,7 +132,8 @@ export class RemoteSensorServer extends EventEmitter {
 
     // prepare promise to wait for feedback with a timeout of 5 seconds
     const prom = new Promise<string>((resolve, reject) => {
-      let timeout: ioBroker.Timeout | undefined = undefined;
+      // eslint-disable-next-line prefer-const
+      let timeout: ioBroker.Timeout | undefined;
 
       const handler = (data: RemoteDataRead): void => {
         if (typeof data !== 'object' || data.address !== sensorAddress || data.ts !== requestTs) return;
@@ -148,7 +141,7 @@ export class RemoteSensorServer extends EventEmitter {
           this.adapter.clearTimeout(timeout);
         }
         this.removeListener('sensorData', handler);
-        resolve(data.raw || '');
+        resolve(data.raw ?? '');
       };
 
       timeout = this.adapter.setTimeout(() => {
@@ -202,14 +195,15 @@ export class RemoteSensorServer extends EventEmitter {
 
       // wait for feedback with a timeout of 5 seconds
       proms.push(new Promise<SearchedSensor[]>((resolve, reject) => {
-        let timeout: ioBroker.Timeout | undefined = undefined;
+        // eslint-disable-next-line prefer-const
+        let timeout: ioBroker.Timeout | undefined;
 
         const handler = (data: RemoteDataSearch): void => {
           if (typeof data !== 'object' || data.systemId !== client.systemId || data.ts !== requestTs) return;
           if (timeout) {
             this.adapter.clearTimeout(timeout);
           }
-          this.removeListener('sensorData', handler);
+          this.removeListener('searchData', handler);
           if (!Array.isArray(data.addresses)) {
             data.addresses = [];
           }
@@ -217,7 +211,7 @@ export class RemoteSensorServer extends EventEmitter {
         };
 
         timeout = this.adapter.setTimeout(() => {
-          this.removeListener('sensorData', handler);
+          this.removeListener('searchData', handler);
           reject(new Error(`No response from remote system ${client.systemId}`));
         }, 5000);
 
@@ -234,8 +228,8 @@ export class RemoteSensorServer extends EventEmitter {
   /**
    * Stop the server and close all socket connections.
    */
-  public stop (): Promise<void> {
-    return new Promise<void>((resolve) => {
+  public async stop (): Promise<void> {
+    return await new Promise<void>((resolve) => {
       this.server.close(() => resolve());
     });
   }
@@ -276,7 +270,7 @@ export class RemoteSensorServer extends EventEmitter {
       let idx = dataStr.indexOf('\n');
       while (idx > 0) {
         const raw = dataStr.slice(0, idx);
-        dataStr = dataStr.slice(idx+1);
+        dataStr = dataStr.slice(idx + 1);
         this.handleSocketData(socketId, socket, raw);
         idx = dataStr.indexOf('\n');
       }
@@ -308,9 +302,9 @@ export class RemoteSensorServer extends EventEmitter {
     let data: RemoteData;
     try {
       const dataStr = decrypt(raw, this.encryptionKey);
-      data = JSON.parse(dataStr);
-    } catch (err: any) {
-      this.adapter.log.warn(`Decrypt of data from ${socketId} failed! ${err.toString()}`);
+      data = JSON.parse(dataStr) as RemoteData;
+    } catch (err) {
+      this.adapter.log.warn(`Decrypt of data from ${socketId} failed! ${err}`);
       // close the socket
       socket.destroy();
       return;
@@ -369,7 +363,7 @@ export class RemoteSensorServer extends EventEmitter {
    * @param data The data object to send.
    */
   private async send (socket: Socket, data: RemoteData): Promise<void> {
-    return new Promise<void>((resolve, reject) => {
+    return await new Promise<void>((resolve, reject) => {
       socket.write(encrypt(JSON.stringify(data), this.encryptionKey) + '\n', (err) => {
         if (err) {
           reject(err);

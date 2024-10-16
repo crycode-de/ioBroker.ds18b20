@@ -11,10 +11,8 @@
  *
  * MIT License
  *
- * Copyright (c) 2021-2023 Peter Müller <peter@crycode.de> (https://crycode.de)
+ * Copyright (c) 2021-2024 Peter Müller <peter@crycode.de> (https://crycode.de)
  */
-
-/* eslint-disable no-restricted-syntax */
 
 import { promisify } from 'util';
 import { Socket } from 'net';
@@ -27,8 +25,8 @@ const readFile = promisify(fs.readFile);
 import { Logger } from './logger';
 
 import {
-  encrypt,
   decrypt,
+  encrypt,
   REMOTE_PROTOCOL_VERSION,
 } from './common';
 
@@ -142,7 +140,7 @@ class Ds18b20Remote {
     this.log.debug(`adapterPort`, this.adapterPort);
 
     // get adapter host
-    this.adapterHost = (process.env.ADAPTER_HOST || '').trim();
+    this.adapterHost = (process.env.ADAPTER_HOST ?? '').trim();
     if (this.adapterHost.length <= 0) {
       this.log.error(`No ADAPTER_HOST given!`);
       process.exit(1);
@@ -150,7 +148,7 @@ class Ds18b20Remote {
     this.log.debug(`adapterHost`, this.adapterHost);
 
     // get the encryption key
-    this.adapterKey = Buffer.from(process.env.ADAPTER_KEY || '', 'hex');
+    this.adapterKey = Buffer.from(process.env.ADAPTER_KEY ?? '', 'hex');
     if (this.adapterKey.length !== 32) {
       this.log.error(`ADAPTER_KEY is no valid key!`);
       process.exit(1);
@@ -158,7 +156,7 @@ class Ds18b20Remote {
     this.log.debug(`adapterKey`, this.adapterKey);
 
     // get the 1-wire devices path
-    this.w1DevicesPath = process.env.W1_DEVICES_PATH || '/sys/bus/w1/devices';
+    this.w1DevicesPath = process.env.W1_DEVICES_PATH ?? '/sys/bus/w1/devices';
     if (!fs.existsSync(this.w1DevicesPath)) {
       this.log.error(`The 1-wire devices path ${this.w1DevicesPath} does not exist!`);
       process.exit(1);
@@ -226,7 +224,7 @@ class Ds18b20Remote {
     while (idx > 0) {
       const raw = this.recvData.slice(0, idx);
       this.recvData = this.recvData.slice(idx + 1);
-      this.handleSocketData(raw);
+      void this.handleSocketData(raw);
       idx = this.recvData.indexOf('\n');
     }
   }
@@ -240,9 +238,9 @@ class Ds18b20Remote {
     let data: RemoteData;
     try {
       const dataStr = decrypt(raw, this.adapterKey);
-      data = JSON.parse(dataStr);
-    } catch (err: any) {
-      this.log.warn(`Decrypt of data failed! ${err.toString()}`);
+      data = JSON.parse(dataStr) as RemoteData;
+    } catch (err) {
+      this.log.warn(`Decrypt of data failed! ${err}`);
       // close the socket
       this.socket.end();
       return;
@@ -258,37 +256,38 @@ class Ds18b20Remote {
         }
 
         this.log.info('Sending client info to the adapter');
-        this.send({
+        await this.send({
           cmd: 'clientInfo',
           protocolVersion: REMOTE_PROTOCOL_VERSION,
           systemId: this.systemId,
         });
         break;
 
-      case 'read':
+      case 'read': {
         // read sensor data
         if (!data.address) {
           this.log.warn(`Got read command without address from adapter!`);
           return;
         }
 
-        let raw: string;
+        let raw2: string;
         try {
-          raw = await readFile(`${this.w1DevicesPath}/${data.address}/w1_slave`, 'utf8');
+          raw2 = await readFile(`${this.w1DevicesPath}/${data.address}/w1_slave`, 'utf8');
           this.log.debug(`Read from file ${this.w1DevicesPath}/${data.address}/w1_slave:`, raw);
-        } catch (err: any) {
-          this.log.warn(`Read from file ${this.w1DevicesPath}/${data.address}/w1_slave failed! ${err.toString()}`);
+        } catch (err) {
+          this.log.warn(`Read from file ${this.w1DevicesPath}/${data.address}/w1_slave failed! ${err}`);
           this.log.debug(err);
-          raw = '';
+          raw2 = '';
         }
 
         await this.send({
           cmd: 'read',
           address: data.address,
           ts: data.ts,
-          raw,
+          raw: raw2,
         });
         break;
+      }
 
       case 'search':
         // search for sensors
@@ -297,7 +296,7 @@ class Ds18b20Remote {
 
           const proms: Promise<string>[] = [];
           for (const file of files) {
-            if (file.match(/^w1_bus_master\d+$/)) { // devices path used
+            if (/^w1_bus_master\d+$/.exec(file)) { // devices path used
               this.log.debug(`reading ${this.w1DevicesPath}/${file}/w1_master_slaves`);
               proms.push(readFile(`${this.w1DevicesPath}/${file}/w1_master_slaves`, 'utf8'));
             } else if (file === 'w1_master_slaves') { // path of one w1_bus_masterX used
@@ -318,8 +317,8 @@ class Ds18b20Remote {
             addresses,
           });
 
-        } catch (err: any) {
-          this.log.warn(`Searching for sensors failed! ${err.toString()}`);
+        } catch (err) {
+          this.log.warn(`Searching for sensors failed! ${err}`);
           this.log.debug(err);
         }
 
@@ -371,7 +370,7 @@ class Ds18b20Remote {
    */
   private async send (data: RemoteData): Promise<void> {
     this.log.debug('send to adapter:', data);
-    return new Promise<void>((resolve, reject) => {
+    return await new Promise<void>((resolve, reject) => {
       this.socket.write(encrypt(JSON.stringify(data), this.adapterKey) + '\n', (err) => {
         if (err) {
           reject(err);
@@ -405,7 +404,7 @@ class Ds18b20Remote {
       const key = line.slice(0, idx).trim();
       const val = line.slice(idx + 1).trim().replace(/(^"|"$)/g, '');
 
-      if (ENV_KEYS.indexOf(key) >= 0) {
+      if (ENV_KEYS.includes(key)) {
         // ignore if this env is already set
         if (process.env[key]) continue;
 

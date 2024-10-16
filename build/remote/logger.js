@@ -22,21 +22,42 @@ __export(logger_exports, {
 });
 module.exports = __toCommonJS(logger_exports);
 class Logger {
+  /**
+   * Log a message.
+   * @param args Things to log.
+   */
   log(...args) {
     console.log(...args);
   }
+  /**
+   * Log a message prepended with `[Debug]`.
+   * The message will only be logged if `process.env.DEBUG` is a truthy value.
+   * @param args Things to log.
+   */
   debug(...args) {
     if (!process.env.DEBUG) {
       return;
     }
     console.log("[Debug]", ...args);
   }
+  /**
+   * Log a message prepended with `[Info]`.
+   * @param args Things to log.
+   */
   info(...args) {
     console.log("[Info]", ...args);
   }
+  /**
+   * Log an error message prepended with `[Warn]`.
+   * @param args Things to log.
+   */
   warn(...args) {
     console.warn("[Warn]", ...args);
   }
+  /**
+   * Log an error message prepended with `[Error]`.
+   * @param args Things to log.
+   */
   error(...args) {
     console.error("[Error]", ...args);
   }

@@ -35,8 +35,15 @@ var import_promises = require("fs/promises");
 var import_autobind_decorator = require("autobind-decorator");
 var import_utils = require("./lib/utils");
 class Sensor extends import_events.EventEmitter {
+  /**
+   * Constructor for a new sensor.
+   * @param opts The options for the Sensor.
+   */
   constructor(opts, adapter) {
     super();
+    /**
+     * Timer for interval sensor readings.
+     */
     this.timer = void 0;
     this.adapter = adapter;
     this.address = opts.address;
@@ -71,7 +78,7 @@ class Sensor extends import_events.EventEmitter {
       } else {
         raw = await (0, import_promises.readFile)(`${this.w1DevicesPath}/${this.address}/w1_slave`, "utf8");
       }
-      val = await this.processData(raw);
+      val = this.processData(raw);
       this.emit("value", val, this.address);
       if (this.hasError) {
         this.hasError = false;
@@ -90,10 +97,16 @@ class Sensor extends import_events.EventEmitter {
     }
     return val;
   }
-  async processData(rawData) {
+  /**
+   * Process the raw data from a sensor file.
+   * @param rawData The raw data read from the sensor file.
+   * @returns The read value.
+   * @throws Error when an error occurs.
+   */
+  processData(rawData) {
     const lines = rawData.split("\n");
     let val;
-    if (lines[0].indexOf("YES") > -1) {
+    if (lines[0].includes("YES")) {
       const bytes = lines[0].split(" ");
       if (bytes[0] === bytes[1] && bytes[0] === bytes[2] && bytes[0] === bytes[3] && bytes[0] === bytes[4] && bytes[0] === bytes[5] && bytes[0] === bytes[6] && bytes[0] === bytes[7] && bytes[0] === bytes[8]) {
         throw new Error("Communication error");
@@ -103,7 +116,7 @@ class Sensor extends import_events.EventEmitter {
         throw new Error("Parse error");
       }
       val = parseInt(m[1], 10) / 1e3;
-    } else if (lines[0].indexOf("NO") > -1) {
+    } else if (lines[0].includes("NO")) {
       throw new Error("Checksum error");
     } else {
       throw new Error("Read error");
@@ -121,6 +134,9 @@ class Sensor extends import_events.EventEmitter {
     }
     return val;
   }
+  /**
+   * Stop a running interval for automated readings.
+   */
   stop() {
     if (this.timer) {
       this.adapter.clearInterval(this.timer);

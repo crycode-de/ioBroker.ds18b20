@@ -29,22 +29,16 @@ interface SensorOptions {
 /**
  * Interface to declare events for the Sensor class.
  */
-// eslint-disable-next-line @typescript-eslint/no-unsafe-declaration-merging
-export interface Sensor {
-  on (event: 'value', listener: (value: number | null, address: string) => void): this;
-  on (event: 'error', listener: (err: Error, address: string) => void): this;
-  on (event: 'errorStateChanged', listener: (hasError: boolean, address: string) => void): this;
-
-  emit (event: 'value', value: number | null, address: string): boolean;
-  emit (event: 'error', err: Error, address: string): boolean;
-  emit (event: 'errorStateChanged', hasError: boolean, address: string): boolean;
+interface SensorEvents {
+  value: [ value: number | null, address: string ];
+  error: [ err: Error, address: string ];
+  errorStateChanged: [ hasError: boolean, address: string ];
 }
 
 /**
  * This class represents a single sensor.
  */
-// eslint-disable-next-line @typescript-eslint/no-unsafe-declaration-merging
-export class Sensor extends EventEmitter {
+export class Sensor extends EventEmitter<SensorEvents> {
   /**
    * The address (1-wire ID) of the sensor.
    */
@@ -122,7 +116,7 @@ export class Sensor extends EventEmitter {
       this.timer = this.adapter.setInterval(() => {
         this.read().catch(() => { /* noop */ });
       }, opts.interval);
-      this.read().catch(() => { /* noop */});
+      this.read().catch(() => { /* noop */ });
     }
   }
 
@@ -149,7 +143,7 @@ export class Sensor extends EventEmitter {
         raw = await readFile(`${this.w1DevicesPath}/${this.address}/w1_slave`, 'utf8');
       }
 
-      val = await this.processData(raw);
+      val = this.processData(raw);
 
       this.emit('value', val, this.address);
 
@@ -158,8 +152,8 @@ export class Sensor extends EventEmitter {
         this.emit('errorStateChanged', false, this.address);
       }
 
-    } catch (err: any) {
-      this.emit('error', err, this.address);
+    } catch (err) {
+      this.emit('error', err as Error, this.address);
 
       if (this.nullOnError) {
         this.emit('value', null, this.address);
@@ -181,12 +175,12 @@ export class Sensor extends EventEmitter {
    * @returns The read value.
    * @throws Error when an error occurs.
    */
-  public async processData (rawData: string): Promise<number> {
+  public processData (rawData: string): number {
     const lines = rawData.split('\n');
 
     let val: number;
 
-    if (lines[0].indexOf('YES') > -1) {
+    if (lines[0].includes('YES')) {
       // checksum ok
       const bytes = lines[0].split(' ');
       if (bytes[0] === bytes[1] && bytes[0] === bytes[2] && bytes[0] === bytes[3] && bytes[0] === bytes[4] && bytes[0] === bytes[5] && bytes[0] === bytes[6] && bytes[0] === bytes[7] && bytes[0] === bytes[8]) {
@@ -200,7 +194,7 @@ export class Sensor extends EventEmitter {
       }
       val = parseInt(m[1], 10) / 1000;
 
-    } else if (lines[0].indexOf('NO') > -1) {
+    } else if (lines[0].includes('NO')) {
       // checksum error
       throw new Error('Checksum error');
 

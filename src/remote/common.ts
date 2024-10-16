@@ -40,7 +40,7 @@ export function encrypt (text: crypto.BinaryLike, key: Buffer): string {
  */
 export function decrypt (text: string, key: Buffer): string {
   const textParts = text.split(':');
-  const iv = Buffer.from(textParts.shift() as string, 'hex');
+  const iv = Buffer.from(textParts.shift()!, 'hex');
   const encryptedText = Buffer.from(textParts.join(':'), 'hex');
   const decipher = crypto.createDecipheriv('aes-256-cbc', key, iv);
   let decrypted = decipher.update(encryptedText);
