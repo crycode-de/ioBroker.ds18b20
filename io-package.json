@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "ds18b20",
-    "version": "2.0.5",
+    "version": "3.0.0",
     "news": {
+      "3.0.0": {
+        "en": "Node >= 18, js-controller >= 5.0.19 required\nFixed possible issue on sensor search\nSmall style fixes for jsonConfig\nUpdated dependencies\nRefactored some code parts",
+        "de": "Node >= 18, js-Controller >= 5.0.19 erforderlich\nMögliches Problem bei der Sensorsuche behoben\nKleine Stilfixes für jsonConfig\nAbhängigkeiten aktualisiert\nÜberarbeitung einiger Codeteile",
+        "ru": "Node >= 18, js-контроллер >= 5.0.19\nИсправлена возможная проблема поиска датчиков\nНебольшой стиль для jsonConfig\nОбновленные зависимости\nРемонт некоторых частей кода",
+        "pt": "Node >= 18, js-controller >= 5.0.19 necessário\nCorrigido possível problema na pesquisa do sensor\nPequenas correções de estilo para jsonConfig\nDependências atualizadas\nRefactored algumas peças de código",
+        "nl": "Voor de toepassing van deze onderverdeling wordt verstaan onder:\nOpgelost mogelijk probleem bij sensorzoeken\nKleine stijlfixes voor jsonConfig\nBijgewerkte afhankelijkheden\nSommige codeonderdelen gerefactoreerd",
+        "fr": "Noeud >= 18, js-controller >= 5.0.19 requis\nCorrection d'un problème possible lors de la recherche du capteur\nCorrections de style pour jsonConfig\nDépendances actualisées\nCorrection de certaines parties de code",
+        "it": "Nodo >= 18, js-controller >= 5.0.19 richiesto\nRisolto possibile problema sulla ricerca del sensore\nPiccolo stile correzioni per jsonConfig\nDipendenze aggiornate\nRefactored alcuni pezzi di codice",
+        "es": "Nodo >= 18, js-controller\nPosible problema fijo en la búsqueda de sensores\nPequeños arreglos de estilo para jsonConfig\nDependencias actualizadas\nRefactored algunas partes de código",
+        "pl": "Węzeł > = 18, kontroler SMS > = 5.0.19 wymagane\nNaprawiono możliwy problem wyszukiwania czujników\nMałe poprawki stylu dla jsonConfig\nAktualizacja zależności\nZmieniłem kilka części kodu",
+        "uk": "Node >= 18, js-controller >= 5.0.19 потрібно\nВиправлено можливого питання по пошуку датчика\nМаленькі фіксатори стилю для jsonConfig\nОновлені залежності\nРефакторовані деякі частини коду",
+        "zh-cn": "节点18,js控制器 需要5.0.19\n关于传感器搜索的固定可能问题\nJsonConfig 的小样式修正\n更新的依赖关系\n重构一些代码部件"
+      },
       "2.0.5": {
         "en": "Fixed cosmetic issue in config UI",
         "de": "Kosmetisches Problem in Config-UI behoben",
@@ -80,19 +93,6 @@
         "pl": "Znajduje się numer 16.4+, js-kontroler 4+ i admin 6+\nNowy interfejs użytkownika używający JsonConfig\nczytać i czytać Obecnie akcje są połączone\nNowe info.remotesConnected with a lista połączonych systemów odległych (jeśli możliwa)\nAdded ikony dla statusu czujnika dla obiektów czujnych\nObiekty czujników niepełnosprawnych\nObiekty niekonfigurowane/delete sensory\nTłumaczenia poprawione\nOptymalizacja kodu oraz aktualne standardy\nZależność od upoważnienia",
         "uk": "浜у 涓 蹇\nНовий адміністратор UI за допомогою JsonConfig\n浜у 灞 绀 Зараз дії зараз об'єднані\nНова державна інформація.remotesConnected з переліком підключених систем дистанційного керування (якщо це можливо)\nДодано іконки для статусу датчика на об'єкти датчика\nЕтикетка об'єктів відключених датчиків\nВидалити об'єкти неконфігурованих / видалених датчиків\nОновлені переклади\nОптимізація коду та оновлення до діючих стандартів\nОновлені залежності",
         "zh-cn": "第16.4+、控制容忍4+和注6+\n新代明·乌伊使用Json Config\n改为: 现在的行动正在合并。\n新建国F.remotned with a list of relevant的偏远系统(如果能够)\n添加传感器地位的理由\n残疾传感器的标签目标\n删除未配制/被动传感器的物体\n最新翻译\n守则和现行标准的优化\nA. 最新依赖情况"
-      },
-      "1.6.1": {
-        "en": "Remote client setup url displayed in admin UI fixed",
-        "de": "Remote-Client-Setup URL, die im im Admin-UI angezeigt wird, korrigiert",
-        "ru": "Удаленный URL-адрес клиента отображается в админ UI фиксированный",
-        "pt": "URL de configuração do cliente remoto exibido na UI de admin fixo",
-        "nl": "Verwijderingscriminaliteit vertoond in administratie UI",
-        "fr": "Configuration client à distance url affiché dans l'interface utilisateur fixe",
-        "it": "Impostazione client remoto url visualizzato in interfaccia utente",
-        "es": "Remoto url de configuración del cliente mostrado en admin UI fijo",
-        "pl": "Kliencki zestaw selekcji url wyświetlany w adminowej wersji stałej UI",
-        "uk": "Віддалена установка клієнта ви URL-адреса відображається в адмін UI фіксована",
-        "zh-cn": "在UI固定地点展示的遥感客户"
       }
     },
     "titleLang": {

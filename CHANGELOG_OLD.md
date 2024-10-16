@@ -1,6 +1,11 @@
 # ioBroker.ds18b20
 
 ## Older changelog
+## 2.0.1 (2023-07-19)
+
+* (crycode-de) Fixed config migration
+* (crycode-de) Added warning message for upgrades
+
 ## 2.0.0 (2023-07-19)
 
 * (crycode-de) 💥 Node.js 16.4+, js-controller 4+ and admin 6+ are required
