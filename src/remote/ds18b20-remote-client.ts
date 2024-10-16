@@ -16,8 +16,8 @@
 
 import { promisify } from 'util';
 import { Socket } from 'net';
-import * as fs from 'fs';
-import * as os from 'os';
+import fs from 'fs';
+import os from 'os';
 
 const readDir = promisify(fs.readdir);
 const readFile = promisify(fs.readFile);

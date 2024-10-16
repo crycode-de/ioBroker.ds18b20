@@ -23,12 +23,12 @@ var __toESM = (mod, isNodeMode, target) => (target = mod != null ? __create(__ge
 ));
 var import_util = require("util");
 var import_net = require("net");
-var fs = __toESM(require("fs"));
-var os = __toESM(require("os"));
+var import_fs = __toESM(require("fs"));
+var import_os = __toESM(require("os"));
 var import_logger = require("./logger");
 var import_common = require("./common");
-const readDir = (0, import_util.promisify)(fs.readdir);
-const readFile = (0, import_util.promisify)(fs.readFile);
+const readDir = (0, import_util.promisify)(import_fs.default.readdir);
+const readFile = (0, import_util.promisify)(import_fs.default.readFile);
 const ENV_KEYS = [
   "ADAPTER_HOST",
   "ADAPTER_KEY",
@@ -66,7 +66,7 @@ class Ds18b20Remote {
     if (process.env.SYSTEM_ID) {
       this.systemId = process.env.SYSTEM_ID.trim();
     } else {
-      this.systemId = os.hostname();
+      this.systemId = import_os.default.hostname();
       this.log.warn(`Using the hostname ${this.systemId} as system ID. Please set SYSTEM_ID to a unique value.`);
     }
     this.log.debug(`systemId`, this.systemId);
@@ -94,7 +94,7 @@ class Ds18b20Remote {
     }
     this.log.debug(`adapterKey`, this.adapterKey);
     this.w1DevicesPath = process.env.W1_DEVICES_PATH ?? "/sys/bus/w1/devices";
-    if (!fs.existsSync(this.w1DevicesPath)) {
+    if (!import_fs.default.existsSync(this.w1DevicesPath)) {
       this.log.error(`The 1-wire devices path ${this.w1DevicesPath} does not exist!`);
       process.exit(1);
     }
@@ -278,11 +278,11 @@ class Ds18b20Remote {
    * Read env vars from a .env file in the current working dir if exists.
    */
   readDotEnv() {
-    if (!fs.existsSync(".env"))
+    if (!import_fs.default.existsSync(".env"))
       return;
     let data;
     try {
-      data = fs.readFileSync(".env", "utf-8").split("\n").map((l) => l.trim());
+      data = import_fs.default.readFileSync(".env", "utf-8").split("\n").map((l) => l.trim());
     } catch (err) {
       this.log.debug("can't read .env file", err);
       return;

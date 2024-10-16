@@ -2,7 +2,7 @@
  * Common functions and constants used by the adapter and the remote client.
  */
 
-import * as crypto from 'crypto';
+import crypto from 'node:crypto';
 
 /**
  * Protocol version for the communication.

@@ -36,6 +36,7 @@ Dies ist ein ioBroker-Adapter zur Integration von DS18B20 1-Wire Temperatursenso
 -->
 ### **WORK IN PROGRESS**
 
+* (crycode-de) Node >= 18, js-controller >= 5.0.19 required
 * (crycode-de) Fixed possible issue on sensor search
 * (crycode-de) Small style fixes for jsonConfig
 * (crycode-de) Updated dependencies
@@ -64,7 +65,7 @@ Dies ist ein ioBroker-Adapter zur Integration von DS18B20 1-Wire Temperatursenso
 
 ## License
 
-Copyright (c) 2019-2023 Peter Müller <peter@crycode.de>
+Copyright (c) 2019-2024 Peter Müller <peter@crycode.de>
 
 ### MIT License
 

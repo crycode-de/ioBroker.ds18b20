@@ -95,7 +95,6 @@
         "zh-cn": "在UI固定地点展示的遥感客户"
       }
     },
-    "title": "DS18B20",
     "titleLang": {
       "en": "DS18B20",
       "de": "DS18B20",
@@ -135,9 +134,11 @@
       "1wire",
       "temperature"
     ],
-    "license": "MIT",
+    "licenseInformation": {
+      "license": "MIT",
+      "type": "free"
+    },
     "platform": "Javascript/Node.js",
-    "main": "build/main.js",
     "icon": "ds18b20.png",
     "enabled": true,
     "extIcon": "https://raw.githubusercontent.com/crycode-de/ioBroker.ds18b20/master/admin/ds18b20.png",
@@ -151,11 +152,10 @@
       "config": "json"
     },
     "compact": true,
-    "materialize": true,
     "messagebox": true,
     "dependencies": [
       {
-        "js-controller": ">=4.0.0"
+        "js-controller": ">=5.0.19"
       }
     ],
     "globalDependencies": [
@@ -163,6 +163,7 @@
         "admin": ">=6.0"
       }
     ],
+    "tier": 3,
     "plugins": {
       "sentry": {
         "dsn": "https://4e2fc6b87e4a4016874cb8d91f5cbd97@sentry.cryhost.de/5"

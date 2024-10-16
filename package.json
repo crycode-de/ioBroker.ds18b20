@@ -12,7 +12,8 @@
   "keywords": [
     "ds18b20",
     "1wire",
-    "temperature"
+    "temperature",
+    "ioBroker"
   ],
   "repository": {
     "type": "git",
@@ -54,7 +55,7 @@
     "typescript": "^5.5.4"
   },
   "engines": {
-    "node": ">=16.4.0"
+    "node": ">=18"
   },
   "main": "build/main.js",
   "scripts": {

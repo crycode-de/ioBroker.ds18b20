@@ -21,9 +21,9 @@ var __toESM = (mod, isNodeMode, target) => (target = mod != null ? __create(__ge
   isNodeMode || !mod || !mod.__esModule ? __defProp(target, "default", { value: mod, enumerable: true }) : target,
   mod
 ));
-var fs = __toESM(require("fs"));
-var os = __toESM(require("os"));
-var path = __toESM(require("path"));
+var import_fs = __toESM(require("fs"));
+var import_os = __toESM(require("os"));
+var import_path = __toESM(require("path"));
 const SYSTEMD_SERVICE_NAME = "iobroker-ds18b20-remote.service";
 const files = {
   FILE: "DUMMY"
@@ -31,7 +31,7 @@ const files = {
 };
 for (const f in files) {
   const content = Buffer.from(files[f], "base64").toString("utf-8");
-  fs.writeFileSync(f, content, { encoding: "utf-8" });
+  import_fs.default.writeFileSync(f, content, { encoding: "utf-8" });
 }
 const systemDContent = `[Unit]
 Description=ioBroker.ds18b20 remote client
@@ -40,16 +40,16 @@ After=network.target
 
 [Service]
 Type=simple
-User=${os.userInfo().username}
+User=${import_os.default.userInfo().username}
 WorkingDirectory=${__dirname}
-ExecStart=${process.execPath} ${path.join(__dirname, "ds18b20-remote-client.js")}
+ExecStart=${process.execPath} ${import_path.default.join(__dirname, "ds18b20-remote-client.js")}
 Restart=on-failure
 
 [Install]
 WantedBy=multi-user.target
 `;
-const systemDFile = path.join(__dirname, SYSTEMD_SERVICE_NAME);
-fs.writeFileSync(systemDFile, systemDContent, { encoding: "utf-8" });
+const systemDFile = import_path.default.join(__dirname, SYSTEMD_SERVICE_NAME);
+import_fs.default.writeFileSync(systemDFile, systemDContent, { encoding: "utf-8" });
 const dotEnvContent = `# Settings for the ioBroker.ds18b20 remote client
 
 # Unique ID for this remote system
@@ -70,9 +70,9 @@ ADAPTER_KEY=
 # System path of the 1-wire devices
 #W1_DEVICES_PATH=/sys/bus/w1/devices
 `;
-const dotEnvFile = path.join(__dirname, ".env");
-if (!fs.existsSync(dotEnvFile)) {
-  fs.writeFileSync(dotEnvFile, dotEnvContent, { encoding: "utf-8" });
+const dotEnvFile = import_path.default.join(__dirname, ".env");
+if (!import_fs.default.existsSync(dotEnvFile)) {
+  import_fs.default.writeFileSync(dotEnvFile, dotEnvContent, { encoding: "utf-8" });
 }
 console.log(`- ioBroker.ds18b20 remote client -
 

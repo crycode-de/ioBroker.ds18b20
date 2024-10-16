@@ -1,4 +1,4 @@
-import * as crypto from 'crypto';
+import crypto from 'node:crypto';
 
 /**
  * Round a floating point number to the given precision.

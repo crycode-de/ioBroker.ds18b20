@@ -32,7 +32,7 @@ __export(utils_exports, {
   round: () => round
 });
 module.exports = __toCommonJS(utils_exports);
-var crypto = __toESM(require("crypto"));
+var import_node_crypto = __toESM(require("node:crypto"));
 function round(num, precision) {
   if (precision === 0)
     return Math.round(num);
@@ -43,7 +43,7 @@ function round(num, precision) {
   return Math.round(num * exp) / exp;
 }
 function genHexString(len) {
-  const bytes = crypto.randomBytes(len / 2);
+  const bytes = import_node_crypto.default.randomBytes(len / 2);
   return [...bytes].map((x) => x.toString(16).padStart(2, "0")).join("");
 }
 // Annotate the CommonJS export names for ESM import in node:

@@ -33,12 +33,12 @@ __export(common_exports, {
   encrypt: () => encrypt
 });
 module.exports = __toCommonJS(common_exports);
-var crypto = __toESM(require("crypto"));
+var import_node_crypto = __toESM(require("node:crypto"));
 const REMOTE_PROTOCOL_VERSION = 3;
 const IV_LENGTH = 16;
 function encrypt(text, key) {
-  const iv = crypto.randomBytes(IV_LENGTH);
-  const cipher = crypto.createCipheriv("aes-256-cbc", key, iv);
+  const iv = import_node_crypto.default.randomBytes(IV_LENGTH);
+  const cipher = import_node_crypto.default.createCipheriv("aes-256-cbc", key, iv);
   let encrypted = cipher.update(text);
   encrypted = Buffer.concat([encrypted, cipher.final()]);
   return iv.toString("hex") + ":" + encrypted.toString("hex");
@@ -47,7 +47,7 @@ function decrypt(text, key) {
   const textParts = text.split(":");
   const iv = Buffer.from(textParts.shift(), "hex");
   const encryptedText = Buffer.from(textParts.join(":"), "hex");
-  const decipher = crypto.createDecipheriv("aes-256-cbc", key, iv);
+  const decipher = import_node_crypto.default.createDecipheriv("aes-256-cbc", key, iv);
   let decrypted = decipher.update(encryptedText);
   decrypted = Buffer.concat([decrypted, decipher.final()]);
   return decrypted.toString();
