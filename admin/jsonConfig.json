@@ -16,6 +16,7 @@
           "sm": 12,
           "md": 4,
           "lg": 3,
+          "xl": 3,
           "label": "Default query interval",
           "help": "The default time between sensor queries in milliseconds.",
           "min": 500
@@ -27,6 +28,7 @@
           "sm": 12,
           "md": 8,
           "lg": 6,
+          "xl": 6,
           "label": "Path of the 1-wire devices",
           "help": "System path where the 1-wire devices can be accessed. Default is '/sys/bus/w1/devices'."
         },
@@ -36,6 +38,9 @@
           "newLine": true,
           "xs": 12,
           "sm": 12,
+          "md": 12,
+          "lg": 12,
+          "xl": 12,
           "text": "If you have lots of sensors on different bus masters, you may use one adapter instance per bus master to optimize the query performance. To do so use the direct path to one bus master, e.g. '/sys/bus/w1/devices/w1_bus_master1'."
         }
 
@@ -51,6 +56,9 @@
           "newLine": true,
           "xs": 12,
           "sm": 12,
+          "md": 12,
+          "lg": 12,
+          "xl": 12,
           "label": "Sensors",
           "uniqueColumns": ["address"],
           "items": [
@@ -163,6 +171,7 @@
           "sm": 12,
           "md": 6,
           "lg": 3,
+          "xl": 3,
           "label": "Search for sensors",
           "icon": "data:image/svg+xml;base64,PHN2ZyBoZWlnaHQ9IjQ4IiB2aWV3Qm94PSIwIC05NjAgOTYwIDk2MCIgd2lkdGg9IjQ4Ij48cGF0aCBzdHlsZT0iZmlsbDogY3VycmVudENvbG9yIiBkPSJNNzk2LTEyMSA1MzMtMzg0cS0zMCAyNi02OS45NTkgNDAuNVQzNzgtMzI5cS0xMDguMTYyIDAtMTgzLjA4MS03NVExMjAtNDc5IDEyMC01ODV0NzUtMTgxcTc1LTc1IDE4MS41LTc1dDE4MSA3NVE2MzItNjkxIDYzMi01ODQuODUgNjMyLTU0MiA2MTgtNTAycS0xNCA0MC00MiA3NWwyNjQgMjYyLTQ0IDQ0Wk0zNzctMzg5cTgxLjI1IDAgMTM4LjEyNS01Ny41VDU3Mi01ODVxMC04MS01Ni44NzUtMTM4LjVUMzc3LTc4MXEtODIuMDgzIDAtMTM5LjU0MiA1Ny41UTE4MC02NjYgMTgwLTU4NXQ1Ny40NTggMTM4LjVRMjk0LjkxNy0zODkgMzc3LTM4OVoiLz48L3N2Zz4=",
           "variant": "contained",
@@ -176,6 +185,7 @@
           "sm": 12,
           "md": 6,
           "lg": 9,
+          "xl": 9,
           "hidden": "_alive",
           "text": "The adapter instance must be started to search for sensors.",
           "style": {
@@ -188,14 +198,20 @@
           "text": "You may search for sensors or add them manually by providing their address.",
           "newLine": true,
           "xs": 12,
-          "sm": 12
+          "sm": 12,
+          "md": 12,
+          "lg": 12,
+          "xl": 12
         },
         "_sensorRemoteHint": {
           "type": "staticText",
           "text": "If a sensor is connected to a remote system, enter the system ID. Otherwise leave the field empty.",
           "newLine": true,
           "xs": 12,
-          "sm": 12
+          "sm": 12,
+          "md": 12,
+          "lg": 12,
+          "xl": 12
         }
       }
     },
@@ -209,6 +225,9 @@
           "newLine": true,
           "xs": 12,
           "sm": 12,
+          "md": 12,
+          "lg": 12,
+          "xl": 12,
           "label": "Enable remote sensors",
           "help": "When enabled the adapter starts a server and accepts connections from ioBroker.ds18b20 remote clients."
         },
@@ -220,6 +239,7 @@
           "sm": 12,
           "md": 6,
           "lg": 2,
+          "xl": 2,
           "label": "Server port",
           "help": "The port to start the server for remote clients on. Default is '1820'.",
           "hidden": "!data.remoteEnabled"
@@ -230,6 +250,7 @@
           "sm": 11,
           "md": 11,
           "lg": 6,
+          "xl": 6,
           "label": "Encryption key",
           "help": "Key to encrypt the client connections. This key must be set on all clients. Use the button on the right to create a new key.",
           "hidden": "!data.remoteEnabled",
@@ -243,6 +264,7 @@
           "sm": 1,
           "md": 1,
           "lg": 1,
+          "xl": 1,
           "icon": "data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgMjQgMjQiPjxwYXRoIHN0eWxlPSJmaWxsOiBjdXJyZW50Q29sb3IiIGQ9Ik0xNy42NSA2LjM1QzE2LjIgNC45IDE0LjIxIDQgMTIgNGMtNC40MiAwLTcuOTkgMy41OC03Ljk5IDhzMy41NyA4IDcuOTkgOGMzLjczIDAgNi44NC0yLjU1IDcuNzMtNmgtMi4wOGMtLjgyIDIuMzMtMy4wNCA0LTUuNjUgNC0zLjMxIDAtNi0yLjY5LTYtNnMyLjY5LTYgNi02YzEuNjYgMCAzLjE0LjY5IDQuMjIgMS43OEwxMyAxMWg3VjRsLTIuMzUgMi4zNXoiPjwvcGF0aD48L3N2Zz4=",
           "variant": "contained",
           "useNative": true,
@@ -261,6 +283,9 @@
           "newLine": true,
           "xs": 12,
           "sm": 12,
+          "md": 12,
+          "lg": 12,
+          "xl": 12,
           "hidden": "!data.remoteEnabled",
           "style": {
             "fontSize": "1.3em",
@@ -274,6 +299,9 @@
           "newLine": true,
           "xs": 12,
           "sm": 12,
+          "md": 12,
+          "lg": 12,
+          "xl": 12,
           "hidden": "!data.remoteEnabled",
           "style": {
             "fontFamily": "monospace",
@@ -286,6 +314,9 @@
           "newLine": true,
           "xs": 12,
           "sm": 12,
+          "md": 12,
+          "lg": 12,
+          "xl": 12,
           "hidden": "!data.remoteEnabled"
         },
 
@@ -299,6 +330,9 @@
           "newLine": true,
           "xs": 12,
           "sm": 12,
+          "md": 12,
+          "lg": 12,
+          "xl": 12,
           "hidden": "!data.remoteEnabled",
           "text": "Remote client setup instructions",
           "style": {
@@ -311,6 +345,9 @@
           "newLine": true,
           "xs": 12,
           "sm": 12,
+          "md": 12,
+          "lg": 12,
+          "xl": 12,
           "hidden": "!data.remoteEnabled",
           "text": "To setup a remote client please make sure Node.js is installed and run the following commands on the remote system. This will create all necessary files in '~/ds18b20-remote/' to run the remote client."
         },
@@ -319,6 +356,9 @@
           "newLine": true,
           "xs": 12,
           "sm": 12,
+          "md": 12,
+          "lg": 12,
+          "xl": 12,
           "hidden": "!data.remoteEnabled",
           "noTranslation": true,
           "text": "mkdir ~/ds18b20-remote",
@@ -333,6 +373,9 @@
           "newLine": true,
           "xs": 12,
           "sm": 12,
+          "md": 12,
+          "lg": 12,
+          "xl": 12,
           "hidden": "!data.remoteEnabled",
           "noTranslation": true,
           "text": "cd ~/ds18b20-remote",
@@ -348,6 +391,9 @@
           "newLine": true,
           "xs": 12,
           "sm": 12,
+          "md": 12,
+          "lg": 12,
+          "xl": 12,
           "hidden": "!data.remoteEnabled",
           "noTranslation": true,
           "text": "wget -O remote-client-setup.js https://raw.githubusercontent.com/crycode-de/ioBroker.ds18b20/582dac6b7dc00d892ec8ab429efc7a8be27e102e/build/remote/remote-client-setup.js",
@@ -363,6 +409,9 @@
           "newLine": true,
           "xs": 12,
           "sm": 12,
+          "md": 12,
+          "lg": 12,
+          "xl": 12,
           "hidden": "!data.remoteEnabled",
           "noTranslation": true,
           "text": "node remote-client-setup.js",
@@ -378,6 +427,9 @@
           "newLine": true,
           "xs": 12,
           "sm": 12,
+          "md": 12,
+          "lg": 12,
+          "xl": 12,
           "hidden": "!data.remoteEnabled",
           "text": "After that you have to edit the created '.env' file and fill in at least the host and the encryption key.",
           "style": {
@@ -389,6 +441,9 @@
           "newLine": true,
           "xs": 12,
           "sm": 12,
+          "md": 12,
+          "lg": 12,
+          "xl": 12,
           "hidden": "!data.remoteEnabled",
           "text": "Then you may start the remote client manually or as a SystemD service like shown in the setup output."
         }
