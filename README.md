@@ -34,7 +34,7 @@ Dies ist ein ioBroker-Adapter zur Integration von DS18B20 1-Wire Temperatursenso
     Placeholder for the next version (at the beginning of the line):
     ### **WORK IN PROGRESS**
 -->
-### **WORK IN PROGRESS**
+### 3.0.1 (2024-11-16)
 
 * (crycode-de) Added missing sizes to jsonConfig
 
@@ -57,11 +57,6 @@ Dies ist ein ioBroker-Adapter zur Integration von DS18B20 1-Wire Temperatursenso
 ### 2.0.3 (2023-08-20)
 
 * (crycode-de) Dependency updates
-
-### 2.0.2 (2023-07-23)
-
-* (crycode-de) Fixed bug on sensor migration
-* (crycode-de) 💥 Need to set a new remote encryption key in admin if remote sensors are used
 
 ## License
 

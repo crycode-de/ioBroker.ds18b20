@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "ds18b20",
-    "version": "3.0.0",
+    "version": "3.0.1",
     "news": {
+      "3.0.1": {
+        "en": "Added missing sizes to jsonConfig",
+        "de": "Fehlende Größen zu jsonConfig hinzugefügt",
+        "ru": "Добавить недостающие размеры для jsonConfig",
+        "pt": "Adicionado tamanhos falta para jsonConfig",
+        "nl": "Ontbrekende maten toegevoegd aan jsonConfig",
+        "fr": "Ajout de tailles manquantes à jsonConfig",
+        "it": "Aggiunti taglie mancanti a jsonConfig",
+        "es": "Añadido tamaños perdidos a jsonConfig",
+        "pl": "Dodano brakujące rozmiary do jsonConfig",
+        "uk": "Додано відсутні розміри в jsonConfig",
+        "zh-cn": "添加到 JsonConfig 的缺失大小"
+      },
       "3.0.0": {
         "en": "Node >= 18, js-controller >= 5.0.19 required\nFixed possible issue on sensor search\nSmall style fixes for jsonConfig\nUpdated dependencies\nRefactored some code parts",
         "de": "Node >= 18, js-Controller >= 5.0.19 erforderlich\nMögliches Problem bei der Sensorsuche behoben\nKleine Stilfixes für jsonConfig\nAbhängigkeiten aktualisiert\nÜberarbeitung einiger Codeteile",
@@ -80,19 +93,6 @@
         "pl": "Naprawiono migrację konfiguracji",
         "uk": "Виправлена ​​міграція конфігурації",
         "zh-cn": "固定配置迁移"
-      },
-      "2.0.0": {
-        "en": "💥 Node.js 16.4+, js-controller 4+ and admin 6+ are required\nNew Admin UI using JsonConfig\n💥 `read` and `readNow` actions are now merged\nNew state `info.remotesConnected` with a list of connected remote systems (if enabled)\nAdded icons for the sensor status to the sensor objects\nLabel objects of disabled sensors\nDelete objects of unconfigured/deleted sensors\nUpdated translations\nCode optimizations and upgrades to current standards\nUpdated dependencies",
-        "de": "💥 Node.js 16.4+, js-controller 4+ und admin 6+ sind erforderlich\nNeue Admin UI mit JsonConfig\n💥 `read` und `readNow` Aktionen zusammengefasst\nNeuer State `info.remotesConnected` mit einer Liste der verbundenen Remote-Systeme (wenn aktiviert)\nIcons für den Sensorstatus zu den Sensorobjekten hinzugefügt\nMarkierung von Objekten von deaktivierten Sensoren\nLöschen von Objekten von unkonfigurierten/gelöschten Sensoren\nAktualisierte Übersetzungen\nCodeoptimierungen und Upgrades auf aktuelle Standards\nAktualisierte Abhängigkeiten",
-        "ru": "💥 Node.js 16.4+, js-controller 4+ и admin 6+ требуются\nНовый Admin UI с помощью JsonConfig\n💥 читать и читать Теперь сливаются действия\nНовое государство info.remotesConnected со списком подключенных удаленных систем (если включено)\nДобавлены иконки для статуса датчика в объекты датчика\nЭтикетки объектов датчиков для инвалидов\nУдалить объекты неконфигурированных / удаленных датчиков\nОбновленные переводы\nОптимизация кода и модернизация на текущие стандарты\nОбновленные зависимости",
-        "pt": ", Node.js 16.4+, js-controller 4+ e admin 6+ são necessários\nNova interface de usuário com JsonConfig\n and ler e ler Agora as ações são fundidas\nNovo estado info.remotesConectado com uma lista de sistemas remotos conectados (se habilitado)\nÍcones adicionados para o estado do sensor aos objetos do sensor\nObjetos de etiqueta de sensores desativados\nExcluir objetos de sensores não configurados / excluídos\nTraduções atualizadas\nOtimizações de código e atualizações para os padrões atuais\nDependências atualizadas",
-        "nl": "_\nNew Admin UI gebruikt JsonConf\nLees en lees Nu zijn de acties gezamenlijk\nNieuwe staatsinformatie. RemotesConnecteerd met een lijst met verbonden systemen\nVoegde icoon toe voor de sensorstatus naar de sensor objecten\nLabel voorwerpen van gehandicapte sensoren\nVerwijder objecten van ongeconfigureerde sensoren\nVertaling:\nCode optimisaties en upgrades naar huidige normen\nVerouderde afhankelijkheid",
-        "fr": "➔ Node.js 16.4+, js-controller 4+ et admin 6+ sont nécessaires\nNouvelle interface utilisateur Admin utilisant JsonConfig\nlire et lire Maintenant les actions sont fusionnées\nNouvelle info état.remotesSe connecter avec une liste de systèmes distants connectés (si activé)\nAjout d'icônes pour l'état du capteur aux objets du capteur\nÉtiquette des objets de capteurs handicapés\nSupprimer les objets de capteurs non configurés ou supprimés\nTraductions actualisées\nOptimisation des codes et amélioration des normes actuelles\nMise à jour des dépendances",
-        "it": "💥 Node.js 16.4+, js-controller 4+ e admin 6+ sono necessari\nNuova interfaccia utente con JsonConfig\n💥 leggere e leggere Ora le azioni sono unite\nNuovo stato info.remotesConnesso con un elenco di sistemi remoti collegati (se abilitati)\nAggiunte icone per lo stato del sensore agli oggetti del sensore\nOggetti di etichette dei sensori disabilitati\nEliminare gli oggetti di sensori non configurati / cancellati\nTraduzioni aggiornate\nOttimizzazione del codice e aggiornamenti agli standard attuali\nDipendenze aggiornate",
-        "es": "💥 Node.js 16.4+, js-controller 4+ y admin 6+ son necesarios\nNuevo Admin UI usando JsonConfig\n💥 leer y leer Ahora las acciones se fusionan\nNuevo estado info.remotesConnected with a list of connected remote systems (if enabled)\nSe agregaron iconos para el estado del sensor a los objetos del sensor\nEtiquetas objetos de sensores discapacitados\nEliminar objetos de sensores no configurados o eliminados\nTraducciones actualizadas\nOptimizaciones y actualizaciones de código a las normas actuales\nDependencias actualizadas",
-        "pl": "Znajduje się numer 16.4+, js-kontroler 4+ i admin 6+\nNowy interfejs użytkownika używający JsonConfig\nczytać i czytać Obecnie akcje są połączone\nNowe info.remotesConnected with a lista połączonych systemów odległych (jeśli możliwa)\nAdded ikony dla statusu czujnika dla obiektów czujnych\nObiekty czujników niepełnosprawnych\nObiekty niekonfigurowane/delete sensory\nTłumaczenia poprawione\nOptymalizacja kodu oraz aktualne standardy\nZależność od upoważnienia",
-        "uk": "浜у 涓 蹇\nНовий адміністратор UI за допомогою JsonConfig\n浜у 灞 绀 Зараз дії зараз об'єднані\nНова державна інформація.remotesConnected з переліком підключених систем дистанційного керування (якщо це можливо)\nДодано іконки для статусу датчика на об'єкти датчика\nЕтикетка об'єктів відключених датчиків\nВидалити об'єкти неконфігурованих / видалених датчиків\nОновлені переклади\nОптимізація коду та оновлення до діючих стандартів\nОновлені залежності",
-        "zh-cn": "第16.4+、控制容忍4+和注6+\n新代明·乌伊使用Json Config\n改为: 现在的行动正在合并。\n新建国F.remotned with a list of relevant的偏远系统(如果能够)\n添加传感器地位的理由\n残疾传感器的标签目标\n删除未配制/被动传感器的物体\n最新翻译\n守则和现行标准的优化\nA. 最新依赖情况"
       }
     },
     "titleLang": {
