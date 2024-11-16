@@ -184,8 +184,8 @@
           "xs": 12,
           "sm": 12,
           "md": 6,
-          "lg": 9,
-          "xl": 9,
+          "lg": 6,
+          "xl": 6,
           "hidden": "_alive",
           "text": "The adapter instance must be started to search for sensors.",
           "style": {
