@@ -55,7 +55,7 @@
     "typescript": "^5.9.3"
   },
   "engines": {
-    "node": ">=18"
+    "node": ">=20"
   },
   "main": "build/main.js",
   "scripts": {

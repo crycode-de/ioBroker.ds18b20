@@ -21,8 +21,7 @@ var __decorateClass = (decorators, target, key, kind) => {
   for (var i = decorators.length - 1, decorator; i >= 0; i--)
     if (decorator = decorators[i])
       result = (kind ? decorator(target, key, result) : decorator(result)) || result;
-  if (kind && result)
-    __defProp(target, key, result);
+  if (kind && result) __defProp(target, key, result);
   return result;
 };
 var remote_server_exports = {};
@@ -30,11 +29,11 @@ __export(remote_server_exports, {
   RemoteSensorServer: () => RemoteSensorServer
 });
 module.exports = __toCommonJS(remote_server_exports);
-var import_events = require("events");
+var import_node_events = require("node:events");
 var import_net = require("net");
 var import_autobind_decorator = require("autobind-decorator");
 var import_common = require("./remote/common");
-class RemoteSensorServer extends import_events.EventEmitter {
+class RemoteSensorServer extends import_node_events.EventEmitter {
   constructor(port, encKey, adapter) {
     super();
     /**
@@ -93,8 +92,7 @@ class RemoteSensorServer extends import_events.EventEmitter {
     const prom = new Promise((resolve, reject) => {
       let timeout;
       const handler = (data) => {
-        if (typeof data !== "object" || data.address !== sensorAddress || data.ts !== requestTs)
-          return;
+        if (typeof data !== "object" || data.address !== sensorAddress || data.ts !== requestTs) return;
         if (timeout) {
           this.adapter.clearTimeout(timeout);
         }
@@ -136,8 +134,7 @@ class RemoteSensorServer extends import_events.EventEmitter {
       proms.push(new Promise((resolve, reject) => {
         let timeout;
         const handler = (data) => {
-          if (typeof data !== "object" || data.systemId !== client.systemId || data.ts !== requestTs)
-            return;
+          if (typeof data !== "object" || data.systemId !== client.systemId || data.ts !== requestTs) return;
           if (timeout) {
             this.adapter.clearTimeout(timeout);
           }

@@ -21,14 +21,14 @@ var __toESM = (mod, isNodeMode, target) => (target = mod != null ? __create(__ge
   isNodeMode || !mod || !mod.__esModule ? __defProp(target, "default", { value: mod, enumerable: true }) : target,
   mod
 ));
-var import_util = require("util");
-var import_net = require("net");
-var import_fs = __toESM(require("fs"));
-var import_os = __toESM(require("os"));
+var import_node_util = require("node:util");
+var import_node_net = require("node:net");
+var import_node_fs = __toESM(require("node:fs"));
+var import_node_os = __toESM(require("node:os"));
 var import_logger = require("./logger");
 var import_common = require("./common");
-const readDir = (0, import_util.promisify)(import_fs.default.readdir);
-const readFile = (0, import_util.promisify)(import_fs.default.readFile);
+const readDir = (0, import_node_util.promisify)(import_node_fs.default.readdir);
+const readFile = (0, import_node_util.promisify)(import_node_fs.default.readFile);
 const ENV_KEYS = [
   "ADAPTER_HOST",
   "ADAPTER_KEY",
@@ -66,7 +66,7 @@ class Ds18b20Remote {
     if (process.env.SYSTEM_ID) {
       this.systemId = process.env.SYSTEM_ID.trim();
     } else {
-      this.systemId = import_os.default.hostname();
+      this.systemId = import_node_os.default.hostname();
       this.log.warn(`Using the hostname ${this.systemId} as system ID. Please set SYSTEM_ID to a unique value.`);
     }
     this.log.debug(`systemId`, this.systemId);
@@ -94,14 +94,14 @@ class Ds18b20Remote {
     }
     this.log.debug(`adapterKey`, this.adapterKey);
     this.w1DevicesPath = process.env.W1_DEVICES_PATH ?? "/sys/bus/w1/devices";
-    if (!import_fs.default.existsSync(this.w1DevicesPath)) {
+    if (!import_node_fs.default.existsSync(this.w1DevicesPath)) {
       this.log.error(`The 1-wire devices path ${this.w1DevicesPath} does not exist!`);
       process.exit(1);
     }
     this.log.debug(`w1DevicesPath`, this.w1DevicesPath);
     process.on("SIGINT", this.exit);
     process.on("SIGTERM", this.exit);
-    this.socket = new import_net.Socket();
+    this.socket = new import_node_net.Socket();
     this.socket.on("close", this.onClose);
     this.socket.on("data", this.onData);
     this.socket.on("error", this.onError);
@@ -278,26 +278,22 @@ class Ds18b20Remote {
    * Read env vars from a .env file in the current working dir if exists.
    */
   readDotEnv() {
-    if (!import_fs.default.existsSync(".env"))
-      return;
+    if (!import_node_fs.default.existsSync(".env")) return;
     let data;
     try {
-      data = import_fs.default.readFileSync(".env", "utf-8").split("\n").map((l) => l.trim());
+      data = import_node_fs.default.readFileSync(".env", "utf-8").split("\n").map((l) => l.trim());
     } catch (err) {
       this.log.debug("can't read .env file", err);
       return;
     }
     for (const line of data) {
-      if (!line || line.startsWith("#"))
-        continue;
+      if (!line || line.startsWith("#")) continue;
       const idx = line.indexOf("=");
-      if (idx <= 0)
-        continue;
+      if (idx <= 0) continue;
       const key = line.slice(0, idx).trim();
       const val = line.slice(idx + 1).trim().replace(/(^"|"$)/g, "");
       if (ENV_KEYS.includes(key)) {
-        if (process.env[key])
-          continue;
+        if (process.env[key]) continue;
         process.env[key] = val;
         this.log.debug(`read ${key}=${val} from .env file`);
       }

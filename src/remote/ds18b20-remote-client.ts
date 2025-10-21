@@ -11,13 +11,13 @@
  *
  * MIT License
  *
- * Copyright (c) 2021-2024 Peter Müller <peter@crycode.de> (https://crycode.de)
+ * Copyright (c) 2021-2025 Peter Müller <peter@crycode.de> (https://crycode.de)
  */
 
-import { promisify } from 'util';
-import { Socket } from 'net';
-import fs from 'fs';
-import os from 'os';
+import { promisify } from 'node:util';
+import { Socket } from 'node:net';
+import fs from 'node:fs';
+import os from 'node:os';
 
 const readDir = promisify(fs.readdir);
 const readFile = promisify(fs.readFile);

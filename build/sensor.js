@@ -21,8 +21,7 @@ var __decorateClass = (decorators, target, key, kind) => {
   for (var i = decorators.length - 1, decorator; i >= 0; i--)
     if (decorator = decorators[i])
       result = (kind ? decorator(target, key, result) : decorator(result)) || result;
-  if (kind && result)
-    __defProp(target, key, result);
+  if (kind && result) __defProp(target, key, result);
   return result;
 };
 var sensor_exports = {};
@@ -30,11 +29,11 @@ __export(sensor_exports, {
   Sensor: () => Sensor
 });
 module.exports = __toCommonJS(sensor_exports);
-var import_events = require("events");
-var import_promises = require("fs/promises");
+var import_node_events = require("node:events");
+var import_promises = require("node:fs/promises");
 var import_autobind_decorator = require("autobind-decorator");
 var import_utils = require("./lib/utils");
-class Sensor extends import_events.EventEmitter {
+class Sensor extends import_node_events.EventEmitter {
   /**
    * Constructor for a new sensor.
    * @param opts The options for the Sensor.

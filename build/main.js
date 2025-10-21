@@ -27,15 +27,14 @@ var __decorateClass = (decorators, target, key, kind) => {
   for (var i = decorators.length - 1, decorator; i >= 0; i--)
     if (decorator = decorators[i])
       result = (kind ? decorator(target, key, result) : decorator(result)) || result;
-  if (kind && result)
-    __defProp(target, key, result);
+  if (kind && result) __defProp(target, key, result);
   return result;
 };
 var main_exports = {};
 module.exports = __toCommonJS(main_exports);
 var import_register = require("source-map-support/register");
-var import_promises = require("fs/promises");
-var crypto = __toESM(require("crypto"));
+var import_promises = require("node:fs/promises");
+var crypto = __toESM(require("node:crypto"));
 var import_adapter_core = require("@iobroker/adapter-core");
 var import_autobind_decorator = require("autobind-decorator");
 var import_sensor = require("./sensor");
@@ -75,8 +74,7 @@ class Ds18b20Adapter extends import_adapter_core.Adapter {
    * @return             The sensor or null.
    */
   getSensor(idOrAddress) {
-    if (this.sensors[idOrAddress])
-      return this.sensors[idOrAddress];
+    if (this.sensors[idOrAddress]) return this.sensors[idOrAddress];
     const m = /^ds18b20\.\d+\.sensors\.(.+)$/.exec(idOrAddress);
     if (m && this.sensors[m[1]]) {
       return this.sensors[m[1]];
@@ -292,8 +290,7 @@ class Ds18b20Adapter extends import_adapter_core.Adapter {
     callback();
   }
   handleSensorValue(value, address) {
-    if (!this.sensors[address])
-      return;
+    if (!this.sensors[address]) return;
     this.log.debug(`Got value ${value} from sensor ${address}`);
     if (value === null) {
       void this.setState(`sensors.${address}`, {
@@ -432,8 +429,7 @@ class Ds18b20Adapter extends import_adapter_core.Adapter {
           }
           break;
         case "getRemoteSystems":
-          if (!obj.callback)
-            return;
+          if (!obj.callback) return;
           if (!this.remoteSensorServer) {
             this.sendTo(obj.from, obj.command, [], obj.callback);
             return;
@@ -441,24 +437,18 @@ class Ds18b20Adapter extends import_adapter_core.Adapter {
           this.sendTo(obj.from, obj.command, this.remoteSensorServer.getConnectedSystems(), obj.callback);
           break;
         case "getRemoteSystemsAdminUi": {
-          if (!obj.callback)
-            return;
-          let remotes = (_a = this.remoteSensorServer) == null ? void 0 : _a.getConnectedSystems().join(", ");
-          if (!remotes) {
-            remotes = "---";
-          }
+          if (!obj.callback) return;
+          const remotes = ((_a = this.remoteSensorServer) == null ? void 0 : _a.getConnectedSystems().join(", ")) ?? "---";
           this.sendTo(obj.from, obj.command, remotes, obj.callback);
           break;
         }
         case "search":
         case "searchSensors":
-          if (!obj.callback)
-            return;
+          if (!obj.callback) return;
           this.sendTo(obj.from, obj.command, { sensors: await this.searchSensors() }, obj.callback);
           break;
         case "searchSensorsAdminUi": {
-          if (!obj.callback)
-            return;
+          if (!obj.callback) return;
           const sensors = [];
           if (typeof obj.message === "object" && Array.isArray(obj.message.sensors)) {
             sensors.push(...obj.message.sensors);
@@ -484,10 +474,11 @@ class Ds18b20Adapter extends import_adapter_core.Adapter {
           break;
         }
         case "getNewRemoteKey":
-          if (!obj.callback)
-            return;
+          if (!obj.callback) return;
           this.sendTo(obj.from, obj.command, { native: { remoteKey: (0, import_utils.genHexString)(64) } }, obj.callback);
           break;
+        default:
+          this.log.warn(`Unknown message command: ${obj.command}`);
       }
     }
   }

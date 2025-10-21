@@ -2,9 +2,8 @@
  *  Class for a DS18B20 temperature sensor.
  */
 
-import { EventEmitter } from 'events';
-
-import { readFile } from 'fs/promises';
+import { EventEmitter } from 'node:events';
+import { readFile } from 'node:fs/promises';
 
 import { boundMethod } from 'autobind-decorator';
 

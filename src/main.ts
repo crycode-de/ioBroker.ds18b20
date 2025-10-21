@@ -1,14 +1,13 @@
 /**
  * ioBroker DS18B20 1-wire temperature sensor adapter.
  *
- * (C) 2019-2024 Peter Müller <peter@crycode.de> (https://github.com/crycode-de/ioBroker.ds18b20)
+ * (C) 2019-2025 Peter Müller <peter@crycode.de> (https://github.com/crycode-de/ioBroker.ds18b20)
  */
 
 import 'source-map-support/register';
 
-import { readdir, readFile } from 'fs/promises';
-
-import * as crypto from 'crypto';
+import { readdir, readFile } from 'node:fs/promises';
+import * as crypto from 'node:crypto';
 
 import {
   Adapter,
@@ -591,10 +590,7 @@ class Ds18b20Adapter extends Adapter {
           // don't do anything if no callback is provided
           if (!obj.callback) return;
 
-          let remotes = this.remoteSensorServer?.getConnectedSystems().join(', ');
-          if (!remotes) {
-            remotes = '---';
-          }
+          const remotes = this.remoteSensorServer?.getConnectedSystems().join(', ') ?? '---';
           this.sendTo(obj.from, obj.command, remotes, obj.callback);
 
           break;
@@ -656,6 +652,9 @@ class Ds18b20Adapter extends Adapter {
 
           this.sendTo(obj.from, obj.command, { native: { remoteKey: genHexString(64) } }, obj.callback);
           break;
+
+        default:
+          this.log.warn(`Unknown message command: ${obj.command}`);
       }
     }
   }

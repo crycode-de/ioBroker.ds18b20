@@ -5,9 +5,9 @@
 */
 /* eslint-disable no-console */
 
-import fs from 'fs';
-import os from 'os';
-import path from 'path';
+import fs from 'node:fs';
+import os from 'node:os';
+import path from 'node:path';
 
 const SYSTEMD_SERVICE_NAME = 'iobroker-ds18b20-remote.service';
 

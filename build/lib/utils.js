@@ -34,8 +34,7 @@ __export(utils_exports, {
 module.exports = __toCommonJS(utils_exports);
 var import_node_crypto = __toESM(require("node:crypto"));
 function round(num, precision) {
-  if (precision === 0)
-    return Math.round(num);
+  if (precision === 0) return Math.round(num);
   let exp = 1;
   for (let i = 0; i < precision; i++) {
     exp *= 10;
