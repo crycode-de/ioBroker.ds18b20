@@ -1,6 +1,10 @@
 # ioBroker.ds18b20
 
 ## Older changelog
+## 2.0.3 (2023-08-20)
+
+* (crycode-de) Dependency updates
+
 ## 2.0.2 (2023-07-23)
 
 * (crycode-de) Fixed bug on sensor migration

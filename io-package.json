@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "ds18b20",
-    "version": "3.0.1",
+    "version": "3.1.0",
     "news": {
+      "3.1.0": {
+        "en": "Node.js >= 20, js-controller >= 6.0.11, Admin >= 7.6.17 required\nUpdated dependencies",
+        "de": "Node.js >= 20, js-controller >= 6.0.11, Admin >= 7.6.17 erforderlich\nAbhängigkeiten aktualisiert",
+        "ru": "Node.js >= 20, js-контроллер >= 6.0.11, администратор >= 7.6.17 требуется\nОбновленные зависимости",
+        "pt": "Node.js >= 20, js-controlador >= 6.0,11, Admin >= 7.6.17 necessário\nDependências atualizadas",
+        "nl": "Voor de toepassing van deze onderverdeling wordt verstaan onder:\nBijgewerkte afhankelijkheden",
+        "fr": "Node.js >= 20, js-controller >= 6.0.11, Admin >= 7.6.17 requis\nDépendances actualisées",
+        "it": "Node.js >= 20, js-controller >= 6.0.11, Admin >= 7.6.17 richiesto\nDipendenze aggiornate",
+        "es": "Node.js \"= 20, js-controller \"= 6.0.11, Admin \"= 7.6.17 requerido\nDependencias actualizadas",
+        "pl": "Node.js > = 20, js- controller > = 6.0.11, Admin > = 7.6.17 wymagane\nAktualizacja zależności",
+        "uk": "JavaScript licenses API Веб-сайт Go1.13.8\nОновлені залежності",
+        "zh-cn": "节点.js >= 20,js控制器 >= 6.0.11, 管理员 >= 7.6.17 需要\n更新的依赖关系"
+      },
       "3.0.1": {
         "en": "Added missing sizes to jsonConfig",
         "de": "Fehlende Größen zu jsonConfig hinzugefügt",
@@ -80,19 +93,6 @@
         "pl": "Fixed bug on the sensor migration (ang.)\nżyczenie Aby ustawić nowy zdalny klucz szyfrowania w adminimie, jeśli zdalne czujniki są używane",
         "uk": "Виправлена помилка на міграції датчика\nй Необхідно встановити новий ключ дистанційного шифрування в адміні, якщо використовуються віддалені датчики",
         "zh-cn": "固定的传感器\n评 注 如果使用远距离传感器,则有必要在专注中建立一个新的偏远加密关键。"
-      },
-      "2.0.1": {
-        "en": "Fixed config migration",
-        "de": "Fehler bei Migration der Konfiguration behoben",
-        "ru": "Фиксированная миграция конфигурации",
-        "pt": "Migração de configuração fixa",
-        "nl": "Vaste configuratiemigratie",
-        "fr": "Migration de configuration fixe",
-        "it": "Corretta la migrazione della configurazione",
-        "es": "Migración de configuración fija",
-        "pl": "Naprawiono migrację konfiguracji",
-        "uk": "Виправлена ​​міграція конфігурації",
-        "zh-cn": "固定配置迁移"
       }
     },
     "titleLang": {
