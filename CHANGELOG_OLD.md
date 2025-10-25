@@ -1,6 +1,10 @@
 # ioBroker.ds18b20
 
 ## Older changelog
+## 2.0.4 (2023-08-20)
+
+* (crycode-de) Fix js-controller 5 compatibility
+
 ## 2.0.3 (2023-08-20)
 
 * (crycode-de) Dependency updates

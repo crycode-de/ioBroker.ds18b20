@@ -34,7 +34,7 @@ Dies ist ein ioBroker-Adapter zur Integration von DS18B20 1-Wire Temperatursenso
     Placeholder for the next version (at the beginning of the line):
     ### **WORK IN PROGRESS**
 -->
-### **WORK IN PROGRESS**
+### 3.1.1 (2025-10-25)
 
 * (crycode-de) Updated Sentry DSN
 
@@ -58,10 +58,6 @@ Dies ist ein ioBroker-Adapter zur Integration von DS18B20 1-Wire Temperatursenso
 ### 2.0.5 (2023-10-29)
 
 * (crycode-de) Fixed cosmetic issue in config UI
-
-### 2.0.4 (2023-08-20)
-
-* (crycode-de) Fix js-controller 5 compatibility
 
 ## License
 
