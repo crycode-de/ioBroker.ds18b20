@@ -166,7 +166,7 @@
     "tier": 3,
     "plugins": {
       "sentry": {
-        "dsn": "https://4e2fc6b87e4a4016874cb8d91f5cbd97@sentry.cryhost.de/5"
+        "dsn": "https://0857b44aee244df2b33b8e0fefa56f9a@glitchtip.crymg.de/6"
       }
     },
     "messages": [
