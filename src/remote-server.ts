@@ -8,7 +8,7 @@ import {
   createServer,
   Server,
   Socket,
-} from 'net';
+} from 'node:net';
 
 import { boundMethod } from 'autobind-decorator';
 
