@@ -59,6 +59,8 @@ Dies ist ein ioBroker-Adapter zur Integration von DS18B20 1-Wire Temperatursenso
 
 * (crycode-de) Fixed cosmetic issue in config UI
 
+[Older changelogs can be found there](CHANGELOG_OLD.md)
+
 ## License
 
 Copyright (c) 2019-2026 Peter Müller <peter@crycode.de>
